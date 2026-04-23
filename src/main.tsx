@@ -2,7 +2,7 @@ import { StrictMode,type ReactNode } from 'react'
 import { createRoot } from 'react-dom/client'
 import { AuthProvider,useAuth } from './context/AuthContext';
 import './index.css'
-
+import './App.css'
 
 
 import {createBrowserRouter, RouterProvider, Navigate} from 'react-router-dom'
