@@ -20,7 +20,6 @@ interface RouteProps {
 const PrivateRoute = ({ children }: RouteProps) => {
   const { user } = useAuth();
   return user ? <>{children}</> : <Navigate to="/Login" replace />;
-  
 };
 
 const PublicRoute = ({ children }: RouteProps) => {
