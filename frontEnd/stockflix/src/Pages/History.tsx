@@ -2,9 +2,12 @@ import Header from '../components/Header.tsx'
 import Sidebar from '../components/Sidebar.tsx'
 import Footer from '../components/Footer.tsx'
 import {useState} from 'react'
+import { useAuth } from '../context/AuthContext';
 
 function History() {
-  const [sidebarOpen, setsidebarOpen] = useState(true)
+  const { user } = useAuth();
+  const [sidebarOpen, setsidebarOpen] = useState(true);
+  if (!user) return null;
   return (
     <>
     <div className="flex flex-col min-h-screen">

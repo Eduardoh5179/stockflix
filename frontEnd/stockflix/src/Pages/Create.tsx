@@ -4,7 +4,7 @@ import Footer from '../components/Footer.tsx'
 import {useState} from 'react'
 
 function Create() {
-  const [sidebarOpen, setsidebarOpen] = useState(true)
+  const [sidebarOpen, setsidebarOpen] = useState(true);
   return (
     <>
     <div className="flex flex-col min-h-screen">

@@ -1,4 +1,5 @@
 import { Menu } from 'lucide-react'
+import Logo from '../assets/logo.svg'
 
 interface HeaderProps {
   onMenuClick: () => void;
@@ -13,7 +14,8 @@ function Header({ onMenuClick }: HeaderProps) {
                 <button onClick={onMenuClick} className="relative flex items-center justify-center cursor-pointer before:content-['']  before:absolute  before:m-auto before:flex before:items-center before:justify-center before:w-0 before:h-0 before:rounded-full before:bg-zinc-300 before:z-[-1] hover:before:w-8 hover:before:h-8"> 
                     <Menu size={20}/>
                 </button>
-                <p className="font-bold text-lg md:text-xl"> stockflix </p>
+                {/* <img src={Logo} className="font-bold text-lg md:text-xl"> stockflix </img> */}
+                <img src={Logo} className='w-8 md:w-10 ' alt="logo" />
             </div>
        </header>
     </>
