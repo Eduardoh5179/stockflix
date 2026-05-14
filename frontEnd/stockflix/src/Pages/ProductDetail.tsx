@@ -3,20 +3,27 @@ import Header from '../components/Header.tsx'
 import Sidebar from '../components/Sidebar.tsx'
 import Footer from '../components/Footer.tsx'
 import Movement from '../components/Movement.tsx'
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { useAuth } from '../context/AuthContext';
-import { produtos, type Produto } from '../data/constants.ts'
+import { type Produto } from '../data/constants.ts'
+import produtosJson from "../data/products.json"
 
 const ProductDetail = () =>{
     const { id } = useParams<{ id: string}>();
     const [sidebarOpen, setsidebarOpen] = useState(true);
     const { user } = useAuth();
 
-    const [produto, setProduto] = useState<Produto | undefined>(() => 
-        produtos.find(p => p.id === Number(id))
-    );
+    const [produto, setProduto] = useState<Produto | undefined>();
+    const [loading, setLoading] = useState(true);
 
-    
+    useEffect(() => {
+        const encontrado = produtosJson.find(p => p.id === Number(id));
+        setProduto(encontrado);
+        setLoading(false);
+    }, [id]);
+
+    if (loading) return <p>Carregando...</p>;
+
 
     if (!produto) {
     return (

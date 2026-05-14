@@ -1,16 +1,24 @@
 import Header from '../components/Header.tsx'
 import Sidebar from '../components/Sidebar.tsx'
 import Footer from '../components/Footer.tsx'
-import {useState} from 'react'
+import { useState, useEffect} from 'react'
 import { Box, TriangleAlert,ArrowDownRight,TrendingUp } from 'lucide-react'
-import { produtos, type Produto } from '../data/constants.ts';
+import { type Produto } from '../data/constants.ts'
+import produtosJson from '../data/products.json'
 import { Link } from 'react-router-dom'
 
 
 function Dashboard() {
 
   
-  const [sidebarOpen, setsidebarOpen] = useState(true)
+  const [sidebarOpen, setsidebarOpen] = useState(true);
+
+    const [listaProdutos, setListaProdutos] = useState<Produto[]>([])
+  
+    useEffect(() => {
+      setListaProdutos(produtosJson);
+    }, []);
+  
 
   return (
     <>
@@ -104,7 +112,7 @@ function Dashboard() {
                       </thead>
 
                       <tbody className="divide-y divide-gray-200">
-                        {produtos.map((item: Produto) => (
+                        {listaProdutos.map((item) => (
                           <tr key={item.id} className="hover:bg-gray-50 transition-colors">
                             <td className="px-4 py-3 font-medium text-gray-900">{item.nome}</td>
                             <td className="px-4 py-3 text-gray-700">{item.id}</td>
