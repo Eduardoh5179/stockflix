@@ -22,6 +22,35 @@ function Home() {
     setListaProdutos(produtosJson);
   }, []);
 
+  useEffect(() => {
+  const testarConexao = async () => {
+    const url = import.meta.env.VITE_API_URL;
+    // const porta = import.meta.env.VITE_API_PORT;
+    const enderecoCompleto = `${url}/setores`;
+    console.log(" Tentando conectar em:", `${enderecoCompleto}`);
+
+    try {
+      const response = await fetch(`${enderecoCompleto}`);
+      console.log(" Status da Resposta:", response.status);
+
+      if (!response.ok) {
+        throw new Error(`Erro na API: ${response.statusText}`);
+      }
+
+      const dados = await response.json();
+      
+      console.log(" DADOS RECEBIDOS COM SUCESSO:");
+      console.table(dados); 
+
+    } catch (error) {
+      console.error(" FALHA NO TESTE DE CONEXÃO:");
+      console.error(error);
+    }
+  };
+
+  testarConexao();
+}, []);
+
   const produtosFiltrados = listaProdutos.filter((produto) => {
   const termo = busca.toLowerCase();
     return (
@@ -46,13 +75,13 @@ function Home() {
                   <div className="flex flex-col sm:flex-row sm:justify-between gap-4 w-full">
                     <div className="flex flex-1 gap-2 max-w-xl"> 
                       <div className="relative flex-1 group">
-                        <input type="text" placeholder="Buscar item ou código..." value={busca} onChange={(e)=>{setBusca(e.target.value)}} className="w-full pl-4 pr-12 py-2.5 bg-white border border-gray-200 rounded-xl text-gray-700 placeholder:text-gray-400 transition-all duration-200 focus:outline-none focus:ring-4 focus:ring-blue-500/10 focus:border-blue-500 hover:border-gray-300" />
-                        <button type="button" className="absolute right-0 top-0 h-full w-12 flex items-center justify-center text-gray-400 border-l border-gray-200 group-focus-within:text-blue-500 group-focus-within:border-blue-500 hover:bg-gray-50 hover:text-gray-600 transition-colors duration-200 cursor-pointer rounded-r-xl">
+                        <input type="text" placeholder="Buscar item ou código..." value={busca} onChange={(e)=>{setBusca(e.target.value)}} className="w-full pl-4 pr-12 py-2.5 bg-white border border-gray-200 rounded-xl text-gray-700 placeholder:text-gray-400 focus:outline-none hover:border-gray-300" />
+                        <button type="button" className="absolute right-0 top-0 h-full w-12 flex items-center justify-center text-gray-400 border-l border-gray-200 hover:bg-gray-50 hover:text-gray-600 transition-colors duration-200 cursor-pointer rounded-r-xl">
                           <Search size={19} strokeWidth={2.2} />
                         </button>
                       </div>
 
-                      <button type="button" className="flex items-center gap-2 px-4 py-2.5 bg-white border border-gray-200 rounded-xl text-gray-600 font-medium transition-all duration-200 hover:bg-gray-50 hover:border-gray-300 hover:text-gray-900 active:scale-95 cursor-pointer focus:ring-4 focus:ring-gray-100">
+                      <button type="button" className="flex items-center gap-2 px-4 py-2.5 bg-white border border-gray-200 rounded-xl text-gray-600 font-medium hover:bg-gray-50 hover:border-gray-300 hover:text-gray-900 cursor-pointer active:bg-gray-100">
                         <SlidersHorizontal size={19} strokeWidth={2.2} />
                         <span className="hidden md:block">Filtrar por</span>
                       </button>
