@@ -3,7 +3,7 @@ import Sidebar from '../components/Sidebar.tsx'
 import Footer from '../components/Footer.tsx'
 import { Search,SlidersHorizontal } from 'lucide-react'
 import { useState, useEffect } from 'react'
-// import { produtos } from '../data/constants.ts'
+import { produtos } from '../data/constants.ts'
 import { type Produto} from '../data/constants.ts'
 import { Link } from 'react-router-dom'
 import { useAuth } from '../context/AuthContext';
@@ -18,38 +18,37 @@ function Home() {
 
   const [listaProdutos, setListaProdutos] = useState<Produto[]>([])
 
-  useEffect(() => {
-    setListaProdutos(produtosJson);
-  }, []);
+//   useEffect(() => {
+//     setListaProdutos(produtosJson);
+//   }, []);
 
-  useEffect(() => {
-  const testarConexao = async () => {
-    const url = import.meta.env.VITE_API_URL;
-    // const porta = import.meta.env.VITE_API_PORT;
-    const enderecoCompleto = `${url}/setores`;
-    console.log(" Tentando conectar em:", `${enderecoCompleto}`);
+//   useEffect(() => {
+//   const testarConexao = async () => {
+//     const url = import.meta.env.VITE_API_URL;
+//     const enderecoCompleto = `${url}/setores`;
+//     console.log(" Tentando conectar em:", `${enderecoCompleto}`);
 
-    try {
-      const response = await fetch(`${enderecoCompleto}`);
-      console.log(" Status da Resposta:", response.status);
+//     try {
+//       const response = await fetch(`${enderecoCompleto}`);
+//       console.log(" Status da Resposta:", response.status);
 
-      if (!response.ok) {
-        throw new Error(`Erro na API: ${response.statusText}`);
-      }
+//       if (!response.ok) {
+//         throw new Error(`Erro na API: ${response.statusText}`);
+//       }
 
-      const dados = await response.json();
+//       const dados = await response.json();
       
-      console.log(" DADOS RECEBIDOS COM SUCESSO:");
-      console.table(dados); 
+//       console.log(" DADOS RECEBIDOS COM SUCESSO:");
+//       console.table(dados); 
 
-    } catch (error) {
-      console.error(" FALHA NO TESTE DE CONEXÃO:");
-      console.error(error);
-    }
-  };
+//     } catch (error) {
+//       console.error(" FALHA NO TESTE DE CONEXÃO:");
+//       console.error(error);
+//     }
+//   };
 
-  testarConexao();
-}, []);
+//   testarConexao();
+// }, []);
 
   const produtosFiltrados = listaProdutos.filter((produto) => {
   const termo = busca.toLowerCase();
@@ -86,7 +85,7 @@ function Home() {
                         <span className="hidden md:block">Filtrar por</span>
                       </button>
                     </div>                  
-                  {user?.role === "admin"  && (
+                  {user?.acessoADM === true  && (
                   <Link to={'/Create'} className="flex items-center w-50 md:w-auto gap-2 bg-green-500 hover:bg-green-600 cursor-pointer text-white font-bold py-2 px-6 rounded-lg ">
                     <span className="text-sm lg:text-lg">+</span>
                     Adicionar produto

@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState,useEffect } from 'react'
 import { useAuth } from '../context/AuthContext';
 import { useNavigate } from 'react-router-dom';
 import Logo from '../assets/logo.svg'
@@ -8,11 +8,66 @@ function Login() {
   const navigate = useNavigate();
   const [email, setEmail] = useState('');
   const [senha, setSenha] = useState('');
-  const handleSubmit = (e: React.FormEvent) => {
+
+    const credenciais = {
+    "login": import.meta.env.VITE_LOGIN,
+    "senha": import.meta.env.VITE_SENHA
+  }
+
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    login(email,senha);
-    navigate('/');
+    
+    if (!email || !senha) {
+      alert("Por favor, preencha todos os campos.");
+      return;
+    }
+    const sucesso = await login(email, senha);
+    if(sucesso){
+      navigate('/');
+    }
   };
+
+useEffect(() => {
+  const fluxoDeAutenticacaoETeste = async () => {
+    const url = import.meta.env.VITE_API_URL;
+    
+    console.log("1. Tentando fazer login...");
+    try {
+      const responseLogin = await fetch(`${url}/auth/login`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        credentials: 'include',
+        body: JSON.stringify(credenciais)
+      });
+
+      if (!responseLogin.ok) {
+        throw new Error(`Falha no login: ${responseLogin.statusText}`);
+      }
+      
+      console.log("2. Login efetuado com sucesso! Cookie gravado.");
+      await new Promise(resolve => setTimeout(resolve, 1000));
+
+      console.log("3. Buscando produtos com o novo cookie...");
+      const responseProdutos = await fetch(`${url}/usuarios`, {
+        method: 'GET',
+        credentials: 'include', 
+      });
+
+      if (!responseProdutos.ok) {
+        throw new Error(`Erro nos produtos: ${responseProdutos.status}`);
+      }
+
+      const dadosProdutos = await responseProdutos.json();
+      console.log("4. Dados recebidos com sucesso:", dadosProdutos);
+
+    } catch (error) {
+      console.error("Erro no fluxo:", error);
+    }
+  };
+
+  fluxoDeAutenticacaoETeste();
+}, []);
+
   return (
     
     <>

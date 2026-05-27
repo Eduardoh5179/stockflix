@@ -3,14 +3,14 @@ import { createContext, useState, useContext, type ReactNode } from 'react';
 export type UserRole = 'admin' | 'user';
 
 interface User {
-  id: string;
-  nome: string;
-  role: UserRole;
+  id: number;
+  login: string;
+  acessoADM: Boolean;
 }
 
 interface AuthContextData {
   user: User | null;
-  login: (email: string, senha:string) => void;
+  login: (email: string, senha:string) => Promise<boolean>;
   logout: () => void;
 }
 
@@ -18,22 +18,44 @@ const AuthContext = createContext<AuthContextData>({} as AuthContextData);
 
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [user, setUser] = useState<User | null>(null);
-  const login = (email: string, senha: string) => {
-    const credenciais = {
-      admin: { email: 'admin@teste.com', pass: 'admin123' },
-      common: { email: 'user@teste.com', pass: 'user123' }
-    };
+  const login = async (email: string, senha: string): Promise<boolean> => {
+    const url = import.meta.env.VITE_API_URL;
 
-    if (email === credenciais.admin.email && senha === credenciais.admin.pass) {
-      setUser({ id: '1', nome: 'Administrador', role: 'admin' });
-    } 
-    else if (email === credenciais.common.email && senha === credenciais.common.pass) {
-      setUser({ id: '2', nome: 'Usuário Comum', role: 'user' });
-    } 
-    else {
+    try {
+      const credenciais = {
+        "login": email,
+        "senha": senha
+      }
+
+      const dadosUsuario = {
+        id:3,
+        login:email,
+        acessoADM: true
+      }
+
+      const response = await fetch(`${url}/auth/login`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        credentials: 'include',
+        body: JSON.stringify(credenciais)
+      });
+
+      if (!response.ok) {
+        throw new Error('Credenciais inválidas ou erro no servidor');
+      }
+
+      setUser(dadosUsuario)
+      const textoResposta = await response.text();
+      console.log("Resposta do servidor:", textoResposta);
+
+      return true;
+    } catch (error) {
+      console.error("Erro na autenticação:", error);
       alert("Usuário ou senha incorretos!");
-    }
+      return false; 
+    } 
   };
+  
 
   const logout = () => setUser(null);
 
