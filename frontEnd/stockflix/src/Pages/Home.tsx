@@ -3,11 +3,12 @@ import Sidebar from '../components/Sidebar.tsx'
 import Footer from '../components/Footer.tsx'
 import { Search,SlidersHorizontal } from 'lucide-react'
 import { useState, useEffect } from 'react'
-import { produtos } from '../data/constants.ts'
+// import { produtos } from '../data/constants.ts'
 import { type Produto} from '../data/constants.ts'
 import { Link } from 'react-router-dom'
 import { useAuth } from '../context/AuthContext';
 import produtosJson from '../data/products.json'
+import produtosApi from '../services/api.ts'
 
 function Home() {
 
@@ -17,6 +18,21 @@ function Home() {
   const [busca, setBusca] = useState("");
 
   const [listaProdutos, setListaProdutos] = useState<Produto[]>([])
+
+  useEffect(() => {
+    const carregarDadosDaApi = async () => {
+      try {
+        const dados = await produtosApi();
+     
+        setListaProdutos(dados); 
+  
+      } catch (error) {
+        console.error("Erro ao carregar os produtos na tela:", error);
+      }
+    };
+
+    carregarDadosDaApi();
+  }, []);
 
 
   const produtosFiltrados = listaProdutos.filter((produto) => {
@@ -80,7 +96,7 @@ function Home() {
                           <tr key={item.id} className="hover:bg-gray-50 transition-colors">
                             <td className="px-4 py-3 font-medium text-gray-900">{item.nome}</td>
                             <td className="px-4 py-3 text-gray-700">{item.id}</td>
-                            <td className="px-4 py-3 text-gray-700">{item.preco}</td>
+                            <td className="px-4 py-3 text-gray-700">R$ {item.preco}</td>
                             <td className="px-4 py-3 text-gray-700">{item.quantidade}</td>
                             <td className="px-4 py-3 text-right">
                               <Link to={`/Products/${item.id}`} className="text-blue-600 hover:text-blue-800 font-medium underline">

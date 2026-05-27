@@ -7,6 +7,7 @@ import { useState, useEffect } from 'react'
 import { useAuth } from '../context/AuthContext';
 import { type Produto } from '../data/constants.ts'
 import produtosJson from "../data/products.json"
+import produtosPorID from '../services/produtosID.ts'
 
 const ProductDetail = () =>{
     const { id } = useParams<{ id: string}>();
@@ -17,13 +18,28 @@ const ProductDetail = () =>{
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
-        const encontrado = produtosJson.find(p => p.id === Number(id));
-        setProduto(encontrado);
+    const carregarProduto = async () => {
+      if (!id) return;
+      
+      setLoading(true); 
+      try {
+        const dados = await produtosPorID(Number(id));
+        
+        setProduto(dados || undefined); 
+      } catch (error) {
+        console.error("Erro ao carregar detalhes do produto:", error);
+        setProduto(undefined);
+      } finally {
         setLoading(false);
-    }, [id]);
+      }
+    };
+
+    carregarProduto();
+  }, [id]); // Executa novamente se o ID na URL mudar
+
+  console.log(produto)
 
     if (loading) return <p>Carregando...</p>;
-
 
     if (!produto) {
     return (
@@ -68,7 +84,7 @@ const ProductDetail = () =>{
 
                             <section className="p-10 font-sans flex flex-col gap-4">
                                 <p className="text-sm">
-                                    Lorem ipsum dolor sit amet consectetur, adipisicing elit. Inventore officiis eveniet at animi odit quo sed veniam, voluptas molestiae voluptatem dolorum hic veritatis sit similique, iure consequatur accusantium numquam rem.
+                                   {produto.descricao}
                                 </p>
                                 <section className="font-serif ">
                                     <div className="border-y flex font-medium justify-between border-(--borderColor) py-2 px-4">
@@ -81,11 +97,11 @@ const ProductDetail = () =>{
                                     </div>
                                     <div className="border-b flex font-medium justify-between border-(--borderColor) py-2 px-4">
                                         <p>valor unitário</p>
-                                        <p>{produto.preco}</p>
+                                        <p>R$ {produto.preco}</p>
                                     </div>
                                     <div className="border-b flex font-medium justify-between border-(--borderColor) py-2 px-4">
                                         <p>valor em estoque</p>
-                                        <p>1</p>
+                                        <p>R$ {produto.preco * produto.quantidade}</p>
                                     </div>
                                 </section>
                             </section>
@@ -93,7 +109,7 @@ const ProductDetail = () =>{
                                 <Movement produtoAtual={produto} onUpdate={atualizarEstoquePai}/>
                             </section>
 
-                            {user?.role === "admin"  && (<section className="border-t border-(--borderColor) flex items-center justify-center p-6">
+                            {user?.acessoADM === true  && (<section className="border-t border-(--borderColor) flex items-center justify-center p-6">
                                 <button className="p-2 border border-zinc-400 cursor-pointer rounded-md">editar</button>
                             </section>
                             )}

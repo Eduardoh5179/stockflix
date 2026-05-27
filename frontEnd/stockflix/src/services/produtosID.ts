@@ -1,6 +1,7 @@
-  const produtos = async () => {
+  const produtosPorID = async (id:number) => {
     const url = import.meta.env.VITE_API_URL;
-    const enderecoCompleto = `${url}/produtos`;
+
+    const enderecoCompleto = `${url}/produtos/${id}`;
     console.log(" Tentando conectar em:", `${enderecoCompleto}`);
 
     try {
@@ -18,16 +19,15 @@
       }
 
       const dados = await response.json();
-      
-      console.log(" DADOS RECEBIDOS COM SUCESSO:");
+    
       console.table(dados); 
       return dados
 
     } catch (error) {
-      console.error(" FALHA NO TESTE DE CONEXÃO:");
+      console.error(" FALHA ao buscar o produto:");
       console.error(error);
-      return []
+      return null
     }
   };
 
-export default produtos
+export default produtosPorID
