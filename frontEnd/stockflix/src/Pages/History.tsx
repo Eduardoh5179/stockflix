@@ -1,12 +1,29 @@
 import Header from '../components/Header.tsx'
 import Sidebar from '../components/Sidebar.tsx'
 import Footer from '../components/Footer.tsx'
-import {useState} from 'react'
+import {useState,useEffect} from 'react'
 import { useAuth } from '../context/AuthContext';
+import movimentacoes from '../services/movimentacoes.ts';
 
 function History() {
   const { user } = useAuth();
   const [sidebarOpen, setsidebarOpen] = useState(true);
+  const [movement, setMovement] = useState([]);
+
+    useEffect(() => {
+      const carregarDadosDaApi = async () => {
+        try {
+          const dados = await movimentacoes();
+       
+          setMovement(dados); 
+    
+        } catch (error) {
+          console.error("Erro ao carregar os produtos na tela:", error);
+        }
+      };
+  
+      carregarDadosDaApi();
+    }, []);
   if (!user) return null;
   return (
     <>

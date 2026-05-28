@@ -27,11 +27,6 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
         "senha": senha
       }
 
-      const dadosUsuario = {
-        id:3,
-        login:email,
-        acessoADM: true
-      }
 
       const response = await fetch(`${url}/auth/login`, {
         method: 'POST',
@@ -44,9 +39,9 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
         throw new Error('Credenciais inválidas ou erro no servidor');
       }
 
-      setUser(dadosUsuario)
-      const textoResposta = await response.text();
-      console.log("Resposta do servidor:", textoResposta);
+      const dadosUsuario = await response.json();
+      setUser(dadosUsuario);
+      console.log("Resposta do servidor:", dadosUsuario);
 
       return true;
     } catch (error) {
