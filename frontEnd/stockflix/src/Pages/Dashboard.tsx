@@ -5,18 +5,29 @@ import { useState, useEffect} from 'react'
 import { Box, TriangleAlert,ArrowDownRight,TrendingUp } from 'lucide-react'
 import { type Produto } from '../data/constants.ts'
 import produtosApi from '../services/api.ts'
+import movimentacoes from '../services/movimentacoes.ts'
 import { Link } from 'react-router-dom'
+import { type Movimentacao } from '../data/movimentacao.ts'
 
 
 function Dashboard() {
-
   
   const [sidebarOpen, setsidebarOpen] = useState(true);
   const [listaProdutos, setListaProdutos] = useState<Produto[]>([]);
+  const [listaMovimentacoes, setListaMovimentacoes] = useState<Movimentacao[]>([]);
 
   const totalQuantidade = listaProdutos.reduce((acumulador, item) => acumulador + item.quantidade, 0);
   const totalPreco = listaProdutos.reduce((acumulador, item) => acumulador + (item.preco * item.quantidade), 0);
   const top3EstoqueCritico = [...listaProdutos].sort((a, b) => a.quantidade - b.quantidade).slice(0, 3);
+  const topItensSaida = Object.values(listaMovimentacoes.filter((mov) => mov.tipoMovimentacao === false).reduce((acc, mov) => {
+      if (!acc[mov.produtoId]) {
+        const produtoNome = listaProdutos.find((p) => p.id === mov.produtoId)?.nome || `Produto ${mov.produtoId}`;
+        acc[mov.produtoId] = { nome: produtoNome, total: 0 };
+      }
+      acc[mov.produtoId].total += mov.qtdMovimentada;
+      return acc;
+    }, {} as Record<number, { nome: string; total: number }>)
+).sort((a, b) => b.total - a.total).slice(0, 3);
   
       useEffect(() => {
         const carregarDadosDaApi = async () => {
@@ -32,6 +43,24 @@ function Dashboard() {
     
         carregarDadosDaApi();
       }, []);
+
+      useEffect(() => {
+        const carregarDadosDaApi = async () => {
+          try {
+            const dados = await movimentacoes();
+         
+            setListaMovimentacoes(dados); 
+      
+          } catch (error) {
+            console.error("Erro ao carregar os produtos na tela:", error);
+          }
+        };
+    
+        carregarDadosDaApi();
+      }, []);
+
+    const totalSaidas = listaMovimentacoes.filter(mov => mov.tipoMovimentacao === false).reduce((soma, mov) => soma + mov.qtdMovimentada, 0);
+
 
   return (
     <>
@@ -71,7 +100,7 @@ function Dashboard() {
                 </div>
                 <div className='font-mono'>
                   <p className='text-zinc-600'>ABAIXO DO ESPERADO</p>
-                  <p className='text-gray-800 font-bold'>231</p>
+                  <p className='text-gray-800 font-bold'>2</p>
                 </div>
               </div>
               <div className='border flex  flex-col gap-2 border-(--borderColor) shadow-sm rounded-md p-6'> {/*Saidas <ArrowDownRight size={20}/></*/}
@@ -85,7 +114,7 @@ function Dashboard() {
                 </div>
                 <div className='font-mono'>
                   <p className='text-zinc-600'>SAIDAS</p>
-                  <p className='text-gray-800 font-bold'>24</p>
+                  <p className='text-gray-800 font-bold'>{totalSaidas}</p>
                 </div>
               </div>
               <div className='border flex  flex-col gap-2 border-(--borderColor) shadow-sm rounded-md p-6'> {/*valor total trendingup*/ }
@@ -145,18 +174,17 @@ function Dashboard() {
               <section className='lg-col-span-1 border border-zinc-300 rounded-lg p-6'>
                  <h2 className='font-bold text-md font-sans'>Top Itens (saida)</h2>
                  <ul className='mt-2 flex flex-col gap-3'>
-                  <div className='flex justify-between'>
-                    <p className='text-sm'>Celular galaxy</p>
-                    <p className='font-bold text-sm'>123 un.</p>
-                  </div>
-                  <div className='flex justify-between'>
-                    <p className='text-sm'>Notebook pro</p>
-                    <p className='font-bold text-sm'>92 un.</p>
-                  </div>
-                  <div className='flex justify-between'>
-                    <p className='text-sm'>fone bluetooth</p>
-                    <p className='font-bold text-sm'>80 un.</p>
-                  </div>
+                  {topItensSaida.map((item, index) => (
+  
+                    <li key={index} className='flex justify-between'>
+                      <p className='text-sm capitalize'>{item.nome}</p>
+                      <p className='font-bold text-sm'>{item.total} un.</p>
+                    </li>
+                  ))}
+
+                    {topItensSaida.length === 0 && (
+                      <p className="text-sm text-zinc-500 italic">Nenhuma saída registrada.</p>
+                    )}
                  </ul>
               </section>
             </section>

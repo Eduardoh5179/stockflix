@@ -5,11 +5,21 @@ import {useState,useEffect} from 'react'
 import { useAuth } from '../context/AuthContext';
 import movimentacoes from '../services/movimentacoes.ts';
 
+
 function History() {
   const { user } = useAuth();
   const [sidebarOpen, setsidebarOpen] = useState(true);
-  const [movement, setMovement] = useState([]);
-
+  
+  interface Movimentacao {
+    id: number;
+    data: string;
+    produtoId: number;
+    qtdMovimentada: number;
+    tipoMovimentacao: boolean;
+    usuarioId: number;
+  }
+  const [listaMovement, setMovement] = useState <Movimentacao[]>([]);
+  
     useEffect(() => {
       const carregarDadosDaApi = async () => {
         try {
@@ -47,7 +57,7 @@ function History() {
                         </tr>
                       </thead>
                       <tbody className="divide-y divide-gray-200">
-                      <tr>
+                      {/* <tr>
                         <td className="px-4 py-3 text-gray-700">Entrada</td>
                         <td className="px-4 py-3 text-gray-700 font-medium">Parafuso Sextavado</td>
                         <td className="px-4 py-3 text-gray-700">500</td>
@@ -70,7 +80,39 @@ function History() {
                         <td className="px-4 py-3 text-gray-700">Avaria</td>
                         <td className="px-4 py-3 text-gray-700">Marcos Lima</td>
                         <td className="px-4 py-3 text-right text-gray-700">07/04/2026</td>
-                      </tr>
+                      </tr> */}
+
+                      {listaMovement.map((mov) => (
+                        <tr key={mov.id}>
+
+                          <td className="px-4 py-3 text-gray-700">
+                            {mov.tipoMovimentacao ? "Entrada" : "Saída"}
+                          </td>
+
+                          <td className="px-4 py-3 text-gray-700 font-medium">
+                            Produto ID: {mov.produtoId}
+                          </td>
+                          
+
+                          <td className="px-4 py-3 text-gray-700">
+                            {mov.qtdMovimentada}
+                          </td>
+                          
+                          <td className="px-4 py-3 text-gray-700">
+                            -
+                          </td>
+                          
+
+                          <td className="px-4 py-3 text-gray-700">
+                            Usuário ID: {mov.usuarioId}
+                          </td>
+                          
+                          <td className="px-4 py-3 text-right text-gray-700">
+                            {new Date(mov.data).toLocaleDateString('pt-BR', { timeZone: 'UTC' })}
+                          </td>
+                        </tr>
+                      ))}
+
                     </tbody>
                     </table>
               </section>
