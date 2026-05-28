@@ -88,12 +88,12 @@ const ProductDetail = () =>{
                                 </p>
                                 <section className="font-serif ">
                                     <div className="border-y flex font-medium justify-between border-(--borderColor) py-2 px-4">
-                                        <p>estoque mínimo</p>
+                                        <p>estoque previsto</p>
                                         <p>1</p>
                                     </div>
                                     <div className="border-b flex font-medium justify-between border-(--borderColor) py-2 px-4">
-                                        <p>estoque máximo</p>
-                                        <p>1</p>
+                                        <p>Setor</p>
+                                        <p>{produto.setorId}</p>
                                     </div>
                                     <div className="border-b flex font-medium justify-between border-(--borderColor) py-2 px-4">
                                         <p>valor unitário</p>
