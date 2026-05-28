@@ -148,6 +148,7 @@ function Dashboard() {
                           <th className="px-4 py-3 text-left font-semibold text-gray-900">Produto</th>
                           <th className="px-4 py-3 text-left font-semibold text-gray-900">ID</th>
                           <th className="px-4 py-3 text-left font-semibold text-gray-900">Preço</th>
+                          <th className="px-4 py-3 text-left font-semibold text-gray-900">Setor</th>
                           <th className="px-4 py-3 text-left font-semibold text-gray-900">Qtd.</th>
                           <th className="px-4 py-3 text-right font-semibold text-gray-900">Ações</th>
                         </tr>
@@ -159,6 +160,7 @@ function Dashboard() {
                             <td className="px-4 py-3 font-medium text-gray-900">{item.nome}</td>
                             <td className="px-4 py-3 text-gray-700">{item.id}</td>
                             <td className="px-4 py-3 text-gray-700">{item.preco.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}</td>
+                            <td className="px-4 py-3 text-gray-700">{item.setorId}</td>
                             <td className="px-4 py-3 text-gray-700">{item.quantidade}</td>
                             <td className="px-4 py-3 text-right">
                               <Link to={`/Products/${item.id}`} className="text-blue-600 hover:text-blue-800 font-medium underline">
