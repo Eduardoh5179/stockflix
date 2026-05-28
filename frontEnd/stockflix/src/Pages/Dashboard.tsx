@@ -4,7 +4,7 @@ import Footer from '../components/Footer.tsx'
 import { useState, useEffect} from 'react'
 import { Box, TriangleAlert,ArrowDownRight,TrendingUp } from 'lucide-react'
 import { type Produto } from '../data/constants.ts'
-import produtosJson from '../data/products.json'
+import produtosApi from '../services/api.ts'
 import { Link } from 'react-router-dom'
 
 
@@ -12,13 +12,26 @@ function Dashboard() {
 
   
   const [sidebarOpen, setsidebarOpen] = useState(true);
+  const [listaProdutos, setListaProdutos] = useState<Produto[]>([]);
 
-    const [listaProdutos, setListaProdutos] = useState<Produto[]>([])
+  const totalQuantidade = listaProdutos.reduce((acumulador, item) => acumulador + item.quantidade, 0);
+  const totalPreco = listaProdutos.reduce((acumulador, item) => acumulador + (item.preco * item.quantidade), 0);
+  const top3EstoqueCritico = [...listaProdutos].sort((a, b) => a.quantidade - b.quantidade).slice(0, 3);
   
-    useEffect(() => {
-      setListaProdutos(produtosJson);
-    }, []);
-  
+      useEffect(() => {
+        const carregarDadosDaApi = async () => {
+          try {
+            const dados = await produtosApi();
+         
+            setListaProdutos(dados); 
+      
+          } catch (error) {
+            console.error("Erro ao carregar os produtos na tela:", error);
+          }
+        };
+    
+        carregarDadosDaApi();
+      }, []);
 
   return (
     <>
@@ -44,7 +57,7 @@ function Dashboard() {
                   </div>
                 <div className='font-mono'>
                   <p className='text-zinc-600'>ITENS TOTAIS</p>
-                  <p className='text-gray-800 font-bold'>983029</p>
+                  <p className='text-gray-800 font-bold'>{totalQuantidade}</p>
                 </div>
               </div>
               <div className='border flex  flex-col gap-2 border-(--borderColor) shadow-sm rounded-md p-6'>
@@ -86,7 +99,7 @@ function Dashboard() {
                 </div>
                 <div className='font-mono'>
                   <p className='text-zinc-600'>VALOR TOTAL</p>
-                  <p className='text-gray-800 font-bold'>R$84k</p>
+                  <p className='text-gray-800 font-bold'>R${totalPreco}</p>
                 </div>
               </div>
               
@@ -112,11 +125,11 @@ function Dashboard() {
                       </thead>
 
                       <tbody className="divide-y divide-gray-200">
-                        {listaProdutos.map((item) => (
+                        {top3EstoqueCritico.slice(0,3).map((item) => (
                           <tr key={item.id} className="hover:bg-gray-50 transition-colors">
                             <td className="px-4 py-3 font-medium text-gray-900">{item.nome}</td>
                             <td className="px-4 py-3 text-gray-700">{item.id}</td>
-                            <td className="px-4 py-3 text-gray-700">{item.preco}</td>
+                            <td className="px-4 py-3 text-gray-700">R$ {item.preco}</td>
                             <td className="px-4 py-3 text-gray-700">{item.quantidade}</td>
                             <td className="px-4 py-3 text-right">
                               <Link to={`/Products/${item.id}`} className="text-blue-600 hover:text-blue-800 font-medium underline">

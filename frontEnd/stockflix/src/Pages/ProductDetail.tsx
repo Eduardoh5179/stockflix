@@ -6,7 +6,6 @@ import Movement from '../components/Movement.tsx'
 import { useState, useEffect } from 'react'
 import { useAuth } from '../context/AuthContext';
 import { type Produto } from '../data/constants.ts'
-import produtosJson from "../data/products.json"
 import produtosPorID from '../services/produtosID.ts'
 
 const ProductDetail = () =>{

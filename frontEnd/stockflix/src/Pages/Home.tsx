@@ -3,11 +3,9 @@ import Sidebar from '../components/Sidebar.tsx'
 import Footer from '../components/Footer.tsx'
 import { Search,SlidersHorizontal } from 'lucide-react'
 import { useState, useEffect } from 'react'
-// import { produtos } from '../data/constants.ts'
 import { type Produto} from '../data/constants.ts'
 import { Link } from 'react-router-dom'
 import { useAuth } from '../context/AuthContext';
-import produtosJson from '../data/products.json'
 import produtosApi from '../services/api.ts'
 
 function Home() {
