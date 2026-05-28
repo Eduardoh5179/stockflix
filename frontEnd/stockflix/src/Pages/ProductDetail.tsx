@@ -15,7 +15,7 @@ const ProductDetail = () =>{
 
     const [produto, setProduto] = useState<Produto | undefined>();
     const [loading, setLoading] = useState(true);
-
+    
     useEffect(() => {
     const carregarProduto = async () => {
       if (!id) return;
@@ -35,13 +35,13 @@ const ProductDetail = () =>{
 
     carregarProduto();
   }, [id]); // Executa novamente se o ID na URL mudar
-
+  
   console.log(produto)
-
-    if (loading) return <p>Carregando...</p>;
-
-    if (!produto) {
-    return (
+  
+  if (loading) return <p>Carregando...</p>;
+  
+  if (!produto) {
+      return (
       <>
       <Header onMenuClick={() => setsidebarOpen(!sidebarOpen)}/>
       <Sidebar isOpen={sidebarOpen}/>
@@ -52,15 +52,16 @@ const ProductDetail = () =>{
       </main>
       </>
     );
-  }
+}
+    const valorEmEstoque = produto.preco * produto.quantidade
 
     const atualizarEstoquePai = (novaQuantidade: number) => {
-            if (produto) {
-                setProduto({ ...produto, quantidade: novaQuantidade });
-            }
-        };
-
-
+        if (produto) {
+            setProduto({ ...produto, quantidade: novaQuantidade });
+        }
+    };
+    
+    
     return(
         <> 
         <div className="flex flex-col min-h-screen">
@@ -96,11 +97,11 @@ const ProductDetail = () =>{
                                     </div>
                                     <div className="border-b flex font-medium justify-between border-(--borderColor) py-2 px-4">
                                         <p>valor unitário</p>
-                                        <p>R$ {produto.preco}</p>
+                                        <p>{produto.preco.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}</p>
                                     </div>
                                     <div className="border-b flex font-medium justify-between border-(--borderColor) py-2 px-4">
                                         <p>valor em estoque</p>
-                                        <p>R$ {produto.preco * produto.quantidade}</p>
+                                        <p>{valorEmEstoque.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}</p>
                                     </div>
                                 </section>
                             </section>

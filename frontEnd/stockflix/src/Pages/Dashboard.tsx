@@ -99,7 +99,7 @@ function Dashboard() {
                 </div>
                 <div className='font-mono'>
                   <p className='text-zinc-600'>VALOR TOTAL</p>
-                  <p className='text-gray-800 font-bold'>R${totalPreco}</p>
+                  <p className='text-gray-800 font-bold'>{totalPreco.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}</p>
                 </div>
               </div>
               
@@ -129,7 +129,7 @@ function Dashboard() {
                           <tr key={item.id} className="hover:bg-gray-50 transition-colors">
                             <td className="px-4 py-3 font-medium text-gray-900">{item.nome}</td>
                             <td className="px-4 py-3 text-gray-700">{item.id}</td>
-                            <td className="px-4 py-3 text-gray-700">R$ {item.preco}</td>
+                            <td className="px-4 py-3 text-gray-700">{item.preco.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}</td>
                             <td className="px-4 py-3 text-gray-700">{item.quantidade}</td>
                             <td className="px-4 py-3 text-right">
                               <Link to={`/Products/${item.id}`} className="text-blue-600 hover:text-blue-800 font-medium underline">
