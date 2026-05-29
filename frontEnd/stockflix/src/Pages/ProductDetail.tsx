@@ -7,6 +7,8 @@ import { useState, useEffect } from 'react'
 import { useAuth } from '../context/AuthContext';
 import { type Produto } from '../data/constants.ts'
 import produtosPorID from '../services/produtosID.ts'
+import atualizarProduto from '../services/produtoPut.ts'
+import { Spinner } from "@/components/ui/spinner"
 
 
 const ProductDetail = () =>{
@@ -16,7 +18,28 @@ const ProductDetail = () =>{
 
     const [produto, setProduto] = useState<Produto | undefined>();
     const [loading, setLoading] = useState(true);
-    
+    const [isUpdating, setIsUpdating] = useState(false);
+    const [isEditing, setIsEditing] = useState(false);
+    const [editForm, setEditForm] = useState<Produto | undefined>(undefined);
+
+    const handleStartEditing = () => {
+        if (user?.acessoADM === true) {
+            setEditForm(produto);
+            setIsEditing(true);
+        } else {
+            alert("Acesso negado: Você não tem permissão para editar.");
+        }
+    };
+
+    const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
+    const { name, value } = e.target;
+    if (editForm) {
+        setEditForm({
+            ...editForm,
+            [name]: (name === "preco" || name === "setorId") ? Number(value) : value
+        });
+    }
+};
     useEffect(() => {
     const carregarProduto = async () => {
       if (!id) return;
@@ -38,8 +61,24 @@ const ProductDetail = () =>{
   }, [id]); 
   
   console.log(produto)
+
   
-  if (loading) return <p>Carregando...</p>;
+  if (loading){
+    {
+      return (
+      <>
+      <Header onMenuClick={() => setsidebarOpen(!sidebarOpen)}/>
+      <Sidebar isOpen={sidebarOpen}/>
+      <main className='h-full flex-1'>
+        <section className={`${sidebarOpen ? 'ml-64': 'ml-0'} transition-all duration-300 p-6`}>
+            <h2> Carregando dados.... </h2>
+        </section>  
+      </main>
+      </>
+    );
+}
+
+  }
   
   if (!produto) {
       return (
@@ -75,7 +114,10 @@ const ProductDetail = () =>{
 
                         <span className="text-zinc-500 text-sm">ID: {id}</span>
                             <section className="flex justify-between">
-                                <h1 className="text-xl md:text-3xl font-bold text-slate-800 mb-4">{produto.nome}</h1>  
+                                {isEditing && user?.acessoADM ? (
+                                    <input name="nome" className="text-xl md:text-3xl font-bold text-slate-800 mb-4 border-b-2 border-violet-500 outline-none bg-slate-50 px-2 w-full" value={editForm?.nome} onChange={handleChange}/>) : (
+                                    <h1 className="text-xl md:text-3xl font-bold text-slate-800 mb-4">{produto.nome}</h1>
+                                )}
                                 <p>Status</p>
                             </section>
                             <section>
@@ -84,9 +126,10 @@ const ProductDetail = () =>{
                             </section>
 
                             <section className="p-10 font-sans flex flex-col gap-4">
-                                <p className="text-sm">
-                                   {produto.descricao}
-                                </p>
+                                {isEditing && user?.acessoADM ? (
+                                        <textarea name="descricao" className="w-full p-3 border border-violet-300 rounded-md text-sm bg-slate-50 outline-none" rows={3} value={editForm?.descricao} onChange={handleChange}/>) : (
+                                        <p className="text-sm">{produto.descricao}</p>
+                                    )}
                                 <section className="font-serif ">
                                     <div className="border-y flex font-medium justify-between border-(--borderColor) py-2 px-4">
                                         <p>estoque previsto</p>
@@ -94,11 +137,20 @@ const ProductDetail = () =>{
                                     </div>
                                     <div className="border-b flex font-medium justify-between border-(--borderColor) py-2 px-4">
                                         <p>Setor</p>
-                                        <p>{produto.setorId}</p>
+                                        {isEditing && user?.acessoADM ? ( <select name="setorId" value={editForm?.setorId} onChange={handleChange} className="border border-violet-300 rounded px-2 py-1 text-sm outline-none">
+                                            <option value={1}>Setor 1</option>
+                                            <option value={2}>Setor 2</option>
+                                            <option value={3}>Setor 3</option>
+                                        </select>) : (
+                                        <p>{produto.setorId}</p> )}
                                     </div>
                                     <div className="border-b flex font-medium justify-between border-(--borderColor) py-2 px-4">
                                         <p>valor unitário</p>
-                                        <p>{produto.preco.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}</p>
+                                        {isEditing && user?.acessoADM ? (
+                                        <div className="flex items-center gap-1">
+                                            <span className="text-sm text-slate-50">R$</span>
+                                            <input name="preco" type="number" step="0.01" className="border border-violet-300 rounded px-2 py-1 text-sm w-24 outline-none" value={editForm?.preco} onChange={handleChange}/>
+                                        </div>) : ( <p>{produto.preco.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}</p>)}
                                     </div>
                                     <div className="border-b flex font-medium justify-between border-(--borderColor) py-2 px-4">
                                         <p>valor em estoque</p>
@@ -110,11 +162,41 @@ const ProductDetail = () =>{
                                 <Movement produtoAtual={produto} onUpdate={atualizarEstoquePai}/>
                             </section>
 
-                            {user?.acessoADM === true  && (<section className="border-t border-(--borderColor) flex items-center justify-center p-6">
-                                <button className="p-2 border border-zinc-400 cursor-pointer rounded-md">editar</button>
-                            </section>
-                            )}
-
+{user?.acessoADM === true && (
+    <section className="border-t border-(--borderColor) flex items-center justify-center p-6 gap-3">
+        {isEditing ? (
+            <>
+                <button onClick={() => setIsEditing(false)} className="px-4 py-2 text-sm font-medium border border-zinc-300 rounded-md hover:bg-zinc-50 transition-colors cursor-pointer">
+                    Cancelar
+                </button>
+                <button 
+                    onClick={async () => {
+                        if (!editForm) return;
+                        setIsUpdating(true);
+                        try {
+                            const resultado = await atualizarProduto(Number(id), editForm);
+                            setProduto(resultado);
+                            setIsEditing(false);
+                        } catch (error) {
+                            alert("Erro ao salvar alterações.");
+                        } finally {
+                            setIsUpdating(false);
+                        }
+                    }}
+                    disabled={isUpdating}
+                    className="px-4 py-2 text-sm font-medium bg-violet-700 text-white rounded-md hover:bg-violet-800 disabled:opacity-50 flex items-center gap-2 cursor-pointer"
+                >
+                    {isUpdating && <Spinner className="h-4 w-4 animate-spin" />}
+                    Salvar Alterações
+                </button>
+            </>
+        ) : (
+            <button onClick={handleStartEditing} className="px-6 py-2 border border-zinc-400 cursor-pointer rounded-md hover:bg-slate-50 transition-all font-medium text-slate-700">
+                Editar Informações
+            </button>
+        )}
+    </section>
+)}                            
                     </div>
                 </section>
             </main>
