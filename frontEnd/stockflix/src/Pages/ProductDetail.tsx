@@ -7,6 +7,7 @@ import { useState, useEffect } from 'react'
 import { useAuth } from '../context/AuthContext';
 import { type Produto } from '../data/constants.ts'
 import produtosPorID from '../services/produtosID.ts'
+import {type FormEvent} from 'react'
 
 const ProductDetail = () =>{
     const { id } = useParams<{ id: string}>();
@@ -34,7 +35,55 @@ const ProductDetail = () =>{
     };
 
     carregarProduto();
-  }, [id]); // Executa novamente se o ID na URL mudar
+  }, [id]); 
+
+    const url = import.meta.env.VITE_API_URL;
+    const [tipo, setTipo] = useState('');
+    const [qtd, setQtd] = useState('');
+    const [data, setData] = useState('1'); 
+    const [produtoId, setProdutoId] = useState('');
+    const [usuarioId, setUsuarioId] = useState('');
+  
+    const handleSubmit = async (e: FormEvent) => {
+      e.preventDefault(); 
+  
+      const requestBody = {
+        id: 0, 
+        tipoMovimentacao: Boolean(tipo),
+        qtdMovimentada: Number(qtd),
+        data: data,
+        produtoId: Number(produtoId),
+        usuarioId: Number(usuarioId)
+      };
+      try {
+        const response = await fetch(`${url}/movimentacoes`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          credentials: 'include',
+          body: JSON.stringify(requestBody),
+        });
+  
+        if (!response.ok) {
+          const dadosErro = await response.json();
+          console.error("❌ Detalhes do erro vindos da API:", dadosErro);
+          throw new Error(`Erro na API: ${response.status} - ${dadosErro}`);
+        }
+  
+        alert('Produto criado com sucesso!');
+        
+        setTipo('');
+        setQtd('');
+        setData('');
+        setProdutoId('');
+        setUsuarioId('');
+  
+      } catch (error) {
+        console.error('Erro na requisição POST:', error);
+        alert('Houve um erro ao tentar criar o produto.');
+      }
+    };
   
   console.log(produto)
   

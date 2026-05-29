@@ -1,12 +1,13 @@
 import Header from '../components/Header.tsx'
 import Sidebar from '../components/Sidebar.tsx'
 import Footer from '../components/Footer.tsx'
-import { Search,SlidersHorizontal } from 'lucide-react'
+import { Search,SlidersHorizontal,Trash2 } from 'lucide-react'
 import { useState, useEffect } from 'react'
 import { type Produto} from '../data/constants.ts'
 import { Link } from 'react-router-dom'
-import { useAuth } from '../context/AuthContext';
+import { useAuth } from '../context/AuthContext'
 import produtosApi from '../services/api.ts'
+
 
 function Home() {
 
@@ -32,6 +33,37 @@ function Home() {
     carregarDadosDaApi();
   }, []);
 
+  const handleDelete = async (id: number, quantidade: number) => {
+  const url = import.meta.env.VITE_API_URL;
+    if (quantidade > 0) {
+      alert(`Não é possível deletar este produto pois ele ainda possui ${quantidade} unidades em estoque! Zere o estoque antes de excluir.`);
+      return; 
+    }
+  const confirmar = window.confirm("Tem certeza que deseja deletar este item?");
+
+  if (!confirmar) return;
+
+  try {
+    const response = await fetch(`${url}/produtos/${id}`, { 
+      method: 'DELETE',
+      headers: {
+        'Content-Type': 'application/json',
+        'credentials': 'include' 
+      }
+    });
+
+    if (!response.ok) {
+      throw new Error('Não foi possível deletar o item no servidor.');
+    }
+
+    alert("Item deletado com sucesso!");
+
+  } catch (error) {
+    console.error("Erro ao deletar:", error);
+    alert("Erro ao tentar excluir o item.");
+  }
+};
+  
 
   const produtosFiltrados = listaProdutos.filter((produto) => {
   const termo = busca.toLowerCase();
@@ -98,10 +130,13 @@ function Home() {
                             <td className="px-4 py-3 text-gray-700">{item.preco.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}</td>
                             <td className="px-4 py-3 text-gray-700">{item.setorId}</td>
                             <td className="px-4 py-3 text-gray-700">{item.quantidade}</td>
-                            <td className="px-4 py-3 text-right">
+                            <td className="px-4 py-3 text-right flex items-center justify-end gap-3">
                               <Link to={`/Products/${item.id}`} className="text-blue-600 hover:text-blue-800 font-medium underline">
                                 Ver detalhes
                               </Link>
+                              {user?.acessoADM === true && (<div className='cursor-pointer' onClick={() => handleDelete(item.id, item.quantidade)}>
+                                <Trash2 size={16} className='text-red-600' />
+                              </div>)}
                             </td>
                           </tr>
                         ))}

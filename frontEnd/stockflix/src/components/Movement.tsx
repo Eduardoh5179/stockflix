@@ -6,17 +6,21 @@ interface MovementProps {
     onUpdate: (novaQuantidade: number) => void;
 }
 
-function Movement({produtoAtual, onUpdate }: MovementProps){
-    const [quantidade,setQuantidade] = useState(1);
 
-    const [tipo,setTipo] = useState <'entrada' | 'saida'>("entrada")
+function Movement({produtoAtual, onUpdate }: MovementProps){
+    const url = import.meta.env.VITE_API_URL;
+    const [quantidade, setQuantidade] = useState(1);
+    const [tipo, setTipo] = useState<'entrada' | 'saida'>("entrada");
+    const [loading, setLoading] = useState(false);
+
+    const usuarioId = 3;
 
     const aumentar = () => setQuantidade(prev=>prev+1);
     const diminuir = () =>{
         if (quantidade>1) setQuantidade(prev => prev-1);
     }
 
-    const registrarMovimentacao = () => {
+    const registrarMovimentacao = async () => {
         if (quantidade <= 0) return alert("Insira uma quantidade válida");
 
         const novoEstoque = tipo === 'entrada' 
@@ -25,8 +29,44 @@ function Movement({produtoAtual, onUpdate }: MovementProps){
 
         if (novoEstoque < 0) return alert("Estoque insuficiente!");
 
-        onUpdate(novoEstoque);
-        alert(`A operação foi concluída com sucesso!`);
+        const requestBody = {
+            id: 0,
+            tipoMovimentacao: tipo === 'entrada', 
+            qtdMovimentada: quantidade,
+            data: new Date().toISOString().split('T')[0], 
+            produtoId: Number(produtoAtual.id),
+            usuarioId: Number(usuarioId)
+        };
+
+        setLoading(true);
+
+        try {
+            const response = await fetch(`${url}/movimentacoes`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                credentials: 'include',
+                body: JSON.stringify(requestBody),
+            });
+
+            if (!response.ok) {
+                const dadosErro = await response.text();
+                console.error("❌ Erro da API:", dadosErro);
+                throw new Error(`Erro na API: ${response.status}`);
+            }
+
+            // 3. Sucesso: Atualiza o estado global/pai e limpa o local
+            onUpdate(novoEstoque);
+            alert(`A operação de ${tipo} foi concluída com sucesso!`);
+            setQuantidade(1);
+
+        } catch (error) {
+            console.error('Erro na requisição POST:', error);
+            alert('Houve um erro ao tentar registrar a movimentação no servidor.');
+        } finally {
+            setLoading(false);
+        }
     };
 
     return(
@@ -34,10 +74,10 @@ function Movement({produtoAtual, onUpdate }: MovementProps){
             <h2 className="text-zinc-700 font-medium text-lg mb-6">Movimentação</h2>
             <section className="flex flex-col gap-4">
                 <section className="flex gap-4">
-                        <button onClick={()=> setTipo('entrada')} className={`px-6 py-1.5 text-sm font-medium rounded-md text-white cursor-pointer bg-green-600 hover:bg-green-700 hover:text-white ${tipo === 'entrada' ? 'bg-green-600 text-white ring-2 ring-offset-1 ring-green-600' : 'bg-zinc-100 text-zinc-600'}`}>
+                        <button type="button" onClick={()=> setTipo('entrada')} className={`px-6 py-1.5 text-sm font-medium rounded-md text-white cursor-pointer bg-green-600 hover:bg-green-700 hover:text-white ${tipo === 'entrada' ? 'bg-green-600 text-white ring-2 ring-offset-1 ring-green-600' : 'bg-zinc-100 text-zinc-600'}`}>
                             + entrada
                         </button>
-                        <button onClick={()=> setTipo('saida')} className={`px-6 py-1.5 text-sm font-medium rounded-md text-white cursor-pointer bg-red-600 hover:bg-red-700 hover:text-white ${tipo === 'saida' ? 'bg-red-600 text-white ring-2 ring-offset-1 ring-red-600' : 'bg-zinc-100 text-zinc-600'}`}>
+                        <button type="button" onClick={()=> setTipo('saida')} className={`px-6 py-1.5 text-sm font-medium rounded-md text-white cursor-pointer bg-red-600 hover:bg-red-700 hover:text-white ${tipo === 'saida' ? 'bg-red-600 text-white ring-2 ring-offset-1 ring-red-600' : 'bg-zinc-100 text-zinc-600'}`}>
                             - retirada
                         </button>
                     </section>
@@ -58,15 +98,15 @@ function Movement({produtoAtual, onUpdate }: MovementProps){
                     <section>
                         <p className="text-sm text-zinc-700 font-semibold">Motivo</p>
                         <select className="w-full md:w-80 h-9 border mt-2 border-zinc-300 rounded-md px-3 text-sm text-slate-700 bg-white focus:outline-none focus:border-zinc-500">
-                            <option value="">Compra de fornecedor</option>
-                            <option value="">Devolução de cliente</option>
-                            <option value="">Transferência interna</option>
-                            <option value="">Ajuste de inventário</option>
+                            <option value="compra">Compra de fornecedor</option>
+                            <option value="devolucao">Devolução de cliente</option>
+                            <option value="transferencia">Transferência interna</option>
+                            <option value="ajuste">Ajuste de inventário</option>
                         </select>
                     </section>
                     <section>
-                        <button onClick={registrarMovimentacao} className="w-fit px-6 py-2 rounded-md text-sm text-white cursor-pointer bg-zinc-900">
-                            Confirmar {tipo === 'entrada' ? 'Entrada' : 'Retirada'}
+                        <button onClick={registrarMovimentacao} disabled={loading} className="w-fit px-6 py-2 rounded-md text-sm text-white cursor-pointer bg-zinc-900">
+                            {loading ? 'Processando...' : `Confirmar ${tipo === 'entrada' ? 'Entrada' : 'Retirada'}`}
                         </button>
                     </section>
                     </section>

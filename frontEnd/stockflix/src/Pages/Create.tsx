@@ -1,7 +1,7 @@
 import Header from '../components/Header.tsx'
 import Sidebar from '../components/Sidebar.tsx'
 import Footer from '../components/Footer.tsx'
-import {useState, } from 'react'
+import {useState} from 'react'
 import {type FormEvent} from 'react'
 
 export function Create() {
