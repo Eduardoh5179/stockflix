@@ -1,6 +1,6 @@
 import { useParams } from "react-router-dom"
 import Header from '../components/Header.tsx'
-import Sidebar from '../components/Sidebar.tsx'
+import Sidebar from '../components/Sidebar1.tsx'
 import Footer from '../components/Footer.tsx'
 import Movement from '../components/Movement.tsx'
 import { useState, useEffect } from 'react'

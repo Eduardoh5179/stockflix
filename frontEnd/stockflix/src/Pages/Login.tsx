@@ -1,6 +1,8 @@
 import { useState } from 'react'
 import { useAuth } from '../context/AuthContext';
 import { useNavigate } from 'react-router-dom';
+import { Spinner } from "@/components/ui/spinner"
+
 import Logo from '../assets/logo.svg'
 
 function Login() {
@@ -8,6 +10,7 @@ function Login() {
   const navigate = useNavigate();
   const [email, setEmail] = useState('');
   const [senha, setSenha] = useState('');
+  const [loading, setLoading] = useState(false);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -16,9 +19,16 @@ function Login() {
       alert("Por favor, preencha todos os campos.");
       return;
     }
-    const sucesso = await login(email, senha);
-    if(sucesso){
-      navigate('/');
+    setLoading(true)
+    try{
+      const sucesso = await login(email, senha);
+      if(sucesso){
+        navigate('/');
+      }
+    }catch (error){
+      console.error(error)
+    }finally{
+      setLoading(false)
     }
   };
 
@@ -48,8 +58,14 @@ function Login() {
         <input type="password" placeholder="••••••••" onChange={(e) => setSenha(e.target.value)}  className="w-full px-4 py-3 rounded-xl border border-slate-200 bg-slate-50 text-slate-900 focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all placeholder:text-slate-400" />
       </div>
 
-      <button type="submit" className="w-full py-3 px-4 bg-violet-700 hover:bg-violet-900 text-white font-semibold rounded-xl shadow-md hover:shadow-lg transform active:scale-[0.98] transition-all cursor-pointer">
-        Entrar no Painel
+      <button type="submit" className="w-full py-3 px-4 flex justify-center bg-violet-700 hover:bg-violet-900 text-white font-semibold rounded-xl shadow-md hover:shadow-lg transform active:scale-[0.98] transition-all cursor-pointer">
+        {loading ? (
+                  <>
+                    <Spinner></Spinner>
+                  </>
+                ) : (
+                  "Entrar no Painel"
+                )}
       </button>
     </form>
 
