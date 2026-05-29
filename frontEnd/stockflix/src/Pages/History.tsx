@@ -82,7 +82,7 @@ function History() {
                         <td className="px-4 py-3 text-right text-gray-700">07/04/2026</td>
                       </tr> */}
 
-                      {listaMovement.map((mov) => (
+                      {listaMovement.toReversed().map((mov) => (
                         <tr key={mov.id}>
 
                           <td className="px-4 py-3 text-gray-700">
