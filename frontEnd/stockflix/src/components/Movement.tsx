@@ -1,5 +1,6 @@
 import { useState } from "react"
 import { type Produto } from "../data/constants.ts"
+import { useAuth } from '../context/AuthContext';
 
 interface MovementProps {
     produtoAtual: Produto;
@@ -9,11 +10,12 @@ interface MovementProps {
 
 function Movement({produtoAtual, onUpdate }: MovementProps){
     const url = import.meta.env.VITE_API_URL;
+    const { user } = useAuth();
     const [quantidade, setQuantidade] = useState(1);
     const [tipo, setTipo] = useState<'entrada' | 'saida'>("entrada");
     const [loading, setLoading] = useState(false);
 
-    const usuarioId = 3;
+    const usuarioId = user?.id;
 
     const aumentar = () => setQuantidade(prev=>prev+1);
     const diminuir = () =>{

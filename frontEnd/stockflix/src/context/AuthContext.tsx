@@ -40,6 +40,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       }
 
       const dadosUsuario = await response.json();
+      localStorage.setItem('@App:user', JSON.stringify(dadosUsuario));
       setUser(dadosUsuario);
       console.log("Resposta do servidor:", dadosUsuario);
 
