@@ -128,29 +128,22 @@ function Home() {
 
                   <tbody className="divide-y divide-gray-200">
                     {loading ? (
-                      
-                        Array.from({length: 5 }).map((_, index) => (
-                        <tr key={`loading-row-${index}`} className="hover:bg-gray-50 transition-colors">
-                          <td className="px-4 py-3 h-10">
-                            <div className="bg-zinc-200 w-full h-full rounded-md animate-pulse "></div>
-                          </td>
-                          <td className="px-4 py-3 h-10">
-                            <div className="bg-zinc-200 w-full h-full rounded-md animate-pulse"></div>
-                          </td>
-                          <td className="px-4 py-3 h-10">
-                            <div className="bg-zinc-200 w-full h-full rounded-md animate-pulse"></div>
-                          </td>
-                          <td className="px-4 py-3 h-10">
-                            <div className="bg-zinc-200 w-full h-full rounded-md animate-pulse"></div>
-                          </td>
-                          <td className="px-4 py-3 h-10">
-                            <div className="bg-zinc-200 w-full h-full rounded-md animate-pulse"></div>
-                          </td>
-                          <td className="px-4 py-3 h-10">
-                            <div className="bg-zinc-200 w-full h-full rounded-md animate-pulse"></div>
-                          </td>
+                      Array.from({ length: 5 }).map((_, rowIndex) => (
+                        <tr key={`loading-row-${rowIndex}`} className="hover:bg-gray-50 transition-colors">
+                          {Array.from({ length: 6 }).map((_, colIndex) => {
+                            const randomWidth = `${Math.floor(Math.random() * 56) + 40}%`;
+
+                            return (
+                              <td key={`loading-cell-${rowIndex}-${colIndex}`} className="px-4 py-3 h-10">
+                                <div
+                                  className="bg-zinc-200 h-full rounded-md animate-pulse"
+                                  style={{ width: randomWidth }}
+                                ></div>
+                              </td>
+                            );
+                          })}
                         </tr>
-                        ))
+                      ))
                     ) : (
                       produtosFiltrados.map((item) => (
                         <tr key={item.id} className="hover:bg-gray-50 transition-colors">
