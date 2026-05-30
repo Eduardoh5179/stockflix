@@ -81,7 +81,7 @@ function Login() {
             </form>
 
             <p className="text-center text-xs text-slate-400">
-              Problemas com acesso? entre em contato com o <span className="text-blue-500 cursor-pointer hover:underline">Suporte TI</span>
+              Problemas com acesso? entre em contato com o <span className="text-blue-500">Suporte TI</span>
             </p>
           </div>
         </section>
