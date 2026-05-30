@@ -9,6 +9,7 @@ import movimentacoes from '../services/movimentacoes.ts';
 function History() {
   const { user } = useAuth();
   const [sidebarOpen, setsidebarOpen] = useState(true);
+  const [loading, setLoading] = useState(false);
 
   interface Movimentacao {
     id: number;
@@ -22,6 +23,7 @@ function History() {
 
   useEffect(() => {
     const carregarDadosDaApi = async () => {
+      setLoading(true);
       try {
         const dados = await movimentacoes();
 
@@ -29,6 +31,8 @@ function History() {
 
       } catch (error) {
         console.error("Erro ao carregar os produtos na tela:", error);
+      } finally {
+        setLoading(false);
       }
     };
 
@@ -81,38 +85,47 @@ function History() {
                         <td className="px-4 py-3 text-gray-700">Marcos Lima</td>
                         <td className="px-4 py-3 text-right text-gray-700">07/04/2026</td>
                       </tr> */}
+                  {loading ? (
+                    Array.from({ length: 5 }).map((_, rowIndex) => (
+                      <tr key={`loading-row-${rowIndex}`} className="hover:bg-gray-50 transition-colors">
+                        {Array.from({ length: 6 }).map((_, colIndex) => {
+                          const randomWidth = `${Math.floor(Math.random() * 56) + 40}%`;
 
-                  {listaMovement.toReversed().map((mov) => (
-                    <tr key={mov.id}>
-
-                      <td className="px-4 py-3 text-gray-700">
-                        {mov.tipoMovimentacao ? "Entrada" : "Saída"}
-                      </td>
-
-                      <td className="px-4 py-3 text-gray-700 font-medium">
-                        Produto ID: {mov.produtoId}
-                      </td>
-
-
-                      <td className="px-4 py-3 text-gray-700">
-                        {mov.qtdMovimentada}
-                      </td>
-
-                      <td className="px-4 py-3 text-gray-700">
-                        -
-                      </td>
-
-
-                      <td className="px-4 py-3 text-gray-700">
-                        Usuário ID: {mov.usuarioId}
-                      </td>
-
-                      <td className="px-4 py-3 text-right text-gray-700">
-                        {new Date(mov.data).toLocaleDateString('pt-BR', { timeZone: 'UTC' })}
-                      </td>
-                    </tr>
-                  ))}
-
+                          return (
+                            <td key={`loading-cell-${rowIndex}-${colIndex}`} className="px-4 py-3 h-10">
+                              <div
+                                className="bg-zinc-200 h-full rounded-md animate-pulse"
+                                style={{ width: randomWidth }}
+                              ></div>
+                            </td>
+                          );
+                        })}
+                      </tr>
+                    ))
+                  ) : (
+                    listaMovement.toReversed().map((mov) => (
+                      <tr key={mov.id}>
+                        <td className="px-4 py-3 text-gray-700">
+                          {mov.tipoMovimentacao ? "Entrada" : "Saída"}
+                        </td>
+                        <td className="px-4 py-3 text-gray-700 font-medium">
+                          Produto ID: {mov.produtoId}
+                        </td>
+                        <td className="px-4 py-3 text-gray-700">
+                          {mov.qtdMovimentada}
+                        </td>
+                        <td className="px-4 py-3 text-gray-700">
+                          -
+                        </td>
+                        <td className="px-4 py-3 text-gray-700">
+                          Usuário ID: {mov.usuarioId}
+                        </td>
+                        <td className="px-4 py-3 text-right text-gray-700">
+                          {new Date(mov.data).toLocaleDateString('pt-BR', { timeZone: 'UTC' })}
+                        </td>
+                      </tr>
+                    ))
+                  )}
                 </tbody>
               </table>
             </section>

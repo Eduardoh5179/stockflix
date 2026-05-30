@@ -15,6 +15,7 @@ function Dashboard() {
   const [sidebarOpen, setsidebarOpen] = useState(true);
   const [listaProdutos, setListaProdutos] = useState<Produto[]>([]);
   const [listaMovimentacoes, setListaMovimentacoes] = useState<Movimentacao[]>([]);
+  const [loading, setLoading] = useState(false);
 
   const totalQuantidade = listaProdutos.reduce((acumulador, item) => acumulador + item.quantidade, 0);
   const totalPreco = listaProdutos.reduce((acumulador, item) => acumulador + (item.preco * item.quantidade), 0);
@@ -31,6 +32,7 @@ function Dashboard() {
 
   useEffect(() => {
     const carregarDadosDaApi = async () => {
+      setLoading(true)
       try {
         const dados = await produtosApi();
 
@@ -38,6 +40,8 @@ function Dashboard() {
 
       } catch (error) {
         console.error("Erro ao carregar os produtos na tela:", error);
+      } finally {
+        setLoading(false)
       }
     };
 
@@ -155,20 +159,40 @@ function Dashboard() {
                     </thead>
 
                     <tbody className="divide-y divide-gray-200">
-                      {top3EstoqueCritico.slice(0, 3).map((item) => (
-                        <tr key={item.id} className="hover:bg-gray-50 transition-colors">
-                          <td className="px-4 py-3 font-medium text-gray-900">{item.nome}</td>
-                          <td className="px-4 py-3 text-gray-700">{item.id}</td>
-                          <td className="px-4 py-3 text-gray-700">{item.preco.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}</td>
-                          <td className="px-4 py-3 text-gray-700">{item.setorId}</td>
-                          <td className="px-4 py-3 text-gray-700">{item.quantidade}</td>
-                          <td className="px-4 py-3 text-right">
-                            <Link to={`/Products/${item.id}`} className="text-blue-600 hover:text-blue-800 font-medium underline">
-                              Ver detalhes
-                            </Link>
-                          </td>
-                        </tr>
-                      ))}
+
+                      {loading ? (
+                        Array.from({ length: 3 }).map((_, rowIndex) => (
+                          <tr key={`loading-row-${rowIndex}`} className="hover:bg-gray-50 transition-colors">
+                            {Array.from({ length: 6 }).map((_, colIndex) => {
+                              const randomWidth = `${Math.floor(Math.random() * 56) + 40}%`;
+
+                              return (
+                                <td key={`loading-cell-${rowIndex}-${colIndex}`} className="px-4 py-3 h-10">
+                                  <div
+                                    className="bg-zinc-200 h-full rounded-md animate-pulse"
+                                    style={{ width: randomWidth }}
+                                  ></div>
+                                </td>
+                              );
+                            })}
+                          </tr>
+                        ))
+                      ) : (
+                        top3EstoqueCritico.slice(0, 3).map((item) => (
+                          <tr key={item.id} className="hover:bg-gray-50 transition-colors">
+                            <td className="px-4 py-3 font-medium text-gray-900">{item.nome}</td>
+                            <td className="px-4 py-3 text-gray-700">{item.id}</td>
+                            <td className="px-4 py-3 text-gray-700">{item.preco.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}</td>
+                            <td className="px-4 py-3 text-gray-700">{item.setorId}</td>
+                            <td className="px-4 py-3 text-gray-700">{item.quantidade}</td>
+                            <td className="px-4 py-3 text-right">
+                              <Link to={`/Products/${item.id}`} className="text-blue-600 hover:text-blue-800 font-medium underline">
+                                Ver detalhes
+                              </Link>
+                            </td>
+                          </tr>
+                        ))
+                      )}
                     </tbody>
                   </table>
                 </section>
