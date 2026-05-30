@@ -12,7 +12,7 @@ import Create from './Pages/Create.tsx'
 import History from './Pages/History.tsx'
 import Dashboard from './Pages/Dashboard.tsx'
 import ProductDetail from './Pages/ProductDetail.tsx'
-import AppSidebar from  './Pages/uitest.tsx'
+import SidebarApp from  './Pages/uitest.tsx'
 
 interface RouteProps {
   children: ReactNode;
@@ -74,7 +74,7 @@ const router = createBrowserRouter([
     path:"/uitest",
         element:(
       <PublicRoute>
-        <AppSidebar />
+        <SidebarApp />
       </PublicRoute>
     )
   },

@@ -53,9 +53,9 @@ function Home() {
     try {
       const response = await fetch(`${url}/produtos/${id}`, {
         method: 'DELETE',
+        'credentials': 'include',
         headers: {
           'Content-Type': 'application/json',
-          'credentials': 'include'
         }
       });
 
