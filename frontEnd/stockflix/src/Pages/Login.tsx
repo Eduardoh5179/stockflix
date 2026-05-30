@@ -2,11 +2,12 @@ import { useState } from 'react'
 import { useAuth } from '../context/AuthContext';
 import { useNavigate } from 'react-router-dom';
 import { Spinner } from "@/components/ui/spinner"
+import { CircleX } from 'lucide-react'
 
 import Logo from '../assets/logo.svg'
 
 function Login() {
-  const { login } = useAuth();
+  const { login, erroAuth } = useAuth();
   const navigate = useNavigate();
   const [email, setEmail] = useState('');
   const [senha, setSenha] = useState('');
@@ -35,7 +36,7 @@ function Login() {
   return (
 
     <>
-      <section className="w-screen h-screen flex">
+      <section className="w-screen h-screen flex overflow-hidden">
 
         <section className="h-screen w-full p-4 flex justify-center items-center">
           <div className="w-full max-w-md p-8 space-y-8 bg-white rounded-2xl border border-slate-400">
@@ -45,7 +46,17 @@ function Login() {
               <img src={Logo} alt="logo" className='w-32' />
               <h2 className="text-3xl font-bold text-slate-900">Acesse o Sistema</h2>
               <p className="text-slate-500 text-sm">Entre com suas credenciais de estoque</p>
+              {erroAuth && (
+                <div className="bg-red-100 border px-3 py-2 rounded-xl overflow-x-hidden flex items-center w-fit">
+                  <div className="flex gap-2 text-red-700 font-medium text-sm">
+                    <CircleX size={16} className='shrink-0' />
+                    <p className="wrap-break-word">
+                      {erroAuth}
+                    </p>
+                  </div>
+                </div>)}
             </div>
+
 
             <form className="space-y-6" onSubmit={handleSubmit}>
               <div className="space-y-1">

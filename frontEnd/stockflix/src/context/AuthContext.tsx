@@ -12,16 +12,20 @@ interface AuthContextData {
   user: User | null;
   login: (email: string, senha:string) => Promise<boolean>;
   logout: () => void;
+  erroAuth: string | null;
+  setErroAuth: React.Dispatch<React.SetStateAction<string | null>>;
 }
 
 const AuthContext = createContext<AuthContextData>({} as AuthContextData);
 
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [user, setUser] = useState<User | null>(null);
+  const [erroAuth, setErroAuth] = useState<string | null>(null);
   const login = async (email: string, senha: string): Promise<boolean> => {
     const url = import.meta.env.VITE_API_URL;
 
     try {
+      setErroAuth(null);
       const credenciais = {
         "login": email,
         "senha": senha
@@ -47,7 +51,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       return true;
     } catch (error) {
       console.error("Erro na autenticação:", error);
-      alert("Usuário ou senha incorretos!");
+      setErroAuth("Usuário/senha incorretos ou houve um erro interno no servidor");
       return false; 
     } 
   };
@@ -56,7 +60,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const logout = () => setUser(null);
 
   return (
-    <AuthContext.Provider value={{ user, login, logout }}>
+    <AuthContext.Provider value={{ user, erroAuth, setErroAuth, login, logout }}>
       {children}
     </AuthContext.Provider>
   );
