@@ -15,11 +15,13 @@ function Home() {
 
   const [sidebarOpen, setsidebarOpen] = useState(true);
   const [busca, setBusca] = useState("");
+  const [loading, setLoading] = useState(false);
 
   const [listaProdutos, setListaProdutos] = useState<Produto[]>([])
 
   useEffect(() => {
     const carregarDadosDaApi = async () => {
+      setLoading(true)
       try {
         const dados = await produtosApi();
 
@@ -27,6 +29,8 @@ function Home() {
 
       } catch (error) {
         console.error("Erro ao carregar os produtos na tela:", error);
+      } finally {
+        setLoading(false)
       }
     };
 
@@ -123,23 +127,50 @@ function Home() {
                   </thead>
 
                   <tbody className="divide-y divide-gray-200">
-                    {produtosFiltrados.map((item) => (
-                      <tr key={item.id} className="hover:bg-gray-50 transition-colors">
-                        <td className="px-4 py-3 font-medium text-gray-900">{item.nome}</td>
-                        <td className="px-4 py-3 text-gray-700">{item.id}</td>
-                        <td className="px-4 py-3 text-gray-700">{item.preco.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}</td>
-                        <td className="px-4 py-3 text-gray-700">{item.setorId}</td>
-                        <td className="px-4 py-3 text-gray-700">{item.quantidade}</td>
-                        <td className="px-4 py-3 text-right flex items-center justify-end gap-3">
-                          <Link to={`/Products/${item.id}`} className="text-blue-600 hover:text-blue-800 font-medium underline">
-                            Ver detalhes
-                          </Link>
-                          {user?.acessoADM === true && (<div className='cursor-pointer' onClick={() => handleDelete(item.id, item.quantidade)}>
-                            <Trash2 size={16} className='text-red-600' />
-                          </div>)}
-                        </td>
-                      </tr>
-                    ))}
+                    {loading ? (
+                      
+                        Array.from({length: 5 }).map((_, index) => (
+                        <tr key={`loading-row-${index}`} className="hover:bg-gray-50 transition-colors">
+                          <td className="px-4 py-3 h-10">
+                            <div className="bg-zinc-200 w-full h-full rounded-md animate-pulse "></div>
+                          </td>
+                          <td className="px-4 py-3 h-10">
+                            <div className="bg-zinc-200 w-full h-full rounded-md animate-pulse"></div>
+                          </td>
+                          <td className="px-4 py-3 h-10">
+                            <div className="bg-zinc-200 w-full h-full rounded-md animate-pulse"></div>
+                          </td>
+                          <td className="px-4 py-3 h-10">
+                            <div className="bg-zinc-200 w-full h-full rounded-md animate-pulse"></div>
+                          </td>
+                          <td className="px-4 py-3 h-10">
+                            <div className="bg-zinc-200 w-full h-full rounded-md animate-pulse"></div>
+                          </td>
+                          <td className="px-4 py-3 h-10">
+                            <div className="bg-zinc-200 w-full h-full rounded-md animate-pulse"></div>
+                          </td>
+                        </tr>
+                        ))
+                    ) : (
+                      produtosFiltrados.map((item) => (
+                        <tr key={item.id} className="hover:bg-gray-50 transition-colors">
+                          <td className="px-4 py-3 font-medium text-gray-900">{item.nome}</td>
+                          <td className="px-4 py-3 text-gray-700">{item.id}</td>
+                          <td className="px-4 py-3 text-gray-700">{item.preco.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}</td>
+                          <td className="px-4 py-3 text-gray-700">{item.setorId}</td>
+                          <td className="px-4 py-3 text-gray-700">{item.quantidade}</td>
+                          <td className="px-4 py-3 text-right flex items-center justify-end gap-3">
+                            <Link to={`/Products/${item.id}`} className="text-blue-600 hover:text-blue-800 font-medium underline">
+                              Ver detalhes
+                            </Link>
+                            {user?.acessoADM === true && (<div className='cursor-pointer' onClick={() => handleDelete(item.id, item.quantidade)}>
+                              <Trash2 size={16} className='text-red-600' />
+                            </div>
+                            )}
+                          </td>
+                        </tr>
+                      ))
+                    )}
                   </tbody>
                 </table>
               </div>
