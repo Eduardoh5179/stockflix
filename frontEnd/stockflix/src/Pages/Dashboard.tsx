@@ -200,16 +200,30 @@ function Dashboard() {
               <section className='lg-col-span-1 border border-zinc-300 rounded-lg p-6'>
                 <h2 className='font-bold text-md font-sans'>Top Itens (saida)</h2>
                 <ul className='mt-2 flex flex-col gap-3'>
-                  {topItensSaida.map((item, index) => (
+                  {loading ? (
+                    Array.from({ length: 3 }).map((_, index) => {
+                      const widths = ['w-24', 'w-32', 'w-28'];
+                      const widthClass = widths[index % widths.length];
+                      return (
+                        <li key={`loading-item-${index}`} className='flex justify-between items-center h-5'>
+                          <div className={`bg-zinc-200 ${widthClass} h-4 rounded-md animate-pulse`}></div>
+                          <div className='bg-zinc-200 w-12 h-4 rounded-md animate-pulse'></div>
+                        </li>
+                      );
+                    })
+                  ) : (
+                    <>
+                      {topItensSaida.map((item, index) => (
+                        <li key={index} className='flex justify-between'>
+                          <p className='text-sm capitalize'>{item.nome}</p>
+                          <p className='font-bold text-sm'>{item.total} un.</p>
+                        </li>
+                      ))}
 
-                    <li key={index} className='flex justify-between'>
-                      <p className='text-sm capitalize'>{item.nome}</p>
-                      <p className='font-bold text-sm'>{item.total} un.</p>
-                    </li>
-                  ))}
-
-                  {topItensSaida.length === 0 && (
-                    <p className="text-sm text-zinc-500 italic">Nenhuma saída registrada.</p>
+                      {topItensSaida.length === 0 && (
+                        <p className="text-sm text-zinc-500 italic">Nenhuma saída registrada.</p>
+                      )}
+                    </>
                   )}
                 </ul>
               </section>
