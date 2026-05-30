@@ -1,7 +1,7 @@
 import Header from '../components/Header.tsx'
 import Sidebar from '../components/Sidebar1.tsx'
 import Footer from '../components/Footer.tsx'
-import {useState,useEffect} from 'react'
+import { useState, useEffect } from 'react'
 import { useAuth } from '../context/AuthContext';
 import movimentacoes from '../services/movimentacoes.ts';
 
@@ -9,7 +9,7 @@ import movimentacoes from '../services/movimentacoes.ts';
 function History() {
   const { user } = useAuth();
   const [sidebarOpen, setsidebarOpen] = useState(true);
-  
+
   interface Movimentacao {
     id: number;
     data: string;
@@ -18,46 +18,46 @@ function History() {
     tipoMovimentacao: boolean;
     usuarioId: number;
   }
-  const [listaMovement, setMovement] = useState <Movimentacao[]>([]);
-  
-    useEffect(() => {
-      const carregarDadosDaApi = async () => {
-        try {
-          const dados = await movimentacoes();
-       
-          setMovement(dados); 
-    
-        } catch (error) {
-          console.error("Erro ao carregar os produtos na tela:", error);
-        }
-      };
-  
-      carregarDadosDaApi();
-    }, []);
+  const [listaMovement, setMovement] = useState<Movimentacao[]>([]);
+
+  useEffect(() => {
+    const carregarDadosDaApi = async () => {
+      try {
+        const dados = await movimentacoes();
+
+        setMovement(dados);
+
+      } catch (error) {
+        console.error("Erro ao carregar os produtos na tela:", error);
+      }
+    };
+
+    carregarDadosDaApi();
+  }, []);
   if (!user) return null;
   return (
     <>
-    <div className="flex flex-col min-h-screen">
+      <div className="flex flex-col min-h-screen">
 
-      <Header onMenuClick={() => setsidebarOpen(!sidebarOpen)}/>
-      <Sidebar isOpen={sidebarOpen}/>
-      <main className='h-full flex-1'>
-          <section className={`${sidebarOpen ? 'md:ml-64': 'md:ml-0'} transition-all duration-300 p-6`}>
-              <h2 className="text-3xl font-bold text-gray-800 tracking-tight">Histórico de movimentações</h2>
-              <section className='mt-6 overflow-x-auto'>
-                    <table className="min-w-full divide-y divide-gray-200 bg-white text-sm">
-                      <thead className="bg-gray-50">
-                        <tr>
-                          <th className="px-4 py-3 text-left font-semibold text-gray-900">Tipo</th>
-                          <th className="px-4 py-3 text-left font-semibold text-gray-900">Produto</th>
-                          <th className="px-4 py-3 text-left font-semibold text-gray-900">Qtd</th>
-                          <th className="px-4 py-3 text-left font-semibold text-gray-900">Mov.</th>
-                          <th className="px-4 py-3 text-left font-semibold text-gray-900">Operador</th>
-                          <th className="px-4 py-3 text-right font-semibold text-gray-900">Data</th>
-                        </tr>
-                      </thead>
-                      <tbody className="divide-y divide-gray-200">
-                      {/* <tr>
+        <Header onMenuClick={() => setsidebarOpen(!sidebarOpen)} />
+        <Sidebar isOpen={sidebarOpen} />
+        <main className='h-full flex-1'>
+          <section className={`${sidebarOpen ? 'md:ml-64' : 'md:ml-0'} transition-all duration-300 p-6`}>
+            <h2 className="text-3xl font-bold text-gray-800 tracking-tight">Histórico de movimentações</h2>
+            <section className='mt-6 overflow-x-auto'>
+              <table className="min-w-full divide-y divide-gray-200 bg-white text-sm">
+                <thead className="bg-gray-50">
+                  <tr>
+                    <th className="px-4 py-3 text-left font-semibold text-gray-900">Tipo</th>
+                    <th className="px-4 py-3 text-left font-semibold text-gray-900">Produto</th>
+                    <th className="px-4 py-3 text-left font-semibold text-gray-900">Qtd</th>
+                    <th className="px-4 py-3 text-left font-semibold text-gray-900">Mov.</th>
+                    <th className="px-4 py-3 text-left font-semibold text-gray-900">Operador</th>
+                    <th className="px-4 py-3 text-right font-semibold text-gray-900">Data</th>
+                  </tr>
+                </thead>
+                <tbody className="divide-y divide-gray-200">
+                  {/* <tr>
                         <td className="px-4 py-3 text-gray-700">Entrada</td>
                         <td className="px-4 py-3 text-gray-700 font-medium">Parafuso Sextavado</td>
                         <td className="px-4 py-3 text-gray-700">500</td>
@@ -82,44 +82,44 @@ function History() {
                         <td className="px-4 py-3 text-right text-gray-700">07/04/2026</td>
                       </tr> */}
 
-                      {listaMovement.toReversed().map((mov) => (
-                        <tr key={mov.id}>
+                  {listaMovement.toReversed().map((mov) => (
+                    <tr key={mov.id}>
 
-                          <td className="px-4 py-3 text-gray-700">
-                            {mov.tipoMovimentacao ? "Entrada" : "Saída"}
-                          </td>
+                      <td className="px-4 py-3 text-gray-700">
+                        {mov.tipoMovimentacao ? "Entrada" : "Saída"}
+                      </td>
 
-                          <td className="px-4 py-3 text-gray-700 font-medium">
-                            Produto ID: {mov.produtoId}
-                          </td>
-                          
+                      <td className="px-4 py-3 text-gray-700 font-medium">
+                        Produto ID: {mov.produtoId}
+                      </td>
 
-                          <td className="px-4 py-3 text-gray-700">
-                            {mov.qtdMovimentada}
-                          </td>
-                          
-                          <td className="px-4 py-3 text-gray-700">
-                            -
-                          </td>
-                          
 
-                          <td className="px-4 py-3 text-gray-700">
-                            Usuário ID: {mov.usuarioId}
-                          </td>
-                          
-                          <td className="px-4 py-3 text-right text-gray-700">
-                            {new Date(mov.data).toLocaleDateString('pt-BR', { timeZone: 'UTC' })}
-                          </td>
-                        </tr>
-                      ))}
+                      <td className="px-4 py-3 text-gray-700">
+                        {mov.qtdMovimentada}
+                      </td>
 
-                    </tbody>
-                    </table>
-              </section>
+                      <td className="px-4 py-3 text-gray-700">
+                        -
+                      </td>
+
+
+                      <td className="px-4 py-3 text-gray-700">
+                        Usuário ID: {mov.usuarioId}
+                      </td>
+
+                      <td className="px-4 py-3 text-right text-gray-700">
+                        {new Date(mov.data).toLocaleDateString('pt-BR', { timeZone: 'UTC' })}
+                      </td>
+                    </tr>
+                  ))}
+
+                </tbody>
+              </table>
+            </section>
           </section>
-      </main>
-      <Footer/>
-    </div>
+        </main>
+        <Footer />
+      </div>
     </>
   )
 }

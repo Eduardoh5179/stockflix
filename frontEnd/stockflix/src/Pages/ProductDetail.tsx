@@ -11,8 +11,8 @@ import atualizarProduto from '../services/produtoPut.ts'
 import { Spinner } from "@/components/ui/spinner"
 
 
-const ProductDetail = () =>{
-    const { id } = useParams<{ id: string}>();
+const ProductDetail = () => {
+    const { id } = useParams<{ id: string }>();
     const [sidebarOpen, setsidebarOpen] = useState(true);
     const { user } = useAuth();
 
@@ -32,67 +32,67 @@ const ProductDetail = () =>{
     };
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
-    const { name, value } = e.target;
-    if (editForm) {
-        setEditForm({
-            ...editForm,
-            [name]: (name === "preco" || name === "setorId") ? Number(value) : value
-        });
-    }
-};
-    useEffect(() => {
-    const carregarProduto = async () => {
-      if (!id) return;
-      
-      setLoading(true); 
-      try {
-        const dados = await produtosPorID(Number(id));
-        
-        setProduto(dados || undefined); 
-      } catch (error) {
-        console.error("Erro ao carregar detalhes do produto:", error);
-        setProduto(undefined);
-      } finally {
-        setLoading(false);
-      }
+        const { name, value } = e.target;
+        if (editForm) {
+            setEditForm({
+                ...editForm,
+                [name]: (name === "preco" || name === "setorId") ? Number(value) : value
+            });
+        }
     };
+    useEffect(() => {
+        const carregarProduto = async () => {
+            if (!id) return;
 
-    carregarProduto();
-  }, [id]); 
-  
-  console.log(produto)
+            setLoading(true);
+            try {
+                const dados = await produtosPorID(Number(id));
 
-  
-  if (loading){
-    {
-      return (
-      <>
-      <Header onMenuClick={() => setsidebarOpen(!sidebarOpen)}/>
-      <Sidebar isOpen={sidebarOpen}/>
-      <main className='h-full flex-1'>
-        <section className={`${sidebarOpen ? 'ml-64': 'ml-0'} transition-all duration-300 p-6`}>
-            <h2> Carregando dados.... </h2>
-        </section>  
-      </main>
-      </>
-    );
-}
+                setProduto(dados || undefined);
+            } catch (error) {
+                console.error("Erro ao carregar detalhes do produto:", error);
+                setProduto(undefined);
+            } finally {
+                setLoading(false);
+            }
+        };
 
-  }
-  
-  if (!produto) {
-      return (
-      <>
-      <Header onMenuClick={() => setsidebarOpen(!sidebarOpen)}/>
-      <Sidebar isOpen={sidebarOpen}/>
-      <main className='h-full flex-1'>
-        <section className={`${sidebarOpen ? 'ml-64': 'ml-0'} transition-all duration-300 p-6`}>
-            <h2> ERRO </h2>
-        </section>  
-      </main>
-      </>
-    );
-}
+        carregarProduto();
+    }, [id]);
+
+    console.log(produto)
+
+
+    if (loading) {
+        {
+            return (
+                <>
+                    <Header onMenuClick={() => setsidebarOpen(!sidebarOpen)} />
+                    <Sidebar isOpen={sidebarOpen} />
+                    <main className='h-full flex-1'>
+                        <section className={`${sidebarOpen ? 'ml-64' : 'ml-0'} transition-all duration-300 p-6`}>
+                            <h2> Carregando dados.... </h2>
+                        </section>
+                    </main>
+                </>
+            );
+        }
+
+    }
+
+    if (!produto) {
+        return (
+            <>
+                <Header onMenuClick={() => setsidebarOpen(!sidebarOpen)} />
+                <Sidebar isOpen={sidebarOpen} />
+                <main className='h-full flex-1'>
+                    <section className={`${sidebarOpen ? 'ml-64' : 'ml-0'} transition-all duration-300 p-6`}>
+                        <h2> ERRO </h2>
+                    </section>
+                </main>
+            </>
+        );
+    }
     const valorEmEstoque = produto.preco * produto.quantidade
 
     const atualizarEstoquePai = (novaQuantidade: number) => {
@@ -100,36 +100,36 @@ const ProductDetail = () =>{
             setProduto({ ...produto, quantidade: novaQuantidade });
         }
     };
-    
-    
-    return(
-        <> 
-        <div className="flex flex-col min-h-screen">
-            <Header onMenuClick={() => setsidebarOpen(!sidebarOpen)}/>
-            <Sidebar isOpen={sidebarOpen}/>
-            <main className='h-full flex-1'>
-                <section className={`${sidebarOpen ? 'md:ml-64': 'md:ml-0'} transition-all duration-300 p-6`}>
-                    <div className="bg-white border border-(--borderColor)">
-                        <section className="p-8 border-b border-(--borderColor)">
 
-                        <span className="text-zinc-500 text-sm">ID: {id}</span>
-                            <section className="flex justify-between">
-                                {isEditing && user?.acessoADM ? (
-                                    <input name="nome" className="text-xl md:text-3xl font-bold text-slate-800 mb-4 border-b-2 border-violet-500 outline-none bg-slate-50 px-2 w-full" value={editForm?.nome} onChange={handleChange}/>) : (
-                                    <h1 className="text-xl md:text-3xl font-bold text-slate-800 mb-4">{produto.nome}</h1>
-                                )}
-                                <p>Status</p>
-                            </section>
-                            <section>
+
+    return (
+        <>
+            <div className="flex flex-col min-h-screen">
+                <Header onMenuClick={() => setsidebarOpen(!sidebarOpen)} />
+                <Sidebar isOpen={sidebarOpen} />
+                <main className='h-full flex-1'>
+                    <section className={`${sidebarOpen ? 'md:ml-64' : 'md:ml-0'} transition-all duration-300 p-6`}>
+                        <div className="bg-white border border-(--borderColor)">
+                            <section className="p-8 border-b border-(--borderColor)">
+
+                                <span className="text-zinc-500 text-sm">ID: {id}</span>
+                                <section className="flex justify-between">
+                                    {isEditing && user?.acessoADM ? (
+                                        <input name="nome" className="text-xl md:text-3xl font-bold text-slate-800 mb-4 border-b-2 border-violet-500 outline-none bg-slate-50 px-2 w-full" value={editForm?.nome} onChange={handleChange} />) : (
+                                        <h1 className="text-xl md:text-3xl font-bold text-slate-800 mb-4">{produto.nome}</h1>
+                                    )}
+                                    <p>Status</p>
+                                </section>
+                                <section>
                                     <p className="text-4xl font-bold">{produto.quantidade} <span className="font-medium text-xl">em estoque</span></p>
                                 </section>
                             </section>
 
                             <section className="p-10 font-sans flex flex-col gap-4">
                                 {isEditing && user?.acessoADM ? (
-                                        <textarea name="descricao" className="w-full p-3 border border-violet-300 rounded-md text-sm bg-slate-50 outline-none" rows={3} value={editForm?.descricao} onChange={handleChange}/>) : (
-                                        <p className="text-sm">{produto.descricao}</p>
-                                    )}
+                                    <textarea name="descricao" className="w-full p-3 border border-violet-300 rounded-md text-sm bg-slate-50 outline-none" rows={3} value={editForm?.descricao} onChange={handleChange} />) : (
+                                    <p className="text-sm">{produto.descricao}</p>
+                                )}
                                 <section className="font-serif ">
                                     <div className="border-y flex font-medium justify-between border-(--borderColor) py-2 px-4">
                                         <p>estoque previsto</p>
@@ -137,20 +137,20 @@ const ProductDetail = () =>{
                                     </div>
                                     <div className="border-b flex font-medium justify-between border-(--borderColor) py-2 px-4">
                                         <p>Setor</p>
-                                        {isEditing && user?.acessoADM ? ( <select name="setorId" value={editForm?.setorId} onChange={handleChange} className="border border-violet-300 rounded px-2 py-1 text-sm outline-none">
+                                        {isEditing && user?.acessoADM ? (<select name="setorId" value={editForm?.setorId} onChange={handleChange} className="border border-violet-300 rounded px-2 py-1 text-sm outline-none">
                                             <option value={1}>Setor 1</option>
                                             <option value={2}>Setor 2</option>
                                             <option value={3}>Setor 3</option>
                                         </select>) : (
-                                        <p>{produto.setorId}</p> )}
+                                            <p>{produto.setorId}</p>)}
                                     </div>
                                     <div className="border-b flex font-medium justify-between border-(--borderColor) py-2 px-4">
                                         <p>valor unitário</p>
                                         {isEditing && user?.acessoADM ? (
-                                        <div className="flex items-center gap-1">
-                                            <span className="text-sm text-slate-50">R$</span>
-                                            <input name="preco" type="number" step="0.01" className="border border-violet-300 rounded px-2 py-1 text-sm w-24 outline-none" value={editForm?.preco} onChange={handleChange}/>
-                                        </div>) : ( <p>{produto.preco.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}</p>)}
+                                            <div className="flex items-center gap-1">
+                                                <span className="text-sm text-slate-50">R$</span>
+                                                <input name="preco" type="number" step="0.01" className="border border-violet-300 rounded px-2 py-1 text-sm w-24 outline-none" value={editForm?.preco} onChange={handleChange} />
+                                            </div>) : (<p>{produto.preco.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}</p>)}
                                     </div>
                                     <div className="border-b flex font-medium justify-between border-(--borderColor) py-2 px-4">
                                         <p>valor em estoque</p>
@@ -159,49 +159,49 @@ const ProductDetail = () =>{
                                 </section>
                             </section>
                             <section className="border-t border-(--borderColor) p-8 ">
-                                <Movement produtoAtual={produto} onUpdate={atualizarEstoquePai}/>
+                                <Movement produtoAtual={produto} onUpdate={atualizarEstoquePai} />
                             </section>
 
-{user?.acessoADM === true && (
-    <section className="border-t border-(--borderColor) flex items-center justify-center p-6 gap-3">
-        {isEditing ? (
-            <>
-                <button onClick={() => setIsEditing(false)} className="px-4 py-2 text-sm font-medium border border-zinc-300 rounded-md hover:bg-zinc-50 transition-colors cursor-pointer">
-                    Cancelar
-                </button>
-                <button 
-                    onClick={async () => {
-                        if (!editForm) return;
-                        setIsUpdating(true);
-                        try {
-                            const resultado = await atualizarProduto(Number(id), editForm);
-                            setProduto(resultado);
-                            setIsEditing(false);
-                        } catch (error) {
-                            alert("Erro ao salvar alterações.");
-                        } finally {
-                            setIsUpdating(false);
-                        }
-                    }}
-                    disabled={isUpdating}
-                    className="px-4 py-2 text-sm font-medium bg-violet-700 text-white rounded-md hover:bg-violet-800 disabled:opacity-50 flex items-center gap-2 cursor-pointer"
-                >
-                    {isUpdating && <Spinner className="h-4 w-4 animate-spin" />}
-                    Salvar Alterações
-                </button>
-            </>
-        ) : (
-            <button onClick={handleStartEditing} className="px-6 py-2 border border-zinc-400 cursor-pointer rounded-md hover:bg-slate-50 transition-all font-medium text-slate-700">
-                Editar Informações
-            </button>
-        )}
-    </section>
-)}                            
-                    </div>
-                </section>
-            </main>
-            <Footer/>
-        </div>
+                            {user?.acessoADM === true && (
+                                <section className="border-t border-(--borderColor) flex items-center justify-center p-6 gap-3">
+                                    {isEditing ? (
+                                        <>
+                                            <button onClick={() => setIsEditing(false)} className="px-4 py-2 text-sm font-medium border border-zinc-300 rounded-md hover:bg-zinc-50 transition-colors cursor-pointer">
+                                                Cancelar
+                                            </button>
+                                            <button
+                                                onClick={async () => {
+                                                    if (!editForm) return;
+                                                    setIsUpdating(true);
+                                                    try {
+                                                        const resultado = await atualizarProduto(Number(id), editForm);
+                                                        setProduto(resultado);
+                                                        setIsEditing(false);
+                                                    } catch (error) {
+                                                        alert("Erro ao salvar alterações.");
+                                                    } finally {
+                                                        setIsUpdating(false);
+                                                    }
+                                                }}
+                                                disabled={isUpdating}
+                                                className="px-4 py-2 text-sm font-medium bg-violet-700 text-white rounded-md hover:bg-violet-800 disabled:opacity-50 flex items-center gap-2 cursor-pointer"
+                                            >
+                                                {isUpdating && <Spinner className="h-4 w-4 animate-spin" />}
+                                                Salvar Alterações
+                                            </button>
+                                        </>
+                                    ) : (
+                                        <button onClick={handleStartEditing} className="px-6 py-2 border border-zinc-400 cursor-pointer rounded-md hover:bg-slate-50 transition-all font-medium text-slate-700">
+                                            Editar Informações
+                                        </button>
+                                    )}
+                                </section>
+                            )}
+                        </div>
+                    </section>
+                </main>
+                <Footer />
+            </div>
         </>
     )
 }
