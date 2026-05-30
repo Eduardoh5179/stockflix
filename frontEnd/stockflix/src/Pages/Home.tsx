@@ -1,6 +1,7 @@
 import Header from '../components/Header.tsx'
 import Sidebar from '../components/Sidebar1.tsx'
 import Footer from '../components/Footer.tsx'
+import { Dialog, DialogTrigger, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogFooter, DialogClose } from "@/components/ui/dialog"
 import { Search, SlidersHorizontal, Trash2 } from 'lucide-react'
 import { useState, useEffect } from 'react'
 import { type Produto } from '../data/constants.ts'
@@ -18,6 +19,8 @@ function Home() {
   const [loading, setLoading] = useState(false);
 
   const [listaProdutos, setListaProdutos] = useState<Produto[]>([])
+  const [setorSelecionado, setSetorSelecionado] = useState<string>("todos");
+  const [ordenacao, setOrdenacao] = useState<string>("nenhum");
 
   useEffect(() => {
     const carregarDadosDaApi = async () => {
@@ -75,8 +78,23 @@ function Home() {
       produto.nome.toLowerCase().includes(termo) ||
       produto.id.toString().includes(termo)
     );
-  });
-
+  }).filter((produto) => {
+    if (setorSelecionado === "todos") return true;
+    return produto.setorId.toString() === setorSelecionado;
+  }).sort((a, b) => {
+      switch (ordenacao) {
+        case "preco-crescente":
+          return a.preco - b.preco;
+        case "preco-decrescente":
+          return b.preco - a.preco;
+        case "qtd-crescente":
+          return a.quantidade - b.quantidade;
+        case "qtd-decrescente":
+          return b.quantidade - a.quantidade;
+        default:
+          return 0;
+      }
+    });
   return (
     <>
       <div className="flex flex-col min-h-screen">
@@ -98,14 +116,61 @@ function Home() {
                       <Search size={19} strokeWidth={2.2} />
                     </button>
                   </div>
+                  <Dialog>
+                    <DialogTrigger asChild>
+                      <button type="button" className="flex items-center gap-2 px-4 py-2.5 bg-white border border-gray-200 rounded-xl text-gray-600 font-medium hover:bg-gray-50 hover:border-gray-300 hover:text-gray-900 cursor-pointer active:bg-gray-100">
+                        <SlidersHorizontal size={19} strokeWidth={2.2} />
+                        <span className="hidden md:block">Filtrar por</span>
+                      </button>
+                    </DialogTrigger>
 
-                  <button type="button" className="flex items-center gap-2 px-4 py-2.5 bg-white border border-gray-200 rounded-xl text-gray-600 font-medium hover:bg-gray-50 hover:border-gray-300 hover:text-gray-900 cursor-pointer active:bg-gray-100">
-                    <SlidersHorizontal size={19} strokeWidth={2.2} />
-                    <span className="hidden md:block">Filtrar por</span>
-                  </button>
+                    <DialogContent className="sm:max-w-106.25`">
+                      <DialogHeader>
+                        <DialogTitle>Filtrar por</DialogTitle>
+                        <DialogDescription>
+                          Defina os filtros a serem aplicados para a pesquisa
+                        </DialogDescription>
+                      </DialogHeader>
+
+                      <form onSubmit={(e) => e.preventDefault()} className="space-y-4 pt-2">
+                        <div className="flex flex-col gap-2">
+                          <label className="text-sm font-medium text-gray-700">Setor</label>
+                          <select value={setorSelecionado} onChange={(e) => setSetorSelecionado(e.target.value)} className="w-full p-2.5 bg-white border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-slate-400">
+                            <option value="todos">Todos os Setores</option>
+                            <option value="1">Setor 1 (Ex: Eletrônicos)</option>
+                            <option value="2">Setor 2 (Ex: Vestuário)</option>
+                            <option value="3">Setor 3 (Ex: Alimentos)</option>
+                          </select>
+                        </div>
+
+                        <div className="flex flex-col gap-2">
+                          <label className="text-sm font-medium text-gray-700">Ordenar por</label>
+                          <select value={ordenacao} onChange={(e) => setOrdenacao(e.target.value)} className="w-full p-2.5 bg-white border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-slate-400">
+                            <option value="nenhum">Padrão</option>
+                            <option value="preco-crescente">Preço: Menor para o Maior</option>
+                            <option value="preco-decrescente">Preço: Maior para o Menor</option>
+                            <option value="qtd-crescente">Quantidade: Menor para o Maior</option>
+                            <option value="qtd-decrescente">Quantidade: Maior para o Menor</option>
+                          </select>
+                        </div>
+
+                        <DialogFooter className="pt-4 gap-2 sm:gap-0">
+                          <button type="button" onClick={() => {setSetorSelecionado("todos"); setOrdenacao("nenhum");}} className="px-4 py-2 text-sm font-medium text-gray-500 hover:text-gray-700 active:bg-gray-50 rounded-lg">
+                            Limpar
+                          </button>
+
+                          <DialogClose asChild>
+                            <button type="submit" className="px-4 py-2 text-sm font-medium text-white bg-slate-900 hover:bg-slate-800 active:bg-slate-950 rounded-lg">
+                              Aplicar
+                            </button>
+                          </DialogClose>
+                        </DialogFooter>
+                      </form>
+                    </DialogContent>
+                  </Dialog>
                 </div>
                 {user?.acessoADM === true && (
-                  <Link to={'/Create'} className="flex items-center w-50 md:w-auto gap-2 bg-green-500 hover:bg-green-600 cursor-pointer text-white font-bold py-2 px-6 rounded-lg ">
+                  <Link to={'/Create'} className="flex items-center w-50 md:w-auto gap-2 text-sm md:text-md bg-green-500 hover:bg-green-600 cursor-pointer text-white font-bold py-2 px-6 rounded-lg ">
                     <span className="text-sm lg:text-lg">+</span>
                     Adicionar produto
                   </Link>
