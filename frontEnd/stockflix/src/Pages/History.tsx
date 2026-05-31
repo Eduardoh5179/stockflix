@@ -2,14 +2,16 @@ import Header from '../components/Header.tsx'
 import Sidebar from '../components/Sidebar1.tsx'
 import Footer from '../components/Footer.tsx'
 import { useState, useEffect } from 'react'
-import { useAuth } from '../context/AuthContext';
-import movimentacoes from '../services/movimentacoes.ts';
+import { useAuth } from '../context/AuthContext'
+import movimentacoes from '../services/movimentacoes.ts'
+import { useNavigate } from 'react-router-dom'
 
 
 function History() {
   const { user } = useAuth();
   const [sidebarOpen, setsidebarOpen] = useState(true);
   const [loading, setLoading] = useState(false);
+  const navigate = useNavigate();
 
   interface Movimentacao {
     id: number;
@@ -31,6 +33,7 @@ function History() {
 
       } catch (error) {
         console.error("Erro ao carregar os produtos na tela:", error);
+        navigate('/ErrorService');
       } finally {
         setLoading(false);
       }

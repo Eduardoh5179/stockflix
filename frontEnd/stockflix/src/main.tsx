@@ -1,18 +1,19 @@
-import { StrictMode,type ReactNode } from 'react'
+import { StrictMode, type ReactNode } from 'react'
 import { createRoot } from 'react-dom/client'
-import { AuthProvider,useAuth } from './context/AuthContext';
+import { AuthProvider, useAuth } from './context/AuthContext';
 import './index.css'
 import './App.css'
 
-import {createBrowserRouter, RouterProvider, Navigate} from 'react-router-dom'
+import { createBrowserRouter, RouterProvider, Navigate } from 'react-router-dom'
 import Login from './Pages/Login.tsx'
-import Home from  './Pages/Home.tsx'
-import Error from  './Pages/Error.tsx'
+import Home from './Pages/Home.tsx'
+import Error from './Pages/Error.tsx'
+import ErrorService from './Pages/ErrorService.tsx'
 import Create from './Pages/Create.tsx'
 import History from './Pages/History.tsx'
 import Dashboard from './Pages/Dashboard.tsx'
 import ProductDetail from './Pages/ProductDetail.tsx'
-import SidebarApp from  './Pages/uitest.tsx'
+import SidebarApp from './Pages/uitest.tsx'
 
 interface RouteProps {
   children: ReactNode;
@@ -25,13 +26,13 @@ const PrivateRoute = ({ children }: RouteProps) => {
 
 const PublicRoute = ({ children }: RouteProps) => {
   const { user } = useAuth();
-  
+
   return !user ? <>{children}</> : <Navigate to="/" replace />;
 };
 
 const router = createBrowserRouter([
   {
-    path:"/Login",
+    path: "/Login",
     element: (
       <PublicRoute>
         <Login />
@@ -39,49 +40,56 @@ const router = createBrowserRouter([
     )
   },
   {
-    path:"/Create",
-    element:(
+    path: "/Create",
+    element: (
       <PrivateRoute>
         <Create />
       </PrivateRoute>
     )
   },
   {
-    path:"/History",
-    element:(
+    path: "/History",
+    element: (
       <PrivateRoute>
         <History />
       </PrivateRoute>
     )
   },
   {
-    path:"/Products",
-    element:(
+    path: "/Products",
+    element: (
       <PrivateRoute>
         <Home />
       </PrivateRoute>
     )
   },
   {
-    path:"/Products/:id",
-        element:(
+    path: "/Products/:id",
+    element: (
       <PrivateRoute>
         <ProductDetail />
       </PrivateRoute>
     )
   },
   {
-    path:"/uitest",
-        element:(
+    path: "/uitest",
+    element: (
       <PublicRoute>
         <SidebarApp />
       </PublicRoute>
     )
   },
   {
-    path:"/",
+    path: "/",
     element: <PrivateRoute><Dashboard /></PrivateRoute>,
-    errorElement:<Error/>
+    errorElement: <Error />
+  },
+  {
+    path: "/ErrorService",
+    element: (<PublicRoute>
+      <ErrorService />
+    </PublicRoute>
+    ),
   }
 ])
 
@@ -89,7 +97,7 @@ const router = createBrowserRouter([
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
     <AuthProvider>
-      <RouterProvider router={router}/>
+      <RouterProvider router={router} />
     </AuthProvider>
   </StrictMode>,
 )

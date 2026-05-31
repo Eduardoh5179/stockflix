@@ -78,6 +78,7 @@ const ProductDetail = () => {
             } catch (error) {
                 console.error("Erro ao carregar detalhes do produto:", error);
                 setProduto(undefined);
+                navigate('/ErrorService');
             } finally {
                 setLoading(false);
             }

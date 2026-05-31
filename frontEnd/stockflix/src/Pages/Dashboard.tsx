@@ -6,7 +6,7 @@ import { Box, TriangleAlert, ArrowDownRight, TrendingUp } from 'lucide-react'
 import { type Produto } from '../data/constants.ts'
 import produtosApi from '../services/api.ts'
 import movimentacoes from '../services/movimentacoes.ts'
-import { Link } from 'react-router-dom'
+import { Link,useNavigate } from 'react-router-dom'
 import { type Movimentacao } from '../data/movimentacao.ts'
 
 
@@ -16,6 +16,7 @@ function Dashboard() {
   const [listaProdutos, setListaProdutos] = useState<Produto[]>([]);
   const [listaMovimentacoes, setListaMovimentacoes] = useState<Movimentacao[]>([]);
   const [loading, setLoading] = useState(false);
+  const navigate = useNavigate();
 
   const totalQuantidade = listaProdutos.reduce((acumulador, item) => acumulador + item.quantidade, 0);
   const totalPreco = listaProdutos.reduce((acumulador, item) => acumulador + (item.preco * item.quantidade), 0);
@@ -40,6 +41,7 @@ function Dashboard() {
 
       } catch (error) {
         console.error("Erro ao carregar os produtos na tela:", error);
+        navigate('/ErrorService')
       } finally {
         setLoading(false)
       }

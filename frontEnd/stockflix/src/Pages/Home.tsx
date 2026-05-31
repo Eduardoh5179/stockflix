@@ -6,7 +6,7 @@ import { Search, SlidersHorizontal } from 'lucide-react'
 // import { Trash2 } from 'lucide-react'
 import { useState, useEffect } from 'react'
 import { type Produto } from '../data/constants.ts'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import { useAuth } from '../context/AuthContext'
 import produtosApi from '../services/api.ts'
 // import { produtoDelete } from '../services/produtoDelete.ts'
@@ -21,6 +21,7 @@ function Home() {
   const [sidebarOpen, setsidebarOpen] = useState(true);
   const [busca, setBusca] = useState("");
   const [loading, setLoading] = useState(false);
+  const navigate = useNavigate();
 
   const [listaProdutos, setListaProdutos] = useState<Produto[]>([])
   const [setorSelecionado, setSetorSelecionado] = useState<string>("todos");
@@ -36,6 +37,7 @@ function Home() {
 
       } catch (error) {
         console.error("Erro ao carregar os produtos na tela:", error);
+        navigate('/ErrorService');
       } finally {
         setLoading(false)
       }
