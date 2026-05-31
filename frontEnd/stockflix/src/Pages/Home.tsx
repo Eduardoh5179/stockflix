@@ -232,7 +232,6 @@ function Home() {
                             {/* {user?.acessoADM === true && (<div className='cursor-pointer' onClick={() => handleDelete(item.id, item.quantidade)}>
                               <Trash2 size={16} className='text-red-600' />
                             </div> )}*/}
-                            )
                           </td>
                         </tr>
                       ))
