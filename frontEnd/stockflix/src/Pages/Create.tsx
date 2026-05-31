@@ -3,6 +3,7 @@ import Sidebar from '../components/Sidebar1.tsx'
 import Footer from '../components/Footer.tsx'
 import { useState } from 'react'
 import { type FormEvent } from 'react'
+import { produtoService } from '../services/produtoPost.ts'
 
 export function Create() {
   const [sidebarOpen, setsidebarOpen] = useState(true);
@@ -10,8 +11,6 @@ export function Create() {
   const [descricao, setDescricao] = useState('');
   const [setorId, setSetorId] = useState('1');
   const [preco, setPreco] = useState('');
-
-  const url = import.meta.env.VITE_API_URL;
 
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
@@ -24,32 +23,19 @@ export function Create() {
       descricao: descricao,
       setorId: Number(setorId)
     };
+
     try {
-      const response = await fetch(`${url}/produtos`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        credentials: 'include',
-        body: JSON.stringify(requestBody),
-      });
-
-      if (!response.ok) {
-        const dadosErro = await response.json();
-        console.error("❌ Detalhes do erro vindos da API:", dadosErro);
-        throw new Error(`Erro na API: ${response.status} - ${dadosErro}`);
-      }
-
+      await produtoService.criar(requestBody);
       alert('Produto criado com sucesso!');
-
       setNome('');
       setDescricao('');
       setSetorId('1');
       setPreco('');
 
-    } catch (error) {
+    } catch (error: any) {
+      // 4. Captura o erro lançado pelo service
       console.error('Erro na requisição POST:', error);
-      alert('Houve um erro ao tentar criar o produto.');
+      alert(error.message || 'Houve um erro ao tentar criar o produto.');
     }
   };
   return (

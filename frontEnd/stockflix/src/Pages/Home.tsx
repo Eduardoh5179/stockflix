@@ -8,6 +8,7 @@ import { type Produto } from '../data/constants.ts'
 import { Link } from 'react-router-dom'
 import { useAuth } from '../context/AuthContext'
 import produtosApi from '../services/api.ts'
+import { produtoService } from '../services/produtoDelete.ts'
 
 
 function Home() {
@@ -41,35 +42,26 @@ function Home() {
   }, []);
 
   const handleDelete = async (id: number, quantidade: number) => {
-    const url = import.meta.env.VITE_API_URL;
-    if (quantidade > 0) {
-      alert(`Não é possível deletar este produto pois ele ainda possui ${quantidade} unidades em estoque! Zere o estoque antes de excluir.`);
-      return;
-    }
-    const confirmar = window.confirm("Tem certeza que deseja deletar este item?");
+  if (quantidade > 0) {
+    alert(`Não é possível deletar este produto pois ele ainda possui ${quantidade} unidades em estoque! Zere o estoque antes de excluir.`);
+    return;
+  }
 
-    if (!confirmar) return;
+  // 2. Confirmação do usuário
+  const confirmar = window.confirm("Tem certeza que deseja deletar este item?");
+  if (!confirmar) return;
 
-    try {
-      const response = await fetch(`${url}/produtos/${id}`, {
-        method: 'DELETE',
-        'credentials': 'include',
-        headers: {
-          'Content-Type': 'application/json',
-        }
-      });
+  try {
+    await produtoService.deletar(id);
+    
+    alert("Item deletado com sucesso!");
 
-      if (!response.ok) {
-        throw new Error('Não foi possível deletar o item no servidor.');
-      }
 
-      alert("Item deletado com sucesso!");
-
-    } catch (error) {
-      console.error("Erro ao deletar:", error);
-      alert("Erro ao tentar excluir o item.");
-    }
-  };
+  } catch (error) {
+    console.error("Erro ao deletar:", error);
+    alert("Erro ao tentar excluir o item.");
+  }
+};
 
 
   const produtosFiltrados = listaProdutos.filter((produto) => {
