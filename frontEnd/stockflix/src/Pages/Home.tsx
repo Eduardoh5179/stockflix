@@ -9,6 +9,8 @@ import { Link } from 'react-router-dom'
 import { useAuth } from '../context/AuthContext'
 import produtosApi from '../services/api.ts'
 import { produtoService } from '../services/produtoDelete.ts'
+import { Toaster } from "@/components/ui/sonner"
+import { toast } from "sonner"
 
 
 function Home() {
@@ -42,26 +44,26 @@ function Home() {
   }, []);
 
   const handleDelete = async (id: number, quantidade: number) => {
-  if (quantidade > 0) {
-    alert(`Não é possível deletar este produto pois ele ainda possui ${quantidade} unidades em estoque! Zere o estoque antes de excluir.`);
-    return;
-  }
+    if (quantidade > 0) {
+      toast.warning(`Não é possível deletar este produto pois ele ainda possui ${quantidade} unidades em estoque! Zere o estoque antes de excluir.`);
+      return;
+    }
 
-  // 2. Confirmação do usuário
-  const confirmar = window.confirm("Tem certeza que deseja deletar este item?");
-  if (!confirmar) return;
+    // 2. Confirmação do usuário
+    const confirmar = window.confirm("Tem certeza que deseja deletar este item?");
+    if (!confirmar) return;
 
-  try {
-    await produtoService.deletar(id);
-    
-    alert("Item deletado com sucesso!");
+    try {
+      await produtoService.deletar(id);
+
+      toast.success("Item deletado com sucesso!");
 
 
-  } catch (error) {
-    console.error("Erro ao deletar:", error);
-    alert("Erro ao tentar excluir o item.");
-  }
-};
+    } catch (error) {
+      console.error("Erro ao deletar:", error);
+      alert("Erro ao tentar excluir o item.");
+    }
+  };
 
 
   const produtosFiltrados = listaProdutos.filter((produto) => {
@@ -74,22 +76,37 @@ function Home() {
     if (setorSelecionado === "todos") return true;
     return produto.setorId.toString() === setorSelecionado;
   }).sort((a, b) => {
-      switch (ordenacao) {
-        case "preco-crescente":
-          return a.preco - b.preco;
-        case "preco-decrescente":
-          return b.preco - a.preco;
-        case "qtd-crescente":
-          return a.quantidade - b.quantidade;
-        case "qtd-decrescente":
-          return b.quantidade - a.quantidade;
-        default:
-          return 0;
-      }
-    });
+    switch (ordenacao) {
+      case "preco-crescente":
+        return a.preco - b.preco;
+      case "preco-decrescente":
+        return b.preco - a.preco;
+      case "qtd-crescente":
+        return a.quantidade - b.quantidade;
+      case "qtd-decrescente":
+        return b.quantidade - a.quantidade;
+      default:
+        return 0;
+    }
+  });
   return (
     <>
       <div className="flex flex-col min-h-screen">
+        <Toaster
+          position="top-center"
+          toastOptions={{
+            classNames: {
+              title: 'text-slate-950 font-semibold',
+              description: '!text-slate-500 font-normal',
+
+
+              success: 'bg-white border border-green-200 group success',
+              warning: 'bg-white border border-amber-200 group warning',
+
+              icon: 'group-[.success]:text-green-600 group-[.warning]:text-amber-500',
+            },
+          }}
+        />
         <Header onMenuClick={() => setsidebarOpen(!sidebarOpen)} />
         <Sidebar isOpen={sidebarOpen} />
         <main className='h-full flex-1'>
@@ -147,7 +164,7 @@ function Home() {
                         </div>
 
                         <DialogFooter className="pt-4 gap-2 sm:gap-0">
-                          <button type="button" onClick={() => {setSetorSelecionado("todos"); setOrdenacao("nenhum");}} className="px-4 py-2 text-sm font-medium text-gray-500 hover:text-gray-700 active:bg-gray-50 rounded-lg">
+                          <button type="button" onClick={() => { setSetorSelecionado("todos"); setOrdenacao("nenhum"); }} className="px-4 py-2 text-sm font-medium text-gray-500 hover:text-gray-700 active:bg-gray-50 rounded-lg">
                             Limpar
                           </button>
 

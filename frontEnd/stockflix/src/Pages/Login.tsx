@@ -3,6 +3,9 @@ import { useAuth } from '../context/AuthContext';
 import { useNavigate } from 'react-router-dom';
 import { Spinner } from "@/components/ui/spinner"
 import { CircleX } from 'lucide-react'
+import { Toaster } from "@/components/ui/sonner"
+import { toast } from "sonner"
+
 
 import Logo from '../assets/logo.svg'
 
@@ -17,7 +20,7 @@ function Login() {
     e.preventDefault();
 
     if (!email || !senha) {
-      alert("Por favor, preencha todos os campos.");
+      toast.info("Por favor, preencha todos os campos.");
       return;
     }
     setLoading(true)
@@ -37,6 +40,15 @@ function Login() {
 
     <>
       <section className="w-screen h-screen flex overflow-hidden">
+                <Toaster
+                  position="top-center"
+                  toastOptions={{
+                    classNames: {
+                      title: 'text-slate-950 font-semibold',
+                      icon: 'text-cyan-700',
+                    },
+                  }}
+                />
 
         <section className="h-screen w-full p-4 flex justify-center items-center">
           <div className="w-full max-w-md p-8 space-y-8 bg-white rounded-2xl border border-slate-400">

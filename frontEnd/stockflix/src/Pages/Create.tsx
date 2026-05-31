@@ -4,6 +4,9 @@ import Footer from '../components/Footer.tsx'
 import { useState } from 'react'
 import { type FormEvent } from 'react'
 import { produtoService } from '../services/produtoPost.ts'
+import { Toaster } from "@/components/ui/sonner"
+import { toast } from "sonner"
+import { CircleX } from 'lucide-react'
 
 export function Create() {
   const [sidebarOpen, setsidebarOpen] = useState(true);
@@ -11,6 +14,7 @@ export function Create() {
   const [descricao, setDescricao] = useState('');
   const [setorId, setSetorId] = useState('1');
   const [preco, setPreco] = useState('');
+  const [errorStatus, setErrorStatus] = useState<string | null>(null);
 
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
@@ -26,22 +30,35 @@ export function Create() {
 
     try {
       await produtoService.criar(requestBody);
-      alert('Produto criado com sucesso!');
+      toast.success("Produto criado com sucesso!", {
+        description: `O produto "${nome}" foi salvo no sistema.`,
+      });
       setNome('');
       setDescricao('');
       setSetorId('1');
       setPreco('');
 
     } catch (error: any) {
-      // 4. Captura o erro lançado pelo service
       console.error('Erro na requisição POST:', error);
-      alert(error.message || 'Houve um erro ao tentar criar o produto.');
+      const mensagem = "Houve um erro ao tentar criar o produto.";
+
+      setErrorStatus(mensagem);
     }
   };
   return (
     <>
       <div className="flex flex-col min-h-screen">
-
+        <Toaster
+          position="top-center"
+          toastOptions={{
+            classNames: {
+              success: 'bg-white border-green-200',
+              title: 'text-slate-950 font-semibold',
+              description: '!text-slate-500 font-normal',
+              icon: 'text-green-600',
+            },
+          }}
+        />
         <Header onMenuClick={() => setsidebarOpen(!sidebarOpen)} />
         <Sidebar isOpen={sidebarOpen} />
         <main className='h-full flex-1'>
@@ -66,9 +83,19 @@ export function Create() {
                 </select>
               </div>
               <div className='flex flex-col gap-2'>
-                <label className='font-semibold font-sans text-slate-800'>Preço do produto(Reais)</label>
+                <label className='font-semibold font-sans text-slate-800'>Preço do produto (R$)</label>
                 <input type='number' placeholder='determine o preço do produto' step="0.01" value={preco} onChange={(e) => setPreco(e.target.value)} required className='px-4 py-3 border border-slate-200 bg-slate-50 rounded-xl focus:outline-none text-slate-900 focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 placeholder:text-slate-400'></input>
               </div>
+              {errorStatus && (<div>
+                <div className="bg-red-100 border px-3 py-2 rounded-xl overflow-x-hidden flex items-center w-fit">
+                  <div className="flex gap-2 text-red-700 font-medium text-sm">
+                    <CircleX size={16} className='shrink-0' />
+                    <p className="wrap-break-word">
+                      {errorStatus}
+                    </p>
+                  </div>
+                </div>
+              </div>)}
               <div className='flex justify-center'>
                 <button type='submit' className='px-4 py-2  rounded-md cursor-pointer bg-green-500 hover:bg-green-600 text-white text-md font-bold transition-colors'>
                   Criar produto

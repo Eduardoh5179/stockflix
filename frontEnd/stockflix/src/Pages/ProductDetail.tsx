@@ -10,6 +10,8 @@ import produtosPorID from '../services/produtosID.ts'
 import atualizarProduto from '../services/produtoPut.ts'
 import { Spinner } from "@/components/ui/spinner"
 import { Pen } from 'lucide-react'
+import { Toaster } from "@/components/ui/sonner"
+import { toast } from "sonner"
 
 
 const ProductDetail = () => {
@@ -23,12 +25,13 @@ const ProductDetail = () => {
     const [isEditing, setIsEditing] = useState(false);
     const [editForm, setEditForm] = useState<Produto | undefined>(undefined);
 
+
     const handleStartEditing = () => {
         if (user?.acessoADM === true) {
             setEditForm(produto);
             setIsEditing(true);
         } else {
-            alert("Acesso negado: Você não tem permissão para editar.");
+            toast.error("Acesso negado: Você não tem permissão para editar.");
         }
     };
 
@@ -70,6 +73,7 @@ const ProductDetail = () => {
                 <>
                     <Header onMenuClick={() => setsidebarOpen(!sidebarOpen)} />
                     <Sidebar isOpen={sidebarOpen} />
+
                     <main className='h-full flex-1'>
                         <section className={`${sidebarOpen ? 'md:ml-64' : 'md:ml-0'} transition-all duration-300 p-6`}>
                             <div className="bg-white border border-(--borderColor)">
@@ -143,6 +147,21 @@ const ProductDetail = () => {
             <div className="flex flex-col min-h-screen">
                 <Header onMenuClick={() => setsidebarOpen(!sidebarOpen)} />
                 <Sidebar isOpen={sidebarOpen} />
+
+                <Toaster
+                    position="top-center"
+                    toastOptions={{
+                        classNames: {
+                            title: 'text-slate-950 font-semibold',
+                            description: '!text-slate-500 font-normal',
+
+                            success: 'bg-white border border-green-200 group success',
+                            error: 'bg-white border border-red-200 group warning',
+
+                            icon: 'group-[.success]:text-green-600 group-[.error]:text-red-500',
+                        },
+                    }}
+                />
                 <main className='h-full flex-1'>
                     <section className={`${sidebarOpen ? 'md:ml-64' : 'md:ml-0'} transition-all duration-300 p-6`}>
                         <div className="bg-white border border-(--borderColor)">
@@ -218,10 +237,11 @@ const ProductDetail = () => {
                                                 setIsUpdating(true);
                                                 try {
                                                     const resultado = await atualizarProduto(Number(id), editForm);
+                                                    toast.success("Dados editados com sucesso!")
                                                     setProduto(resultado);
                                                     setIsEditing(false);
                                                 } catch (error) {
-                                                    alert("Erro ao salvar alterações.");
+                                                    toast.error("Houve um erro ao salvar as alterações.");
                                                 } finally {
                                                     setIsUpdating(false);
                                                 }
@@ -230,7 +250,7 @@ const ProductDetail = () => {
                                             className="flex-1 px-4 py-2.5 text-sm font-medium bg-violet-600 text-white rounded-lg hover:bg-violet-700 active:bg-violet-800 transition-all disabled:opacity-70 disabled:cursor-not-allowed flex items-center justify-center gap-2 cursor-pointer shadow-sm shadow-violet-100">
                                             {isUpdating ? (
                                                 <>
-                                                    <Spinner/>
+                                                    <Spinner />
                                                     <span>Salvando...</span>
                                                 </>
                                             ) : (
