@@ -1,6 +1,6 @@
 const url = import.meta.env.VITE_API_URL;
 
-export const produtoService = {
+export const produtoDelete = {
   deletar: async (id: number): Promise<void> => {
     const response = await fetch(`${url}/produtos/${id}`, {
       method: 'DELETE',

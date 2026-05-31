@@ -5,11 +5,13 @@ import Footer from '../components/Footer.tsx'
 import Movement from '../components/Movement.tsx'
 import { useState, useEffect } from 'react'
 import { useAuth } from '../context/AuthContext';
+import { useNavigate } from 'react-router-dom';
 import { type Produto } from '../data/constants.ts'
 import produtosPorID from '../services/produtosID.ts'
 import atualizarProduto from '../services/produtoPut.ts'
+import { produtoDelete } from '../services/produtoDelete.ts'
 import { Spinner } from "@/components/ui/spinner"
-import { Pen } from 'lucide-react'
+import { Pen, Trash2 } from 'lucide-react'
 import { Toaster } from "@/components/ui/sonner"
 import { toast } from "sonner"
 
@@ -22,6 +24,7 @@ const ProductDetail = () => {
     const [produto, setProduto] = useState<Produto | undefined>();
     const [loading, setLoading] = useState(true);
     const [isUpdating, setIsUpdating] = useState(false);
+    const navigate = useNavigate()
     const [isEditing, setIsEditing] = useState(false);
     const [editForm, setEditForm] = useState<Produto | undefined>(undefined);
 
@@ -42,6 +45,25 @@ const ProductDetail = () => {
                 ...editForm,
                 [name]: (name === "preco" || name === "setorId") ? Number(value) : value
             });
+        }
+    };
+
+    const handleDelete = async (id: number, quantidade: number) => {
+        if (quantidade > 0) {
+            toast.warning(`Não é possível deletar este produto pois ele ainda possui ${quantidade} unidades em estoque! Zere o estoque antes de excluir.`);
+            return;
+        }
+
+        const confirmar = window.confirm("Tem certeza que deseja deletar este item?");
+        if (!confirmar) return;
+
+        try {
+            await produtoDelete.deletar(id);
+            toast.success("Item deletado com sucesso!");
+            navigate('/Products');
+        } catch (error) {
+            console.error("Erro ao deletar:", error);
+            alert("Erro ao tentar excluir o item.");
         }
     };
     useEffect(() => {
@@ -169,11 +191,19 @@ const ProductDetail = () => {
                                 <div className="flex justify-between items-center mb-2">
                                     <span className="text-zinc-500 text-sm">ID: {id}</span>
 
-                                    {user?.acessoADM && !isEditing && (
-                                        <button onClick={handleStartEditing} className="p-2 text-zinc-800  hover:text-violet-600 hover:bg-violet-50 rounded-full transition-all cursor-pointer border border-transparent hover:border-violet-200" title="Editar Informações">
-                                            <Pen size={18} />
-                                        </button>
-                                    )}
+                                    <div className="flex items-center gap-2">
+
+                                        {user?.acessoADM && !isEditing && (
+                                            <button onClick={handleStartEditing} className="p-2 text-zinc-800  hover:text-violet-600 hover:bg-violet-50 rounded-full transition-all cursor-pointer border border-transparent hover:border-violet-200" title="Editar Informações">
+                                                <Pen size={18} />
+                                            </button>
+                                        )}
+                                        {user?.acessoADM === true && (
+                                            <button className='cursor-pointer p-2 hover:text-red-800 hover:bg-violet-50 rounded-full transition-all border border-transparent hover:border-red-300' onClick={() => handleDelete(produto.id, produto.quantidade)} title="Deletar produto">
+                                                <Trash2 size={18} className='text-red-600' />
+                                            </button>
+                                        )}
+                                    </div>
                                 </div>
 
                                 <section className="flex justify-between">

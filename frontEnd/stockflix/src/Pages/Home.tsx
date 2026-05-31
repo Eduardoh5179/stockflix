@@ -2,15 +2,16 @@ import Header from '../components/Header.tsx'
 import Sidebar from '../components/Sidebar1.tsx'
 import Footer from '../components/Footer.tsx'
 import { Dialog, DialogTrigger, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogFooter, DialogClose } from "@/components/ui/dialog"
-import { Search, SlidersHorizontal, Trash2 } from 'lucide-react'
+import { Search, SlidersHorizontal } from 'lucide-react'
+// import { Trash2 } from 'lucide-react'
 import { useState, useEffect } from 'react'
 import { type Produto } from '../data/constants.ts'
 import { Link } from 'react-router-dom'
 import { useAuth } from '../context/AuthContext'
 import produtosApi from '../services/api.ts'
-import { produtoService } from '../services/produtoDelete.ts'
+// import { produtoDelete } from '../services/produtoDelete.ts'
 import { Toaster } from "@/components/ui/sonner"
-import { toast } from "sonner"
+// import { toast } from "sonner"
 
 
 function Home() {
@@ -43,27 +44,25 @@ function Home() {
     carregarDadosDaApi();
   }, []);
 
-  const handleDelete = async (id: number, quantidade: number) => {
-    if (quantidade > 0) {
-      toast.warning(`Não é possível deletar este produto pois ele ainda possui ${quantidade} unidades em estoque! Zere o estoque antes de excluir.`);
-      return;
-    }
+  // const handleDelete = async (id: number, quantidade: number) => {
+  //   if (quantidade > 0) {
+  //     toast.warning(`Não é possível deletar este produto pois ele ainda possui ${quantidade} unidades em estoque! Zere o estoque antes de excluir.`);
+  //     return;
+  //   }
 
-    // 2. Confirmação do usuário
-    const confirmar = window.confirm("Tem certeza que deseja deletar este item?");
-    if (!confirmar) return;
+  //   const confirmar = window.confirm("Tem certeza que deseja deletar este item?");
+  //   if (!confirmar) return;
 
-    try {
-      await produtoService.deletar(id);
+  //   try {
+  //     await produtoDelete.deletar(id);
 
-      toast.success("Item deletado com sucesso!");
+  //     toast.success("Item deletado com sucesso!");
 
-
-    } catch (error) {
-      console.error("Erro ao deletar:", error);
-      alert("Erro ao tentar excluir o item.");
-    }
-  };
+  //   } catch (error) {
+  //     console.error("Erro ao deletar:", error);
+  //     alert("Erro ao tentar excluir o item.");
+  //   }
+  // };
 
 
   const produtosFiltrados = listaProdutos.filter((produto) => {
@@ -230,10 +229,10 @@ function Home() {
                             <Link to={`/Products/${item.id}`} className="text-blue-600 hover:text-blue-800 font-medium underline">
                               Ver detalhes
                             </Link>
-                            {user?.acessoADM === true && (<div className='cursor-pointer' onClick={() => handleDelete(item.id, item.quantidade)}>
+                            {/* {user?.acessoADM === true && (<div className='cursor-pointer' onClick={() => handleDelete(item.id, item.quantidade)}>
                               <Trash2 size={16} className='text-red-600' />
-                            </div>
-                            )}
+                            </div> )}*/}
+                            )
                           </td>
                         </tr>
                       ))
