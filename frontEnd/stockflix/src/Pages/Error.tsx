@@ -2,7 +2,6 @@ import Header from '../components/Header.tsx';
 import Sidebar from '../components/Sidebar1.tsx';
 import Footer from '../components/Footer.tsx';
 import { useState } from 'react';
-import { Link } from 'react-router-dom';
 import { SearchX } from 'lucide-react';
 
 function Error() {

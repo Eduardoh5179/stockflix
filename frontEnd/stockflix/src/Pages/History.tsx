@@ -48,7 +48,7 @@ function History() {
 
         <Header onMenuClick={() => setsidebarOpen(!sidebarOpen)} />
         <Sidebar isOpen={sidebarOpen} />
-        <main className='h-full flex-1'>
+        <main className='h-full flex-1 transition-colors'>
           <section className={`${sidebarOpen ? 'md:ml-64' : 'md:ml-0'} transition-all duration-300 p-6`}>
             <h2 className="text-3xl font-bold text-gray-800 tracking-tight dark:text-zinc-100">Histórico de movimentações</h2>
             <section className='mt-6 overflow-x-auto'>
@@ -63,7 +63,7 @@ function History() {
                     <th className="px-4 py-3 text-right font-semibold text-gray-900 dark:text-zinc-200">Data</th>
                   </tr>
                 </thead>
-                <tbody className="divide-y divide-gray-200 dark:divide-zinc-800 transition-colors duration-300">
+                <tbody className="divide-y divide-gray-200 dark:divide-zinc-800 duration-300">
                   {/* <tr>
                         <td className="px-4 py-3 text-gray-700">Entrada</td>
                         <td className="px-4 py-3 text-gray-700 font-medium">Parafuso Sextavado</td>

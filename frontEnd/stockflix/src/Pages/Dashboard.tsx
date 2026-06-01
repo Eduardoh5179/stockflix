@@ -74,7 +74,7 @@ function Dashboard() {
 
         <Header onMenuClick={() => setsidebarOpen(!sidebarOpen)} />
         <Sidebar isOpen={sidebarOpen} />
-        <main className='h-full flex-1 '>
+        <main className='h-full flex-1 transition-colors '>
           <section className={`${sidebarOpen ? 'md:ml-64' : 'md:ml-0'} transition-all duration-300 p-6`}>
             <section className='mb-6'>
               <h2 className="text-3xl font-bold text-gray-800 tracking-tight dark:text-zinc-100">Visão geral do estoque</h2>
@@ -149,7 +149,7 @@ function Dashboard() {
                 </section>
                 <section className='overflow-x-auto'>
                   <table className="min-w-full divide-y divide-gray-200 bg-white text-sm dark:bg-zinc-900">
-                    <thead className="bg-gray-50 dark:bg-zinc-800 transition-colors">
+                    <thead className="bg-gray-50 dark:bg-zinc-800 ">
                       <tr>
                         <th className="px-4 py-3 text-left font-semibold text-gray-900 dark:text-zinc-200">Produto</th>
                         <th className="px-4 py-3 text-left font-semibold text-gray-900 dark:text-zinc-200 ">ID</th>
@@ -164,7 +164,7 @@ function Dashboard() {
 
                       {loading ? (
                         Array.from({ length: 3 }).map((_, rowIndex) => (
-                          <tr key={`loading-row-${rowIndex}`} className="hover:bg-gray-50 transition-colors dark:bg-zinc-900 dark:hover:bg-zinc-800/50">
+                          <tr key={`loading-row-${rowIndex}`} className="hover:bg-gray-50 dark:bg-zinc-900 dark:hover:bg-zinc-800/50">
                             {Array.from({ length: 6 }).map((_, colIndex) => {
                               const randomWidth = `${Math.floor(Math.random() * 56) + 40}%`;
 
@@ -181,7 +181,7 @@ function Dashboard() {
                         ))
                       ) : (
                         top3EstoqueCritico.slice(0, 3).map((item) => (
-                          <tr key={item.id} className="hover:bg-gray-50 transition-colors dark:hover:bg-zinc-800/30">
+                          <tr key={item.id} className="hover:bg-gray-50 dark:hover:bg-zinc-800/30">
                             <td className="px-4 py-3 font-medium text-gray-900 dark:text-zinc-300">{item.nome}</td>
                             <td className="px-4 py-3 text-gray-700 dark:text-zinc-300">{item.id}</td>
                             <td className="px-4 py-3 text-gray-700 dark:text-zinc-300">{item.preco.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}</td>

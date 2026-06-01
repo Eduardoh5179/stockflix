@@ -110,7 +110,7 @@ function Home() {
         />
         <Header onMenuClick={() => setsidebarOpen(!sidebarOpen)} />
         <Sidebar isOpen={sidebarOpen} />
-        <main className='h-full flex-1'>
+        <main className='h-full flex-1 transition-colors'>
           <section className={`${sidebarOpen ? 'md:ml-64' : 'md:ml-0'} transition-all duration-300 p-6`}>
 
             <div className="flex flex-col gap-6 ">
@@ -121,14 +121,14 @@ function Home() {
               <div className="flex flex-col sm:flex-row sm:justify-between gap-4 w-full">
                 <div className="flex flex-1 gap-2 max-w-xl">
                   <div className="relative flex-1 group">
-                    <input type="text" placeholder="Buscar item ou código..." value={busca} onChange={(e) => { setBusca(e.target.value) }} className="w-full pl-4 pr-12 py-2.5 bg-white border border-gray-200 rounded-xl text-gray-700 placeholder:text-gray-400 focus:outline-none hover:border-gray-300 transition-colors dark:bg-zinc-900 dark:border-zinc-800 dark:text-slate-200 dark:placeholder:text-zinc-500 dark:hover:border-zinc-700"  />
-                    <button type="button" className="absolute right-0 top-0 h-full w-12 flex items-center justify-center text-gray-400 border-l border-gray-200 hover:bg-gray-50 hover:text-gray-600 transition-colors duration-200 cursor-pointer rounded-r-xl dark:border-zinc-800 dark:hover:bg-zinc-800 dark:text-zinc-500">
+                    <input type="text" placeholder="Buscar item ou código..." value={busca} onChange={(e) => { setBusca(e.target.value) }} className="w-full pl-4 pr-12 py-2.5 bg-white border border-gray-200 rounded-xl text-gray-700 placeholder:text-gray-400 focus:outline-none hover:border-gray-300 dark:bg-zinc-900 dark:border-zinc-800 dark:text-slate-200 dark:placeholder:text-zinc-500 dark:hover:border-zinc-700"  />
+                    <button type="button" className="absolute right-0 top-0 h-full w-12 flex items-center justify-center text-gray-400 border-l border-gray-200 hover:bg-gray-50 hover:text-gray-600 duration-200 cursor-pointer rounded-r-xl dark:border-zinc-800 dark:hover:bg-zinc-800 dark:text-zinc-500">
                       <Search size={19} strokeWidth={2.2} />
                     </button>
                   </div>
                   <Dialog>
                     <DialogTrigger asChild>
-                      <button type="button" className="flex items-center gap-2 px-4 py-2.5 bg-white border border-gray-200 rounded-xl text-gray-600 font-medium hover:bg-gray-50 hover:border-gray-300 hover:text-gray-900 cursor-pointer active:bg-gray-100 transition-colors dark:bg-zinc-900 dark:border-zinc-800 dark:text-zinc-400 dark:hover:bg-zinc-800 dark:hover:text-zinc-200">
+                      <button type="button" className="flex items-center gap-2 px-4 py-2.5 bg-white border border-gray-200 rounded-xl text-gray-600 font-medium hover:bg-gray-50 hover:border-gray-300 hover:text-gray-900 cursor-pointer active:bg-gray-100 dark:bg-zinc-900 dark:border-zinc-800 dark:text-zinc-400 dark:hover:bg-zinc-800 dark:hover:text-zinc-200">
                         <SlidersHorizontal size={19} strokeWidth={2.2} />
                         <span className="hidden md:block">Filtrar por</span>
                       </button>
@@ -144,8 +144,8 @@ function Home() {
 
                       <form onSubmit={(e) => e.preventDefault()} className="space-y-4 pt-2">
                         <div className="flex flex-col gap-2">
-                          <label className="text-sm font-medium text-gray-700">Setor</label>
-                          <select value={setorSelecionado} onChange={(e) => setSetorSelecionado(e.target.value)} className="w-full p-2.5 bg-white border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-slate-400">
+                          <label className="text-sm font-medium text-gray-700 dark:text-zinc-200">Setor</label>
+                          <select value={setorSelecionado} onChange={(e) => setSetorSelecionado(e.target.value)} className="w-full p-2.5 bg-white border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-slate-400 dark:bg-zinc-900 dark:border-zinc-800 dark:text-zinc-300 dark:focus:ring-zinc-700">
                             <option value="todos">Todos os Setores</option>
                             <option value="1">Setor 1 (Ex: Eletrônicos)</option>
                             <option value="2">Setor 2 (Ex: Vestuário)</option>
@@ -154,8 +154,8 @@ function Home() {
                         </div>
 
                         <div className="flex flex-col gap-2">
-                          <label className="text-sm font-medium text-gray-700">Ordenar por</label>
-                          <select value={ordenacao} onChange={(e) => setOrdenacao(e.target.value)} className="w-full p-2.5 bg-white border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-slate-400">
+                          <label className="text-sm font-medium text-gray-700 dark:text-zinc-200">Ordenar por</label>
+                          <select value={ordenacao} onChange={(e) => setOrdenacao(e.target.value)} className="w-full p-2.5 bg-white border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-slate-400 dark:bg-zinc-900 dark:border-zinc-800 dark:text-zinc-300 dark:focus:ring-zinc-700">
                             <option value="nenhum">Padrão</option>
                             <option value="preco-crescente">Preço: Menor para o Maior</option>
                             <option value="preco-decrescente">Preço: Maior para o Menor</option>
@@ -165,12 +165,12 @@ function Home() {
                         </div>
 
                         <DialogFooter className="pt-4 gap-2 sm:gap-0">
-                          <button type="button" onClick={() => { setSetorSelecionado("todos"); setOrdenacao("nenhum"); }} className="px-4 py-2 text-sm font-medium text-gray-500 hover:text-gray-700 active:bg-gray-50 rounded-lg">
+                          <button type="button" onClick={() => { setSetorSelecionado("todos"); setOrdenacao("nenhum"); }} className="px-4 py-2 text-sm font-medium text-gray-500 hover:text-gray-700 active:bg-gray-50 rounded-lg cursor-pointer hover:dark:text-zinc-300 dark:text-zinc-500">
                             Limpar
                           </button>
 
                           <DialogClose asChild>
-                            <button type="submit" className="px-4 py-2 text-sm font-medium text-white bg-slate-900 hover:bg-slate-800 active:bg-slate-950 rounded-lg">
+                            <button type="submit" className="px-4 py-2 text-sm font-medium text-white bg-slate-900 hover:bg-slate-800 active:bg-slate-950 rounded-lg cursor-pointer dark:bg-zinc-100 dark:text-zinc-800 hover:dark:bg-zinc-400  ">
                               Aplicar
                             </button>
                           </DialogClose>
@@ -190,7 +190,7 @@ function Home() {
             <div>
               <div className="mt-4 border border-gray-200 dark:border-zinc-800 overflow-x-auto">
                 <table className="min-w-full divide-y divide-gray-200  bg-white dark:bg-zinc-900 text-sm">
-                  <thead className="bg-gray-50 dark:bg-zinc-800 transition-colors">
+                  <thead className="bg-gray-50 dark:bg-zinc-800 ">
                     <tr>
                       <th className="px-4 py-3 text-left font-semibold text-gray-900 dark:text-zinc-200">Produto</th>
                       <th className="px-4 py-3 text-left font-semibold text-gray-900 dark:text-zinc-200">ID</th>
@@ -204,7 +204,7 @@ function Home() {
                   <tbody className="divide-y divide-gray-200 dark:divide-zinc-800">
                     {loading ? (
                       Array.from({ length: 5 }).map((_, rowIndex) => (
-                        <tr key={`loading-row-${rowIndex}`} className="hover:bg-gray-50 transition-colors dark:bg-zinc-900 dark:hover:bg-zinc-800/50">
+                        <tr key={`loading-row-${rowIndex}`} className="hover:bg-gray-50 dark:bg-zinc-900 dark:hover:bg-zinc-800/50">
                           {Array.from({ length: 6 }).map((_, colIndex) => {
                             const randomWidth = `${Math.floor(Math.random() * 56) + 40}%`;
 
@@ -221,7 +221,7 @@ function Home() {
                       ))
                     ) : (
                       produtosFiltrados.map((item) => (
-                        <tr key={item.id} className="hover:bg-gray-50 transition-colors dark:hover:bg-zinc-800/30">
+                        <tr key={item.id} className="hover:bg-gray-50 dark:hover:bg-zinc-800/30">
                           <td className="px-4 py-3 font-medium text-gray-900 dark:text-zinc-300">{item.nome}</td>
                           <td className="px-4 py-3 text-gray-700  dark:text-zinc-300">{item.id}</td>
                           <td className="px-4 py-3 text-gray-700  dark:text-zinc-300">{item.preco.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}</td>

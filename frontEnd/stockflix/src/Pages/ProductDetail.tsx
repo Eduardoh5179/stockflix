@@ -97,40 +97,40 @@ const ProductDetail = () => {
                     <Header onMenuClick={() => setsidebarOpen(!sidebarOpen)} />
                     <Sidebar isOpen={sidebarOpen} />
 
-                    <main className='h-full flex-1'>
+                    <main className='h-full flex-1 transition-colors dark:bg-zinc-950'>
                         <section className={`${sidebarOpen ? 'md:ml-64' : 'md:ml-0'} transition-all duration-300 p-6`}>
-                            <div className="bg-white border border-(--borderColor)">
+                            <div className="bg-white border border-(--borderColor) dark:border-zinc-800 dark:bg-zinc-900">
 
                                 <>
-                                    <section className="p-8 border-b border-(--borderColor) flex flex-col gap-4 animate-pulse">
-                                        <div className="bg-zinc-200 h-4 w-16 rounded-md"></div>
+                                    <section className="p-8 border-b border-(--borderColor) flex flex-col gap-4 animate-pulse dark:border-zinc-800">
+                                        <div className="bg-zinc-200 h-4 w-16 rounded-md dark:bg-zinc-800"></div>
 
                                         <div className="flex justify-between items-center">
-                                            <div className="bg-zinc-200 h-8 w-1/2 md:w-1/3 rounded-md"></div>
-                                            <div className="bg-zinc-200 h-5 w-14 rounded-md"></div>
+                                            <div className="bg-zinc-200 h-8 w-1/2 md:w-1/3 rounded-md dark:bg-zinc-800"></div>
+                                            <div className="bg-zinc-200 h-5 w-14 rounded-md dark:bg-zinc-800"></div>
                                         </div>
 
-                                        <div className="bg-zinc-200 h-10 w-48 rounded-md mt-2"></div>
+                                        <div className="bg-zinc-200 h-10 w-48 rounded-md mt-2 dark:bg-zinc-800"></div>
                                     </section>
 
                                     <section className="p-10 flex flex-col gap-6 animate-pulse">
                                         <div className="flex flex-col gap-2">
-                                            <div className="bg-zinc-200 h-4 w-full rounded-md"></div>
-                                            <div className="bg-zinc-200 h-4 w-5/6 rounded-md"></div>
+                                            <div className="bg-zinc-200 h-4 w-full rounded-md dark:bg-zinc-800"></div>
+                                            <div className="bg-zinc-200 h-4 w-5/6 rounded-md dark:bg-zinc-800"></div>
                                         </div>
 
-                                        <div className="border-t border-(--borderColor) pt-2 flex flex-col gap-4">
+                                        <div className="border-t border-(--borderColor) pt-2 flex flex-col gap-4 dark:border-zinc-800">
                                             {Array.from({ length: 4 }).map((_, index) => (
-                                                <div key={`skeleton-row-${index}`} className="flex justify-between py-2 px-4 border-b border-(--borderColor)/50">
-                                                    <div className="bg-zinc-200 h-4 w-28 rounded-md"></div>
-                                                    <div className="bg-zinc-200 h-4 w-16 rounded-md"></div>
+                                                <div key={`skeleton-row-${index}`} className="flex justify-between py-2 px-4 border-b border-(--borderColor)/50 dark:border-zinc-800/50">
+                                                    <div className="bg-zinc-200 h-4 w-28 rounded-md bg-zinc-200 dark:bg-zinc-800"></div>
+                                                    <div className="bg-zinc-200 h-4 w-16 rounded-md bg-zinc-200 dark:bg-zinc-800"></div>
                                                 </div>
                                             ))}
                                         </div>
                                     </section>
 
-                                    <section className="border-t border-(--borderColor) p-8 animate-pulse">
-                                        <div className="bg-zinc-200 h-12 w-full rounded-md"></div>
+                                    <section className="border-t border-(--borderColor) p-8 animate-pulse dark:border-zinc-800 ">
+                                        <div className="bg-zinc-200 h-12 w-full rounded-m dark:bg-zinc-800"></div>
                                     </section>
                                 </>
                             </div>
@@ -185,7 +185,7 @@ const ProductDetail = () => {
                         },
                     }}
                 />
-                <main className='h-full flex-1'>
+                <main className='h-full flex-1 transition-colors'>
                     <section className={`${sidebarOpen ? 'md:ml-64' : 'md:ml-0'} transition-all duration-300 p-6`}>
                         <div className="bg-white border border-(--borderColor) dark:bg-zinc-900 dark:border-zinc-800">
                             <section className="p-8 border-b border-(--borderColor) dark:border-zinc-800">
@@ -259,7 +259,7 @@ const ProductDetail = () => {
                             {user?.acessoADM === true && isEditing && (
                                 <section className="border-t border-(--borderColor) flex items-center justify-center p-6 bg-slate-50/50 transition-all animate-fade-in dark:border-zinc-800 dark:bg-zinc-900/30">
                                     <div className="flex items-center gap-3 w-full max-w-md justify-center">
-                                        <button onClick={() => setIsEditing(false)} disabled={isUpdating} className="flex-1 px-4 py-2.5 text-sm font-medium text-slate-600 bg-white border border-slate-300 rounded-lg hover:bg-slate-50 hover:text-slate-800 active:bg-slate-100 transition-all cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed shadow-sm dark:bg-zinc-900 dark:border-zinc-700 dark:text-zinc-300 dark:hover:bg-zinc-800 dark:hover:text-zinc-100 dark:active:bg-zinc-850">
+                                        <button onClick={() => setIsEditing(false)} disabled={isUpdating} className="flex-1 px-4 py-2.5 text-sm font-medium text-slate-600 bg-white border border-slate-300 rounded-lg hover:bg-slate-50 hover:text-slate-800 active:bg-slate-100 cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed shadow-sm dark:bg-zinc-900 dark:border-zinc-700 dark:text-zinc-300 dark:hover:bg-zinc-800 dark:hover:text-zinc-100 dark:active:bg-zinc-850">
                                             Cancelar
                                         </button>
                                         <button
@@ -278,7 +278,7 @@ const ProductDetail = () => {
                                                 }
                                             }}
                                             disabled={isUpdating}
-                                            className="flex-1 px-4 py-2.5 text-sm font-medium bg-violet-600 text-white rounded-lg hover:bg-violet-700 active:bg-violet-800 transition-all disabled:opacity-70 disabled:cursor-not-allowed flex items-center justify-center gap-2 cursor-pointer shadow-sm shadow-violet-100 dark:bg-violet-500 dark:hover:bg-violet-400 dark:active:bg-violet-600 dark:shadow-none">
+                                            className="flex-1 px-4 py-2.5 text-sm font-medium bg-violet-600 text-white rounded-lg hover:bg-violet-700 active:bg-violet-800 disabled:opacity-70 disabled:cursor-not-allowed flex items-center justify-center gap-2 cursor-pointer shadow-sm shadow-violet-100 dark:bg-violet-500 dark:hover:bg-violet-400 dark:active:bg-violet-600 dark:shadow-none">
                                             {isUpdating ? (
                                                 <>
                                                     <Spinner />

@@ -12,7 +12,7 @@ function ErrorService() {
 
         <Header onMenuClick={() => setsidebarOpen(!sidebarOpen)} />
         <Sidebar isOpen={sidebarOpen} />
-        <main className='h-full flex-1 dark:bg-zinc-950'>
+        <main className='h-full flex-1 dark:bg-zinc-950 transition-colors'>
           <section className={`${sidebarOpen ? 'ml-64' : 'ml-0'} transition-all duration-300 p-6`}>
             <div className="flex flex-col items-center justify-center min-h-[65vh] px-6 text-center bg-white border border-(--borderColor) rounded-xl p-12 shadow-sm max-w-2xl mx-auto my-8 dark:bg-zinc-900 dark:border-zinc-800">
 
