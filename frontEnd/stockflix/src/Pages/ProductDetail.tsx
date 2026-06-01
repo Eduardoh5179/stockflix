@@ -17,6 +17,7 @@ import { toast } from "sonner"
 
 
 const ProductDetail = () => {
+    //Boa sorte futuro desenvolvedor que for mexer com isso :)
     const { id } = useParams<{ id: string }>();
     const [sidebarOpen, setsidebarOpen] = useState(true);
     const { user } = useAuth();
@@ -59,7 +60,6 @@ const ProductDetail = () => {
 
         try {
             await produtoDelete.deletar(id);
-            toast.success("Item deletado com sucesso!");
             navigate('/Products');
         } catch (error) {
             console.error("Erro ao deletar:", error);
@@ -187,20 +187,20 @@ const ProductDetail = () => {
                 />
                 <main className='h-full flex-1'>
                     <section className={`${sidebarOpen ? 'md:ml-64' : 'md:ml-0'} transition-all duration-300 p-6`}>
-                        <div className="bg-white border border-(--borderColor)">
-                            <section className="p-8 border-b border-(--borderColor)">
+                        <div className="bg-white border border-(--borderColor) dark:bg-zinc-900 dark:border-zinc-800">
+                            <section className="p-8 border-b border-(--borderColor) dark:border-zinc-800">
                                 <div className="flex justify-between items-center mb-2">
-                                    <span className="text-zinc-500 text-sm">ID: {id}</span>
+                                    <span className="text-zinc-500 text-sm dark:text-zinc-400">ID: {id}</span>
 
                                     <div className="flex items-center gap-2">
 
                                         {user?.acessoADM && !isEditing && (
-                                            <button onClick={handleStartEditing} className="p-2 text-zinc-800  hover:text-violet-600 hover:bg-violet-50 rounded-full transition-all cursor-pointer border border-transparent hover:border-violet-200" title="Editar Informações">
+                                            <button onClick={handleStartEditing} className="p-2 text-zinc-800  hover:text-violet-600 hover:bg-violet-50 rounded-full transition-all cursor-pointer border border-transparent hover:border-violet-200 dark:text-zinc-400 dark:hover:bg-violet-900/20 dark:hover:text-violet-400" title="Editar Informações">
                                                 <Pen size={18} />
                                             </button>
                                         )}
                                         {user?.acessoADM === true && (
-                                            <button className='cursor-pointer p-2 hover:text-red-800 hover:bg-violet-50 rounded-full transition-all border border-transparent hover:border-red-300' onClick={() => handleDelete(produto.id, produto.quantidade)} title="Deletar produto">
+                                            <button className='cursor-pointer p-2 hover:text-red-800 hover:bg-violet-50 rounded-full transition-all border border-transparent hover:border-red-300 dark:text-zinc-400 dark:hover:bg-red-900/20 dark:hover:text-red-400' onClick={() => handleDelete(produto.id, produto.quantidade)} title="Deletar produto">
                                                 <Trash2 size={18} className='text-red-600' />
                                             </button>
                                         )}
@@ -209,57 +209,57 @@ const ProductDetail = () => {
 
                                 <section className="flex justify-between">
                                     {isEditing && user?.acessoADM ? (
-                                        <input name="nome" className="text-xl md:text-3xl font-bold text-slate-800 mb-4 border-b-2 border-violet-500 outline-none bg-slate-50 px-2 w-full" value={editForm?.nome} onChange={handleChange} />
+                                        <input name="nome" className="text-xl md:text-3xl font-bold text-slate-800 mb-4 border-b-2 border-violet-500 outline-none bg-slate-50 px-2 w-full dark:bg-zinc-800 dark:text-zinc-100 dark:border-violet-400" value={editForm?.nome} onChange={handleChange} />
                                     ) : (
-                                        <h1 className="text-xl md:text-3xl font-bold text-slate-800 mb-4">{produto.nome}</h1>
+                                        <h1 className="text-xl md:text-3xl font-bold text-slate-800 mb-4 dark:text-zinc-100">{produto.nome}</h1>
                                     )}
                                     <p>Status</p>
                                 </section>
                                 <section>
-                                    <p className="text-4xl font-bold">{produto.quantidade} <span className="font-medium text-xl">em estoque</span></p>
+                                    <p className="text-4xl font-bold dark:text-white ">{produto.quantidade} <span className="font-medium text-xl dark:text-zinc-400">em estoque</span></p>
                                 </section>
                             </section>
 
-                            <section className="p-10 font-sans flex flex-col gap-4">
+                            <section className="p-10 font-sans flex flex-col gap-4 text-zinc-800 dark:text-zinc-200">
                                 {isEditing && user?.acessoADM ? (
-                                    <textarea name="descricao" className="w-full p-3 border border-violet-300 rounded-md text-sm bg-slate-50 outline-none" rows={3} value={editForm?.descricao} onChange={handleChange} />) : (
-                                    <p className="text-sm">{produto.descricao}</p>
+                                    <textarea name="descricao" className="w-full p-3 border border-violet-300 rounded-md text-sm bg-slate-50 outline-none dark:bg-zinc-800 dark:border-zinc-700 dark:text-zinc-100 dark:focus:border-violet-400" rows={3} value={editForm?.descricao} onChange={handleChange} />) : (
+                                    <p className="text-sm dark:text-zinc-400">{produto.descricao}</p>
                                 )}
                                 <section className="font-serif ">
-                                    <div className="border-y flex font-medium justify-between border-(--borderColor) py-2 px-4">
-                                        <p>estoque previsto</p>
-                                        <p>1</p>
+                                    <div className="border-y flex font-medium justify-between border-(--borderColor) py-2 px-4 dark:border-zinc-800">
+                                        <p className=" dark:text-zinc-400">estoque previsto</p>
+                                        <p className=" dark:text-zinc-100">1</p>
                                     </div>
-                                    <div className="border-b flex font-medium justify-between border-(--borderColor) py-2 px-4">
-                                        <p>Setor</p>
-                                        {isEditing && user?.acessoADM ? (<select name="setorId" value={editForm?.setorId} onChange={handleChange} className="border border-violet-300 rounded px-2 py-1 text-sm outline-none">
+                                    <div className="border-b flex font-medium justify-between border-(--borderColor) py-2 px-4 dark:border-zinc-800">
+                                        <p className=" dark:text-zinc-400 ">Setor</p>
+                                        {isEditing && user?.acessoADM ? (<select name="setorId" value={editForm?.setorId} onChange={handleChange} className="border border-violet-300 rounded px-2 py-1 text-sm outline-none dark:bg-zinc-800 dark:border-zinc-700 dark:text-zinc-100">
                                             <option value={1}>Setor 1</option>
                                             <option value={2}>Setor 2</option>
                                             <option value={3}>Setor 3</option>
                                         </select>) : (
-                                            <p>{produto.setorId}</p>)}
+                                            <p className="dark:text-zinc-100">{produto.setorId}</p>)}
                                     </div>
-                                    <div className="border-b flex font-medium justify-between border-(--borderColor) py-2 px-4">
-                                        <p>valor unitário</p>
+                                    <div className="border-b flex font-medium justify-between border-(--borderColor) py-2 px-4 dark:border-zinc-800">
+                                        <p className=" dark:text-zinc-400">valor unitário</p>
                                         {isEditing && user?.acessoADM ? (
                                             <div className="flex items-center gap-1">
-                                                <span className="text-sm text-slate-50">R$</span>
-                                                <input name="preco" type="number" step="0.01" className="border border-violet-300 rounded px-2 py-1 text-sm w-24 outline-none" value={editForm?.preco} onChange={handleChange} />
-                                            </div>) : (<p>{produto.preco.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}</p>)}
+                                                <span className="text-sm text-slate-50 dark:text-zinc-400">R$</span>
+                                                <input name="preco" type="number" step="0.01" className="border border-violet-300 rounded px-2 py-1 text-sm w-24 outline-none dark:bg-zinc-800 dark:border-zinc-700 dark:text-zinc-100" value={editForm?.preco} onChange={handleChange} />
+                                            </div>) : (<p className="dark:text-zinc-100">{produto.preco.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}</p>)}
                                     </div>
-                                    <div className="border-b flex font-medium justify-between border-(--borderColor) py-2 px-4">
-                                        <p>valor em estoque</p>
-                                        <p>{valorEmEstoque.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}</p>
+                                    <div className="border-b flex font-medium justify-between border-(--borderColor) py-2 px-4 dark:border-zinc-800">
+                                        <p className="dark:text-zinc-400">valor em estoque</p>
+                                        <p className="dark:text-white">{valorEmEstoque.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}</p>
                                     </div>
                                 </section>
                             </section>
-                            <section className="border-t border-(--borderColor) p-8 ">
+                            <section className="border-t border-(--borderColor) p-8 dark:border-zinc-800 ">
                                 <Movement produtoAtual={produto} onUpdate={atualizarEstoquePai} />
                             </section>
                             {user?.acessoADM === true && isEditing && (
-                                <section className="border-t border-(--borderColor) flex items-center justify-center p-6 bg-slate-50/50 transition-all animate-fade-in">
+                                <section className="border-t border-(--borderColor) flex items-center justify-center p-6 bg-slate-50/50 transition-all animate-fade-in dark:border-zinc-800 dark:bg-zinc-900/30">
                                     <div className="flex items-center gap-3 w-full max-w-md justify-center">
-                                        <button onClick={() => setIsEditing(false)} disabled={isUpdating} className="flex-1 px-4 py-2.5 text-sm font-medium text-slate-600 bg-white border border-slate-300 rounded-lg hover:bg-slate-50 hover:text-slate-800 active:bg-slate-100 transition-all cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed shadow-sm">
+                                        <button onClick={() => setIsEditing(false)} disabled={isUpdating} className="flex-1 px-4 py-2.5 text-sm font-medium text-slate-600 bg-white border border-slate-300 rounded-lg hover:bg-slate-50 hover:text-slate-800 active:bg-slate-100 transition-all cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed shadow-sm dark:bg-zinc-900 dark:border-zinc-700 dark:text-zinc-300 dark:hover:bg-zinc-800 dark:hover:text-zinc-100 dark:active:bg-zinc-850">
                                             Cancelar
                                         </button>
                                         <button
@@ -278,7 +278,7 @@ const ProductDetail = () => {
                                                 }
                                             }}
                                             disabled={isUpdating}
-                                            className="flex-1 px-4 py-2.5 text-sm font-medium bg-violet-600 text-white rounded-lg hover:bg-violet-700 active:bg-violet-800 transition-all disabled:opacity-70 disabled:cursor-not-allowed flex items-center justify-center gap-2 cursor-pointer shadow-sm shadow-violet-100">
+                                            className="flex-1 px-4 py-2.5 text-sm font-medium bg-violet-600 text-white rounded-lg hover:bg-violet-700 active:bg-violet-800 transition-all disabled:opacity-70 disabled:cursor-not-allowed flex items-center justify-center gap-2 cursor-pointer shadow-sm shadow-violet-100 dark:bg-violet-500 dark:hover:bg-violet-400 dark:active:bg-violet-600 dark:shadow-none">
                                             {isUpdating ? (
                                                 <>
                                                     <Spinner />

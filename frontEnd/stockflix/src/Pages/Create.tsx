@@ -61,30 +61,30 @@ export function Create() {
         />
         <Header onMenuClick={() => setsidebarOpen(!sidebarOpen)} />
         <Sidebar isOpen={sidebarOpen} />
-        <main className='h-full flex-1'>
+        <main className='h-full flex-1 transition-colors'>
           <section className={`${sidebarOpen ? 'md:ml-64' : 'md:ml-0'} transition-all duration-300 p-6`}>
-            <h1 className="text-3xl font-bold text-gray-800 tracking-tight">Criar novo produto</h1>
+            <h1 className="text-3xl font-bold text-gray-800 tracking-tight dark:text-zinc-100">Criar novo produto</h1>
 
             <form onSubmit={handleSubmit} className='mt-4 space-y-4'>
               <div className='flex flex-col gap-2'>
-                <label className='font-semibold font-sans text-slate-800'>Nome do produto </label>
-                <input type="text" placeholder='digite o nome do produto' value={nome} onChange={(e) => setNome(e.target.value)} required className='px-4 py-3 border border-slate-200 bg-slate-50 rounded-xl focus:outline-none text-slate-900 focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 placeholder:text-slate-400' />
+                <label className='font-semibold font-sans text-slate-800 dark:text-zinc-300'>Nome do produto </label>
+                <input type="text" placeholder='digite o nome do produto' value={nome} onChange={(e) => setNome(e.target.value)} required className='px-4 py-3 border border-slate-200 bg-slate-50 rounded-xl focus:outline-none text-slate-900 focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 placeholder:text-slate-400 dark:bg-zinc-900 dark:border-zinc-800 dark:text-zinc-100 dark:placeholder:text-zinc-500 dark:focus:ring-blue-500' />
               </div>
               <div className='flex flex-col gap-2'>
-                <label className='font-semibold font-sans text-slate-800'>Descrição do Produto </label>
-                <textarea placeholder='digite a descrição do produto' value={descricao} onChange={(e) => setDescricao(e.target.value)} required className='px-4 py-3 border border-slate-200 bg-slate-50 rounded-xl focus:outline-none text-slate-900 focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 placeholder:text-slate-400'></textarea>
+                <label className='font-semibold font-sans text-slate-800 dark:text-zinc-300'>Descrição do Produto </label>
+                <textarea placeholder='digite a descrição do produto' value={descricao} onChange={(e) => setDescricao(e.target.value)} required className='px-4 py-3 border border-slate-200 bg-slate-50 rounded-xl focus:outline-none text-slate-900 focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 placeholder:text-slate-400 dark:bg-zinc-900 dark:border-zinc-800 dark:text-zinc-100 dark:placeholder:text-zinc-500 dark:focus:ring-blue-500'></textarea>
               </div>
               <div className='flex flex-col gap-2'>
-                <label className='font-semibold font-sans text-slate-800'>Defina o setor do produto </label>
-                <select value={setorId} onChange={(e) => setSetorId(e.target.value)} className='px-4 py-3 border  border-slate-200 bg-slate-50 rounded-xl focus:outline-none text-slate-900 focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 placeholder:text-slate-400'>
+                <label className='font-semibold font-sans text-slate-800 dark:text-zinc-300'>Defina o setor do produto </label>
+                <select value={setorId} onChange={(e) => setSetorId(e.target.value)} className='px-4 py-3 border  border-slate-200 bg-slate-50 rounded-xl focus:outline-none text-slate-900 focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 placeholder:text-slate-400 dark:bg-zinc-900 dark:border-zinc-800 dark:text-zinc-100 dark:placeholder:text-zinc-500 dark:focus:ring-blue-500'>
                   <option value="1"> 1 </option>
                   <option value="2"> 2 </option>
                   <option value="3"> 3 </option>
                 </select>
               </div>
               <div className='flex flex-col gap-2'>
-                <label className='font-semibold font-sans text-slate-800'>Preço do produto (R$)</label>
-                <input type='number' placeholder='determine o preço do produto' step="0.01" value={preco} onChange={(e) => setPreco(e.target.value)} required className='px-4 py-3 border border-slate-200 bg-slate-50 rounded-xl focus:outline-none text-slate-900 focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 placeholder:text-slate-400'></input>
+                <label className='font-semibold font-sans text-slate-800 dark:text-zinc-300'>Preço do produto (R$)</label>
+                <input type='number' placeholder='determine o preço do produto' step="0.01" value={preco} onChange={(e) => setPreco(e.target.value)} required className='px-4 py-3 border border-slate-200 bg-slate-50 rounded-xl focus:outline-none text-slate-900 focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 placeholder:text-slate-400 dark:bg-zinc-900 dark:border-zinc-800 dark:text-zinc-100 dark:placeholder:text-zinc-500 dark:focus:ring-blue-500'></input>
               </div>
               {errorStatus && (<div>
                 <div className="bg-red-100 border px-3 py-2 rounded-xl overflow-x-hidden flex items-center w-fit">

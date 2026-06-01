@@ -1,4 +1,6 @@
 :root{
     --borderColor: #eaeaea;
-    --sideBarBackground: rgb(22, 22, 27);
+    --borderColorDark: hsl(0, 0%, 20%);
+    --sideBarBackground: #16161b;
+    --bgDarkColor: hsl(240, 4%, 11%);
 } 

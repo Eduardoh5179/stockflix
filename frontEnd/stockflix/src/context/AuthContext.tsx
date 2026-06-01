@@ -5,7 +5,7 @@ export type UserRole = 'admin' | 'user';
 interface User {
   id: number;
   login: string;
-  acessoADM: Boolean;
+  acessoADM: boolean;
 }
 
 interface AuthContextData {

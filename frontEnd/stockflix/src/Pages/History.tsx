@@ -50,20 +50,20 @@ function History() {
         <Sidebar isOpen={sidebarOpen} />
         <main className='h-full flex-1'>
           <section className={`${sidebarOpen ? 'md:ml-64' : 'md:ml-0'} transition-all duration-300 p-6`}>
-            <h2 className="text-3xl font-bold text-gray-800 tracking-tight">Histórico de movimentações</h2>
+            <h2 className="text-3xl font-bold text-gray-800 tracking-tight dark:text-zinc-100">Histórico de movimentações</h2>
             <section className='mt-6 overflow-x-auto'>
               <table className="min-w-full divide-y divide-gray-200 bg-white text-sm">
-                <thead className="bg-gray-50">
+                <thead className="bg-gray-50 dark:bg-zinc-800">
                   <tr>
-                    <th className="px-4 py-3 text-left font-semibold text-gray-900">Tipo</th>
-                    <th className="px-4 py-3 text-left font-semibold text-gray-900">Produto</th>
-                    <th className="px-4 py-3 text-left font-semibold text-gray-900">Qtd</th>
-                    <th className="px-4 py-3 text-left font-semibold text-gray-900">Mov.</th>
-                    <th className="px-4 py-3 text-left font-semibold text-gray-900">Operador</th>
-                    <th className="px-4 py-3 text-right font-semibold text-gray-900">Data</th>
+                    <th className="px-4 py-3 text-left font-semibold text-gray-900 dark:text-zinc-200">Tipo</th>
+                    <th className="px-4 py-3 text-left font-semibold text-gray-900 dark:text-zinc-200">Produto</th>
+                    <th className="px-4 py-3 text-left font-semibold text-gray-900 dark:text-zinc-200">Qtd</th>
+                    <th className="px-4 py-3 text-left font-semibold text-gray-900 dark:text-zinc-200">Mov.</th>
+                    <th className="px-4 py-3 text-left font-semibold text-gray-900 dark:text-zinc-200">Operador</th>
+                    <th className="px-4 py-3 text-right font-semibold text-gray-900 dark:text-zinc-200">Data</th>
                   </tr>
                 </thead>
-                <tbody className="divide-y divide-gray-200">
+                <tbody className="divide-y divide-gray-200 dark:divide-zinc-800 transition-colors duration-300">
                   {/* <tr>
                         <td className="px-4 py-3 text-gray-700">Entrada</td>
                         <td className="px-4 py-3 text-gray-700 font-medium">Parafuso Sextavado</td>
@@ -90,14 +90,14 @@ function History() {
                       </tr> */}
                   {loading ? (
                     Array.from({ length: 5 }).map((_, rowIndex) => (
-                      <tr key={`loading-row-${rowIndex}`} className="hover:bg-gray-50 transition-colors">
+                      <tr key={`loading-row-${rowIndex}`} className="hover:bg-gray-50 transition-colors dark:bg-zinc-900 dark:hover:bg-zinc-800/50 ">
                         {Array.from({ length: 6 }).map((_, colIndex) => {
                           const randomWidth = `${Math.floor(Math.random() * 56) + 40}%`;
 
                           return (
                             <td key={`loading-cell-${rowIndex}-${colIndex}`} className="px-4 py-3 h-10">
                               <div
-                                className="bg-zinc-200 h-full rounded-md animate-pulse"
+                                className="bg-zinc-200 h-full dark:bg-zinc-700 rounded-md animate-pulse"
                                 style={{ width: randomWidth }}
                               ></div>
                             </td>
@@ -107,23 +107,23 @@ function History() {
                     ))
                   ) : (
                     listaMovement.toReversed().map((mov) => (
-                      <tr key={mov.id}>
-                        <td className="px-4 py-3 text-gray-700">
+                      <tr key={mov.id} className='dark:hover:bg-zinc-800/30'>
+                        <td className="px-4 py-3 text-gray-700 dark:bg-zinc-900 dark:text-zinc-300">
                           {mov.tipoMovimentacao ? "Entrada" : "Saída"}
                         </td>
-                        <td className="px-4 py-3 text-gray-700 font-medium">
+                        <td className="px-4 py-3 text-gray-700 font-medium dark:bg-zinc-900 dark:text-zinc-300">
                           Produto ID: {mov.produtoId}
                         </td>
-                        <td className="px-4 py-3 text-gray-700">
+                        <td className="px-4 py-3 text-gray-700 dark:bg-zinc-900 dark:text-zinc-300">
                           {mov.qtdMovimentada}
                         </td>
-                        <td className="px-4 py-3 text-gray-700">
+                        <td className="px-4 py-3 text-gray-700 dark:bg-zinc-900 dark:text-zinc-300">
                           -
                         </td>
-                        <td className="px-4 py-3 text-gray-700">
+                        <td className="px-4 py-3 text-gray-700 dark:bg-zinc-900 dark:text-zinc-300">
                           Usuário ID: {mov.usuarioId}
                         </td>
-                        <td className="px-4 py-3 text-right text-gray-700">
+                        <td className="px-4 py-3 text-right text-gray-700 dark:bg-zinc-900 dark:text-zinc-300">
                           {new Date(mov.data).toLocaleDateString('pt-BR', { timeZone: 'UTC' })}
                         </td>
                       </tr>

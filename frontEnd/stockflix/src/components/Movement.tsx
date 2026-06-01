@@ -73,7 +73,7 @@ function Movement({produtoAtual, onUpdate }: MovementProps){
 
     return(
             <>
-            <h2 className="text-zinc-700 font-medium text-lg mb-6">Movimentação</h2>
+            <h2 className="text-zinc-700 font-medium text-lg mb-6 dark:text-zinc-300">Movimentação</h2>
             <section className="flex flex-col gap-4">
                 <section className="flex gap-4">
                         <button type="button" onClick={()=> setTipo('entrada')} className={`px-6 py-1.5 text-sm font-medium rounded-md text-white cursor-pointer bg-green-600 hover:bg-green-700 hover:text-white ${tipo === 'entrada' ? 'bg-green-600 text-white ring-2 ring-offset-1 ring-green-600' : 'bg-zinc-100 text-zinc-600'}`}>
@@ -85,7 +85,7 @@ function Movement({produtoAtual, onUpdate }: MovementProps){
                     </section>
     
                     <section className="flex gap-1">
-                        <button onClick={diminuir} className="w-9 h-9 border border-zinc-300 rounded-md text-zinc-600 hover:bg-zinc-50 transition-colors cursor-pointer">−</button>
+                        <button onClick={diminuir} className="w-9 h-9 border border-zinc-300 rounded-md text-zinc-600 hover:bg-zinc-50 transition-colors cursor-pointer dark:border-zinc-800 dark:text-zinc-400 dark:hover:bg-zinc-800">−</button>
                         <input type="number" min={1} value={quantidade} onChange={(e)=>{
                             const valor = parseInt(e.target.value);
                             if (!isNaN(valor) && valor >= 1) {
@@ -93,21 +93,21 @@ function Movement({produtoAtual, onUpdate }: MovementProps){
                             } else if (e.target.value === "") {
                                 setQuantidade(0); 
                             }
-                        }} placeholder="Qtd." className="w-24 h-9 border border-zinc-300 rounded-md px-3 text-sm text-center text-slate-800 focus:outline-none focus:border-zinc-500"/>
-                        <button onClick={aumentar} className="w-9 h-9 border border-zinc-300 rounded-md text-zinc-600 hover:bg-zinc-50 transition-colors cursor-pointer">+</button>
+                        }} placeholder="Qtd." className="w-24 h-9 border border-zinc-300 rounded-md px-3 text-sm text-center text-slate-800 focus:outline-none focus:border-zinc-500 dark:bg-zinc-900 dark:border-zinc-800 dark:text-zinc-200 dark:focus:border-zinc-600"/>
+                        <button onClick={aumentar} className="w-9 h-9 border border-zinc-300 rounded-md text-zinc-600 hover:bg-zinc-50 transition-colors cursor-pointer dark:border-zinc-800 dark:text-zinc-400 dark:hover:bg-zinc-800">+</button>
                     </section>
     
                     <section>
-                        <p className="text-sm text-zinc-700 font-semibold">Motivo</p>
-                        <select className="w-full md:w-80 h-9 border mt-2 border-zinc-300 rounded-md px-3 text-sm text-slate-700 bg-white focus:outline-none focus:border-zinc-500">
-                            <option value="compra">Compra de fornecedor</option>
-                            <option value="devolucao">Devolução de cliente</option>
-                            <option value="transferencia">Transferência interna</option>
-                            <option value="ajuste">Ajuste de inventário</option>
+                        <p className="text-sm text-zinc-700 font-semibold dark:text-zinc-300">Motivo</p>
+                        <select className="w-full md:w-80 h-9 border mt-2 border-zinc-300 rounded-md px-3 text-sm text-slate-700 bg-white focus:outline-none focus:border-zinc-500 dark:bg-zinc-900 dark:border-zinc-800 dark:text-zinc-300 dark:focus:border-zinc-600">
+                            <option value="compra" className="dark:bg-zinc-900">Compra de fornecedor</option>
+                            <option value="devolucao" className="dark:bg-zinc-900">Devolução de cliente</option>
+                            <option value="transferencia" className="dark:bg-zinc-900">Transferência interna</option>
+                            <option value="ajuste" className="dark:bg-zinc-900">Ajuste de inventário</option>
                         </select>
                     </section>
                     <section>
-                        <button onClick={registrarMovimentacao} disabled={loading} className="w-fit px-6 py-2 rounded-md text-sm text-white cursor-pointer bg-zinc-900">
+                        <button onClick={registrarMovimentacao} disabled={loading} className="w-fit px-6 py-2 rounded-md text-sm text-white cursor-pointer bg-zinc-900 dark:bg-zinc-100 dark:text-zinc-900 dark:hover:bg-white">
                             {loading ? 'Processando...' : `Confirmar ${tipo === 'entrada' ? 'Entrada' : 'Retirada'}`}
                         </button>
                     </section>

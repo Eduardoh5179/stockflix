@@ -116,19 +116,19 @@ function Home() {
             <div className="flex flex-col gap-6 ">
 
               <div className="flex items-baseline gap-3">
-                <h1 className="text-3xl font-bold text-gray-800 tracking-tight">Estoque</h1>
+                <h1 className="text-3xl font-bold text-gray-800 dark:text-zinc-100 tracking-tight">Estoque</h1>
               </div>
               <div className="flex flex-col sm:flex-row sm:justify-between gap-4 w-full">
                 <div className="flex flex-1 gap-2 max-w-xl">
                   <div className="relative flex-1 group">
-                    <input type="text" placeholder="Buscar item ou código..." value={busca} onChange={(e) => { setBusca(e.target.value) }} className="w-full pl-4 pr-12 py-2.5 bg-white border border-gray-200 rounded-xl text-gray-700 placeholder:text-gray-400 focus:outline-none hover:border-gray-300" />
-                    <button type="button" className="absolute right-0 top-0 h-full w-12 flex items-center justify-center text-gray-400 border-l border-gray-200 hover:bg-gray-50 hover:text-gray-600 transition-colors duration-200 cursor-pointer rounded-r-xl">
+                    <input type="text" placeholder="Buscar item ou código..." value={busca} onChange={(e) => { setBusca(e.target.value) }} className="w-full pl-4 pr-12 py-2.5 bg-white border border-gray-200 rounded-xl text-gray-700 placeholder:text-gray-400 focus:outline-none hover:border-gray-300 transition-colors dark:bg-zinc-900 dark:border-zinc-800 dark:text-slate-200 dark:placeholder:text-zinc-500 dark:hover:border-zinc-700"  />
+                    <button type="button" className="absolute right-0 top-0 h-full w-12 flex items-center justify-center text-gray-400 border-l border-gray-200 hover:bg-gray-50 hover:text-gray-600 transition-colors duration-200 cursor-pointer rounded-r-xl dark:border-zinc-800 dark:hover:bg-zinc-800 dark:text-zinc-500">
                       <Search size={19} strokeWidth={2.2} />
                     </button>
                   </div>
                   <Dialog>
                     <DialogTrigger asChild>
-                      <button type="button" className="flex items-center gap-2 px-4 py-2.5 bg-white border border-gray-200 rounded-xl text-gray-600 font-medium hover:bg-gray-50 hover:border-gray-300 hover:text-gray-900 cursor-pointer active:bg-gray-100">
+                      <button type="button" className="flex items-center gap-2 px-4 py-2.5 bg-white border border-gray-200 rounded-xl text-gray-600 font-medium hover:bg-gray-50 hover:border-gray-300 hover:text-gray-900 cursor-pointer active:bg-gray-100 transition-colors dark:bg-zinc-900 dark:border-zinc-800 dark:text-zinc-400 dark:hover:bg-zinc-800 dark:hover:text-zinc-200">
                         <SlidersHorizontal size={19} strokeWidth={2.2} />
                         <span className="hidden md:block">Filtrar por</span>
                       </button>
@@ -188,30 +188,30 @@ function Home() {
               </div>
             </div>
             <div>
-              <div className="mt-4 border border-gray-200 overflow-x-auto">
-                <table className="min-w-full divide-y divide-gray-200 bg-white text-sm">
-                  <thead className="bg-gray-50">
+              <div className="mt-4 border border-gray-200 dark:border-zinc-800 overflow-x-auto">
+                <table className="min-w-full divide-y divide-gray-200  bg-white dark:bg-zinc-900 text-sm">
+                  <thead className="bg-gray-50 dark:bg-zinc-800 transition-colors">
                     <tr>
-                      <th className="px-4 py-3 text-left font-semibold text-gray-900">Produto</th>
-                      <th className="px-4 py-3 text-left font-semibold text-gray-900">ID</th>
-                      <th className="px-4 py-3 text-left font-semibold text-gray-900">Preço</th>
-                      <th className="px-4 py-3 text-left font-semibold text-gray-900">Setor</th>
-                      <th className="px-4 py-3 text-left font-semibold text-gray-900">Qtd.</th>
-                      <th className="px-4 py-3 text-right font-semibold text-gray-900">Ações</th>
+                      <th className="px-4 py-3 text-left font-semibold text-gray-900 dark:text-zinc-200">Produto</th>
+                      <th className="px-4 py-3 text-left font-semibold text-gray-900 dark:text-zinc-200">ID</th>
+                      <th className="px-4 py-3 text-left font-semibold text-gray-900 dark:text-zinc-200">Preço</th>
+                      <th className="px-4 py-3 text-left font-semibold text-gray-900 dark:text-zinc-200">Setor</th>
+                      <th className="px-4 py-3 text-left font-semibold text-gray-900 dark:text-zinc-200">Qtd.</th>
+                      <th className="px-4 py-3 text-right font-semibold text-gray-900 dark:text-zinc-200">Ações</th>
                     </tr>
                   </thead>
 
-                  <tbody className="divide-y divide-gray-200">
+                  <tbody className="divide-y divide-gray-200 dark:divide-zinc-800">
                     {loading ? (
                       Array.from({ length: 5 }).map((_, rowIndex) => (
-                        <tr key={`loading-row-${rowIndex}`} className="hover:bg-gray-50 transition-colors">
+                        <tr key={`loading-row-${rowIndex}`} className="hover:bg-gray-50 transition-colors dark:bg-zinc-900 dark:hover:bg-zinc-800/50">
                           {Array.from({ length: 6 }).map((_, colIndex) => {
                             const randomWidth = `${Math.floor(Math.random() * 56) + 40}%`;
 
                             return (
                               <td key={`loading-cell-${rowIndex}-${colIndex}`} className="px-4 py-3 h-10">
                                 <div
-                                  className="bg-zinc-200 h-full rounded-md animate-pulse"
+                                  className="bg-zinc-200 h-full rounded-md animate-pulse dark:bg-zinc-700"
                                   style={{ width: randomWidth }}
                                 ></div>
                               </td>
@@ -221,14 +221,14 @@ function Home() {
                       ))
                     ) : (
                       produtosFiltrados.map((item) => (
-                        <tr key={item.id} className="hover:bg-gray-50 transition-colors">
-                          <td className="px-4 py-3 font-medium text-gray-900">{item.nome}</td>
-                          <td className="px-4 py-3 text-gray-700">{item.id}</td>
-                          <td className="px-4 py-3 text-gray-700">{item.preco.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}</td>
-                          <td className="px-4 py-3 text-gray-700">{item.setorId}</td>
-                          <td className="px-4 py-3 text-gray-700">{item.quantidade}</td>
+                        <tr key={item.id} className="hover:bg-gray-50 transition-colors dark:hover:bg-zinc-800/30">
+                          <td className="px-4 py-3 font-medium text-gray-900 dark:text-zinc-300">{item.nome}</td>
+                          <td className="px-4 py-3 text-gray-700  dark:text-zinc-300">{item.id}</td>
+                          <td className="px-4 py-3 text-gray-700  dark:text-zinc-300">{item.preco.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}</td>
+                          <td className="px-4 py-3 text-gray-700 dark:text-zinc-300">{item.setorId}</td>
+                          <td className="px-4 py-3 text-gray-700  dark:text-zinc-300">{item.quantidade}</td>
                           <td className="px-4 py-3 text-right flex items-center justify-end gap-3">
-                            <Link to={`/Products/${item.id}`} className="text-blue-600 hover:text-blue-800 font-medium underline">
+                            <Link to={`/Products/${item.id}`} className="text-blue-600 hover:text-blue-800 dark:bg-zinc-900 font-medium underline dark:text-blue-400 dark:hover:text-blue-300">
                               Ver detalhes
                             </Link>
                             {/* {user?.acessoADM === true && (<div className='cursor-pointer' onClick={() => handleDelete(item.id, item.quantidade)}>

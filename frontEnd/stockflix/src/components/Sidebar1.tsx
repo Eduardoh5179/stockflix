@@ -21,7 +21,7 @@ const Sidebar = ({ isOpen }: SidebarProps) => {
 
 
   return (
-    <aside className={`h-full w-64 bg-(--sideBarBackground) fixed text-gray-100 flex flex-col border-r transition-all duration-400 border-white/10 top-0 ${isOpen ? "w-64" : "w-0 -translate-x-full"} z-60`}>
+    <aside className={`h-full w-64 bg-(--sideBarBackground) fixed text-gray-100 flex flex-col border-r transition-all duration-400 dark:bg-(--bgDarkColor) border-white/10 top-0 ${isOpen ? "w-64" : "w-0 -translate-x-full"} z-60`}>
       {/* <div className="p-6 text-xl font-bold border-b border-white/10">
         Stock<span className="text-blue-500">Flix</span>
       </div> */}
@@ -46,7 +46,7 @@ const Sidebar = ({ isOpen }: SidebarProps) => {
       </nav>
 
 
-      <div className="p-4 border-t border-white/10 bg-(--sideBarBackground)">
+      <div className="p-4 border-t border-white/10 dark:bg-(--bgDarkColor)">
         <button onClick={handleLogout}  className="flex items-center gap-3 p-3 w-full rounded-lg hover:bg-red-500/10 hover:text-red-500 transition-colors cursor-pointer">
           <LogOut size={18} />
           <span className="font-semibold">Sair</span>

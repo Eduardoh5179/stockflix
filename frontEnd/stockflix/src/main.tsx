@@ -15,6 +15,7 @@ import Dashboard from './Pages/Dashboard.tsx'
 import ProductDetail from './Pages/ProductDetail.tsx'
 import SidebarApp from './Pages/uitest.tsx'
 
+
 interface RouteProps {
   children: ReactNode;
 }
