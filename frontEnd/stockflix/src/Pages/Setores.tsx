@@ -43,7 +43,7 @@ function Setores() {
                         <div className="flex items-baseline gap-3">
                             <h1 className="text-3xl font-bold text-gray-800 dark:text-zinc-100 tracking-tight"> Setores </h1>
                         </div>
-                        <section>
+                        <section className='mt-4'>
                             <table className="min-w-full divide-y divide-gray-200 bg-white dark:bg-zinc-900 text-sm">
                                 {/* O cabeçalho fica fora do ternário para ser renderizado apenas uma vez */}
                                 <thead className="bg-gray-50 dark:bg-zinc-800/50">
