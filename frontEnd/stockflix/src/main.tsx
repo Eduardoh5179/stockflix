@@ -14,7 +14,8 @@ import History from './Pages/History.tsx'
 import Dashboard from './Pages/Dashboard.tsx'
 import ProductDetail from './Pages/ProductDetail.tsx'
 import SidebarApp from './Pages/uitest.tsx'
-
+import Setores from './Pages/Setores.tsx'
+import Usuarios from './Pages/Usuarios.tsx'
 
 interface RouteProps {
   children: ReactNode;
@@ -69,6 +70,22 @@ const router = createBrowserRouter([
     element: (
       <PrivateRoute>
         <ProductDetail />
+      </PrivateRoute>
+    )
+  },
+  {
+    path: "/Sectors",
+    element: (
+      <PrivateRoute>
+        <Setores />
+      </PrivateRoute>
+    )
+  },
+  {
+    path: "/Users",
+    element: (
+      <PrivateRoute>
+        <Usuarios />
       </PrivateRoute>
     )
   },

@@ -25,7 +25,7 @@ function Error() {
                 Página não encontrada
               </h1>
               <p className="text-slate-500 max-w-sm mb-8 text-sm leading-relaxed dark:text-zinc-400">
-                O item que você está tentando acessar não existe no sistema, foi removido permanentemente ou o link está incorreto.
+                O item que você está tentando acessar não existe no sistema, foi removido permanentemente ou está incorreto.
               </p>
             </div>
           </section>

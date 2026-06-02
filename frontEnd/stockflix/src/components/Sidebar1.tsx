@@ -1,4 +1,4 @@
-import { Home, History, LogOut, Boxes } from 'lucide-react';
+import { Home, History, LogOut, Boxes, SquareSplitVertical, UserRound } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 
@@ -10,7 +10,7 @@ interface SidebarProps {
 const Sidebar = ({ isOpen }: SidebarProps) => {
   const { logout } = useAuth();
 
-  const handleLogout =  () => {
+  const handleLogout = () => {
 
     try {
       logout();
@@ -41,13 +41,21 @@ const Sidebar = ({ isOpen }: SidebarProps) => {
               <span className="text-gray-400 "><History size={18} /></span>
               <span className="font-semibold">Histórico</span>
             </Link>
+            <Link to="/Sectors" className="flex items-center gap-3 p-3 rounded-lg transition-all duration-200 hover:bg-white/10 hover:text-white group">
+              <span className="text-gray-400 "><SquareSplitVertical size={18} /></span>
+              <span className="font-semibold">Setores</span>
+            </Link>
+            <Link to="/Users" className="flex items-center gap-3 p-3 rounded-lg transition-all duration-200 hover:bg-white/10 hover:text-white group">
+              <span className="text-gray-400 "><UserRound size={18} /></span>
+              <span className="font-semibold">Usuários</span>
+            </Link>
           </li>
         </ul>
       </nav>
 
 
       <div className="p-4 border-t border-white/10 dark:bg-(--bgDarkColor)">
-        <button onClick={handleLogout}  className="flex items-center gap-3 p-3 w-full rounded-lg hover:bg-red-500/10 hover:text-red-500 transition-colors cursor-pointer">
+        <button onClick={handleLogout} className="flex items-center gap-3 p-3 w-full rounded-lg hover:bg-red-500/10 hover:text-red-500 transition-colors cursor-pointer">
           <LogOut size={18} />
           <span className="font-semibold">Sair</span>
         </button>
