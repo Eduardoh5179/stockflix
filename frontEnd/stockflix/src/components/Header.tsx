@@ -3,6 +3,7 @@ import { useState, useEffect } from 'react'
 import '../App.css'
 
 import LogoName from '../assets/logoname.png'
+import LogoName2 from '../assets/logoname2.png'
 
 interface HeaderProps {
   onMenuClick: () => void;
@@ -40,7 +41,7 @@ function Header({ onMenuClick }: HeaderProps) {
               <Menu size={20} />
             </button>
             {/* <img src={Logo} className="font-bold text-lg md:text-xl"> stockflix </img> */}
-            <img src={LogoName} className='w-24 md:w-36 ' alt="" />
+            <img src={(theme === 'light') ? (LogoName):(LogoName2)} className='w-24 md:w-36 ' alt="" />
           </div>
           <div className="flex items-center">
             <button onClick={toggleTheme} aria-label="Alternar tema" className="relative flex items-center justify-center cursor-pointer p-2 rounded-full border border-zinc-200 dark:border-zinc-700 text-zinc-800 dark:text-zinc-200 hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-all duration-200">
