@@ -55,7 +55,7 @@ function History() {
               <table className="min-w-full divide-y divide-gray-200 bg-white text-sm">
                 <thead className="bg-gray-50 dark:bg-zinc-800">
                   <tr>
-                    <th className="px-4 py-3 text-left font-semibold text-gray-900 dark:text-zinc-200">Tipo</th>
+                    <th className="px-4 py-3 text-left font-semibold text-gray-900 dark:text-zinc-200 border-l-none">Tipo</th>
                     <th className="px-4 py-3 text-left font-semibold text-gray-900 dark:text-zinc-200">Produto</th>
                     <th className="px-4 py-3 text-left font-semibold text-gray-900 dark:text-zinc-200">Qtd</th>
                     <th className="px-4 py-3 text-left font-semibold text-gray-900 dark:text-zinc-200">Mov.</th>
@@ -108,7 +108,7 @@ function History() {
                   ) : (
                     listaMovement.toReversed().map((mov) => (
                       <tr key={mov.id} className='dark:hover:bg-zinc-800/30'>
-                        <td className="px-4 py-3 text-gray-700 dark:bg-zinc-900 dark:text-zinc-300">
+                        <td className={`px-4 py-3 text-gray-700 dark:bg-zinc-900 dark:text-zinc-300 border-l-3 ${mov.tipoMovimentacao ? "border-green-500" : "border-red-500"} `}>
                           {mov.tipoMovimentacao ? "Entrada" : "Saída"}
                         </td>
                         <td className="px-4 py-3 text-gray-700 font-medium dark:bg-zinc-900 dark:text-zinc-300">
