@@ -61,10 +61,8 @@ function UsuariosPage() {
         if (!editForm) return;
 
         try {
-            // Faz a requisição PUT na API
             const usuarioAtualizado = await atualizarUsuario(editForm.id, editForm);
 
-            // Atualiza o estado local corretamente mudando apenas o editado
             setListaUsuarios(prev =>
                 prev.map(u => u.id === editForm.id ? usuarioAtualizado : u)
             );
@@ -86,10 +84,9 @@ function UsuariosPage() {
         if (!confirmar) return;
 
         try {
-            // Faz a requisição de delete na API
+
             await deleteUsuario.deletar(id);
 
-            // Remove o usuário da lista local para sumir da tela imediatamente
             setListaUsuarios(prev => prev.filter(u => u.id !== id));
 
             toast.success(`Usuário foi deletado com sucesso!`);
@@ -151,7 +148,6 @@ function UsuariosPage() {
                         <div className='mt-4'>
                             {user?.acessoADM === true && (
                                 <Dialog>
-                                    {/* O DialogTrigger renderiza o seu botão sem quebrar o layout */}
                                     <DialogTrigger asChild>
                                         <button type="button" className="flex items-center w-50 md:w-auto gap-2 text-sm md:text-md bg-green-500 hover:bg-green-600 cursor-pointer text-white font-bold py-2 px-6 rounded-lg">
                                             <span className="text-sm lg:text-lg">+</span>
@@ -221,56 +217,40 @@ function UsuariosPage() {
                                         ))
                                     ) : (
                                         listaUsuarios.map((item) => {
-                                            // ESSA linha específica está em modo de edição?
                                             const estaEditandoEste = isEditing && editForm?.id === item.id;
 
                                             return (
                                                 <tr key={item.id} className="hover:bg-gray-50 dark:hover:bg-zinc-800/30 transition-colors">
-                                                    {/* ID */}
+    
                                                     <td className="px-4 py-3 font-medium text-gray-900 dark:text-zinc-200">{item.id}</td>
 
-                                                    {/* CAMPO NOME */}
                                                     <td className="px-4 py-3 font-medium text-gray-900 dark:text-zinc-200">
                                                         {estaEditandoEste ? (
-                                                            <input
-                                                                type="text"
-                                                                // O valor vem de dentro do objeto editForm que está sendo modificado
-                                                                value={editForm.login}
-                                                                onChange={(e) => setEditForm({ ...editForm, login: e.target.value })}
-                                                                className="bg-white dark:bg-zinc-700 border border-violet-500 rounded px-2 py-1 text-sm focus:outline-none focus:ring-2 focus:ring-violet-500 text-gray-900 dark:text-zinc-100"
-                                                                autoFocus
-                                                            />
+                                                            <input type="text" value={editForm.login} onChange={(e) => setEditForm({ ...editForm, login: e.target.value })} className="bg-white dark:bg-zinc-700 border border-violet-500 rounded px-2 py-1 text-sm focus:outline-none focus:ring-2 focus:ring-violet-500 text-gray-900 dark:text-zinc-100" autoFocus />
                                                         ) : (
                                                             item.login
                                                         )}
                                                     </td>
-
-                                                    {/* ESTOQUE ID */}
                                                     <td className="px-4 py-3 font-medium text-gray-900 dark:text-zinc-200">{item.acessoADM ? ("true") : ("false")}</td>
 
-                                                    {/* AÇÕES (BOTÕES) */}
                                                     <td className="px-4 py-3 text-right">
                                                         <div className='flex justify-end gap-4'>
                                                             {user?.acessoADM && (
                                                                 estaEditandoEste ? (
                                                                     <>
-                                                                        {/* Botão Salvar */}
                                                                         <button onClick={handleSave} title="Salvar alteração" className="text-emerald-600 hover:text-emerald-800 dark:text-emerald-500 dark:hover:text-emerald-400 font-medium cursor-pointer text-sm">
                                                                             Salvar
                                                                         </button>
-                                                                        {/* Botão Cancelar */}
                                                                         <button onClick={() => { setIsEditing(false); setEditForm(undefined); }} title="Cancelar" className="text-gray-500 hover:text-gray-700 dark:text-zinc-400 dark:hover:text-zinc-300 font-medium cursor-pointer text-sm">
                                                                             Cancelar
                                                                         </button>
                                                                     </>
                                                                 ) : (
                                                                     <>
-                                                                        {/* Botão Editar - Passando o 'item' atual por parâmetro */}
                                                                         <button onClick={() => handleStartEditing(item)} title="Editar setor" className="text-violet-600 hover:text-violet-800 dark:text-violet-500 dark:hover:text-violet-400 font-medium cursor-pointer">
                                                                             <Pen size={17} />
                                                                         </button>
 
-                                                                        {/* Botão Deletar */}
                                                                         <button onClick={() => handleDelete(item.id)} title="Deletar setor" className="text-red-600 hover:text-red-800 dark:text-red-500 dark:hover:text-red-400 font-medium cursor-pointer">
                                                                             <Trash2 size={17} />
                                                                         </button>

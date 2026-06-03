@@ -2,7 +2,7 @@ import Header from '../components/Header.tsx'
 import Sidebar from '../components/Sidebar1.tsx'
 import Footer from '../components/Footer.tsx'
 import { Dialog, DialogTrigger, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogFooter, DialogClose } from "@/components/ui/dialog"
-import { Search, SlidersHorizontal } from 'lucide-react'
+import { Search, SlidersHorizontal, X } from 'lucide-react'
 // import { Trash2 } from 'lucide-react'
 import { useState, useEffect } from 'react'
 import { type Produto } from '../data/constants.ts'
@@ -121,7 +121,7 @@ function Home() {
               <div className="flex flex-col sm:flex-row sm:justify-between gap-4 w-full">
                 <div className="flex flex-1 gap-2 max-w-xl">
                   <div className="relative flex-1 group">
-                    <input type="text" placeholder="Buscar item ou código..." value={busca} onChange={(e) => { setBusca(e.target.value) }} className="w-full pl-4 pr-12 py-2.5 bg-white border border-gray-200 rounded-xl text-gray-700 placeholder:text-gray-400 focus:outline-none hover:border-gray-300 dark:bg-zinc-900 dark:border-zinc-800 dark:text-slate-200 dark:placeholder:text-zinc-500 dark:hover:border-zinc-700"  />
+                    <input type="text" placeholder="Buscar item ou código..." value={busca} onChange={(e) => { setBusca(e.target.value) }} className="w-full pl-4 pr-12 py-2.5 bg-white border border-gray-200 rounded-xl text-gray-700 placeholder:text-gray-400 focus:outline-none hover:border-gray-300 dark:bg-zinc-900 dark:border-zinc-800 dark:text-slate-200 dark:placeholder:text-zinc-500 dark:hover:border-zinc-700" />
                     <button type="button" className="absolute right-0 top-0 h-full w-12 flex items-center justify-center text-gray-400 border-l border-gray-200 hover:bg-gray-50 hover:text-gray-600 duration-200 cursor-pointer rounded-r-xl dark:border-zinc-800 dark:hover:bg-zinc-800 dark:text-zinc-500">
                       <Search size={19} strokeWidth={2.2} />
                     </button>
@@ -188,6 +188,45 @@ function Home() {
               </div>
             </div>
             <div>
+
+              {(setorSelecionado !== "todos" || ordenacao !== "nenhum") && (
+                <div className="flex flex-wrap items-center gap-2 mt-3 animate-fade-in">
+                  <span className="text-xs font-medium text-gray-500 dark:text-zinc-400">
+                    Filtros aplicados:
+                  </span>
+
+                  {setorSelecionado !== "todos" && (
+                    <span className="inline-flex items-center gap-1.5 px-3 py-2 text-xs font-medium bg-violet-50 text-violet-700 border border-violet-200 dark:bg-violet-950/40 dark:text-violet-400 dark:border-violet-800 rounded-full">
+                      Setor: {
+                        setorSelecionado === "1" ? "Eletrônicos" :
+                          setorSelecionado === "2" ? "Vestuário" :
+                            setorSelecionado === "3" ? "Alimentos" : `ID ${setorSelecionado}`
+                      }
+                      <button type="button" onClick={() => setSetorSelecionado("todos")} className="hover:bg-violet-200 dark:hover:bg-violet-900 rounded-full p-0.5 transition-colors cursor-pointer">
+                        <X size={12} strokeWidth={2.5} />
+                      </button>
+                    </span>
+                  )}
+
+                  {ordenacao !== "nenhum" && (
+                    <span className="inline-flex items-center gap-1.5 px-3 py-2 text-xs font-medium bg-blue-50 text-blue-700 border border-blue-200 dark:bg-blue-950/40 dark:text-blue-400 dark:border-blue-800 rounded-full">
+                      Ordem: {
+                        ordenacao === "preco-crescente" ? "Menor Preço" :
+                          ordenacao === "preco-decrescente" ? "Maior Preço" :
+                            ordenacao === "qtd-crescente" ? "Menor Qtd" :
+                              ordenacao === "qtd-decrescente" ? "Maior Qtd" : "Padrão"
+                      }
+                      <button type="button" onClick={() => setOrdenacao("nenhum")} className="hover:bg-blue-200 dark:hover:bg-blue-900 rounded-full p-0.5 transition-colors cursor-pointer">
+                        <X size={12} strokeWidth={2.5} />
+                      </button>
+                    </span>
+                  )}
+
+                  <button type="button" onClick={() => { setSetorSelecionado("todos"); setOrdenacao("nenhum"); }} className="text-xs text-red-600 hover:text-red-700 dark:text-red-400 dark:hover:text-red-300 ml-1 underline cursor-pointer font-medium">
+                    Limpar todos
+                  </button>
+                </div>
+              )}
               <div className="mt-4 border border-gray-200 dark:border-zinc-800 overflow-x-auto">
                 <table className="min-w-full divide-y divide-gray-200  bg-white dark:bg-zinc-900 text-sm">
                   <thead className="bg-gray-50 dark:bg-zinc-800 ">
