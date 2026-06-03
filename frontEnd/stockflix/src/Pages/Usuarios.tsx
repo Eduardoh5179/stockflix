@@ -2,7 +2,13 @@ import Header from '../components/Header.tsx';
 import Sidebar from '../components/Sidebar1.tsx';
 import Footer from '../components/Footer.tsx';
 import { useState, useEffect } from 'react';
+import { type FormEvent } from 'react';
+import { useAuth } from '@/context/AuthContext.tsx';
 import Usuarios from '@/services/usuarios.ts';
+import { criarUsuario } from '@/services/postUsuarios.ts';
+import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog"
+import { Toaster } from "@/components/ui/sonner";
+import { toast } from "sonner";
 
 interface Usuario {
     id: number;
@@ -12,9 +18,12 @@ interface Usuario {
 
 
 function UsuariosPage() {
+    const { user } = useAuth();
     const [sidebarOpen, setsidebarOpen] = useState(true);
     const [loading, setLoading] = useState(false);
     const [listaUsuarios, setListaUsuarios] = useState<Usuario[]>([]);
+    const [login, setLogin] = useState('');
+    const [senha, setSenha] = useState('');
 
 
     useEffect(() => {
@@ -33,10 +42,48 @@ function UsuariosPage() {
         carregarDadosDaApi();
     }, []);
 
+    const handleSubmit = async (e: FormEvent) => {
+        e.preventDefault();
+
+        const requestBody = {
+            id: 0,
+            login: login,
+            senha: senha,
+            acessoADM: false
+        };
+
+        try {
+            await criarUsuario.criar(requestBody);
+            toast.success("Usuario criado com sucesso!", {
+                description: `O usuário "${login}" foi salvo no sistema.`,
+            });
+
+        } catch (error: any) {
+            console.error('Erro na requisição POST:', error);
+            const mensagem = "Houve um erro na hora de criar o usuário.";
+            toast.error(mensagem);
+        }
+    };
+
+
     return (
         <>
             <div className="flex flex-col min-h-screen overflow-x-hidden">
 
+                <Toaster
+                    className='z-999'
+                    position="top-center"
+                    toastOptions={{
+                        classNames: {
+                            title: 'text-slate-950 font-semibold',
+                            description: '!text-slate-500 font-normal',
+
+                            success: 'bg-white border border-green-200 group success',
+                            error: 'bg-white border border-red-200 group warning',
+
+                            icon: 'group-[.success]:text-green-600 group-[.error]:text-red-500',
+                        },
+                    }} />
                 <Header onMenuClick={() => setsidebarOpen(!sidebarOpen)} />
                 <Sidebar isOpen={sidebarOpen} />
                 <main className='h-full flex-1 dark:bg-zinc-950'>
@@ -44,9 +91,50 @@ function UsuariosPage() {
                         <div className="flex items-baseline gap-3">
                             <h1 className="text-3xl font-bold text-gray-800 dark:text-zinc-100 tracking-tight"> Usuarios </h1>
                         </div>
+                        <div className='mt-4'>
+                            {user?.acessoADM === true && (
+                                <Dialog>
+                                    {/* O DialogTrigger renderiza o seu botão sem quebrar o layout */}
+                                    <DialogTrigger asChild>
+                                        <button type="button" className="flex items-center w-50 md:w-auto gap-2 text-sm md:text-md bg-green-500 hover:bg-green-600 cursor-pointer text-white font-bold py-2 px-6 rounded-lg">
+                                            <span className="text-sm lg:text-lg">+</span>
+                                            Adicionar Usuário
+                                        </button>
+                                    </DialogTrigger>
+
+                                    <DialogContent className="sm:max-w-106.25">
+                                        <DialogHeader>
+                                            <DialogTitle>Adicionar Novo Usuário</DialogTitle>
+                                            <DialogDescription>
+                                                Insira o login do usuário que deseja cadastrar no sistema.
+                                            </DialogDescription>
+                                        </DialogHeader>
+                                        <form onSubmit={handleSubmit} className="space-y-4 pt-2" >
+                                            <div className="flex flex-col gap-2">
+                                                <div className="grid grid-cols-4 items-center gap-4">
+                                                    <label htmlFor="name" className="text-sm font-medium text-gray-700 dark:text-zinc-200">
+                                                        Login
+                                                    </label>
+                                                    <input id="name" value={login} onChange={(e) => setLogin(e.target.value)} className="col-span-3 min-w-full p-2.5 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-slate-400 dark:bg-zinc-900 dark:border-zinc-800 dark:text-zinc-300 dark:focus:ring-zinc-700" />
+                                                    <label htmlFor="senha" className="text-sm font-medium text-gray-700 dark:text-zinc-200">
+                                                        Senha
+                                                    </label>
+                                                    <input id="senha" value={senha} onChange={(e) => setSenha(e.target.value)}className="col-span-3 min-w-full p-2.5 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-slate-400 dark:bg-zinc-900 dark:border-zinc-800 dark:text-zinc-300 dark:focus:ring-zinc-700" />
+                                                </div>
+                                            </div>
+
+                                        <DialogFooter>
+                                            <button type="submit" className="flex items-center w-50 md:w-auto gap-2 text-sm md:text-md bg-green-500 hover:bg-green-600 cursor-pointer text-white font-bold py-2 px-6 rounded-lg">
+                                                Criar
+                                            </button>
+                                        </DialogFooter>
+                                        </form>
+                                    </DialogContent>
+                                </Dialog>
+                            )}
+                        </div>
                         <section className='mt-4'>
                             <table className="min-w-full divide-y divide-gray-200 bg-white dark:bg-zinc-900 text-sm">
-                                {/* O cabeçalho fica fora do ternário para ser renderizado apenas uma vez */}
                                 <thead className="bg-gray-50 dark:bg-zinc-800/50">
                                     <tr>
                                         <th className="px-4 py-3 text-left font-semibold text-gray-900 dark:text-zinc-200">ID</th>
@@ -60,7 +148,7 @@ function UsuariosPage() {
                                     {loading ? (
                                         Array.from({ length: 3 }).map((_, rowIndex) => (
                                             <tr key={`loading-row-${rowIndex}`} className="dark:bg-zinc-900">
-                                                {Array.from({ length: 3 }).map((_, colIndex) => {
+                                                {Array.from({ length: 4 }).map((_, colIndex) => {
                                                     const randomWidth = `${Math.floor(Math.random() * 56) + 40}%`;
 
                                                     return (
@@ -79,7 +167,7 @@ function UsuariosPage() {
                                             <tr key={item.id} className="hover:bg-gray-50 dark:hover:bg-zinc-800/30 transition-colors">
                                                 <td className="px-4 py-3 font-medium text-gray-900 dark:text-zinc-200">{item.id}</td>
                                                 <td className="px-4 py-3 font-medium text-gray-900 dark:text-zinc-200">{item.login}</td>
-                                                <td className="px-4 py-3 font-medium text-gray-900 dark:text-zinc-200">{ item.acessoADM ? ("true"):("false")}</td>
+                                                <td className="px-4 py-3 font-medium text-gray-900 dark:text-zinc-200">{item.acessoADM ? ("true") : ("false")}</td>
                                                 <td className="px-4 py-3 text-right">
                                                     <button className="text-blue-600 hover:text-blue-800 dark:text-blue-400 dark:hover:text-blue-300 font-medium underline cursor-pointer">
                                                         Editar

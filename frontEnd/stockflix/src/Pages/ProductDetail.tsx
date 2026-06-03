@@ -122,8 +122,8 @@ const ProductDetail = () => {
                                         <div className="border-t border-(--borderColor) pt-2 flex flex-col gap-4 dark:border-zinc-800">
                                             {Array.from({ length: 4 }).map((_, index) => (
                                                 <div key={`skeleton-row-${index}`} className="flex justify-between py-2 px-4 border-b border-(--borderColor)/50 dark:border-zinc-800/50">
-                                                    <div className="bg-zinc-200 h-4 w-28 rounded-md bg-zinc-200 dark:bg-zinc-800"></div>
-                                                    <div className="bg-zinc-200 h-4 w-16 rounded-md bg-zinc-200 dark:bg-zinc-800"></div>
+                                                    <div className="bg-zinc-200 h-4 w-28 rounded-md dark:bg-zinc-800"></div>
+                                                    <div className="bg-zinc-200 h-4 w-16 rounded-md dark:bg-zinc-800"></div>
                                                 </div>
                                             ))}
                                         </div>

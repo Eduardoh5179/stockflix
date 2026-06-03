@@ -9,6 +9,7 @@ interface SidebarProps {
 
 const Sidebar = ({ isOpen }: SidebarProps) => {
   const { logout } = useAuth();
+  const { user } = useAuth();
 
   const handleLogout = () => {
 
@@ -45,10 +46,10 @@ const Sidebar = ({ isOpen }: SidebarProps) => {
               <span className="text-gray-400 "><SquareSplitVertical size={18} /></span>
               <span className="font-semibold">Setores</span>
             </Link>
-            <Link to="/Users" className="flex items-center gap-3 p-3 rounded-lg transition-all duration-200 hover:bg-white/10 hover:text-white group">
+            {user?.acessoADM && (<Link to="/Users" className="flex items-center gap-3 p-3 rounded-lg transition-all duration-200 hover:bg-white/10 hover:text-white group">
               <span className="text-gray-400 "><UserRound size={18} /></span>
               <span className="font-semibold">Usuários</span>
-            </Link>
+            </Link>)}
           </li>
         </ul>
       </nav>

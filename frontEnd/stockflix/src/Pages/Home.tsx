@@ -134,7 +134,7 @@ function Home() {
                       </button>
                     </DialogTrigger>
 
-                    <DialogContent className="sm:max-w-106.25`">
+                    <DialogContent className="sm:max-w-106.25">
                       <DialogHeader>
                         <DialogTitle>Filtrar por</DialogTitle>
                         <DialogDescription>
