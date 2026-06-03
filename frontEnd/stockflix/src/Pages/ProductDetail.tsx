@@ -4,8 +4,8 @@ import Sidebar from '../components/Sidebar1.tsx'
 import Footer from '../components/Footer.tsx'
 import Movement from '../components/Movement.tsx'
 import { useState, useEffect } from 'react'
-import { useAuth } from '../context/AuthContext';
-import { useNavigate } from 'react-router-dom';
+import { useAuth } from '../context/AuthContext'
+import { useNavigate } from 'react-router-dom'
 import { type Produto } from '../data/constants.ts'
 import produtosPorID from '../services/produtosID.ts'
 import atualizarProduto from '../services/produtoPut.ts'
@@ -14,7 +14,7 @@ import { Spinner } from "@/components/ui/spinner"
 import { Pen, Trash2 } from 'lucide-react'
 import { Toaster } from "@/components/ui/sonner"
 import { toast } from "sonner"
-
+import Error from '../components/Error.tsx'
 
 const ProductDetail = () => {
     //Boa sorte futuro desenvolvedor que for mexer com isso :)
@@ -150,7 +150,7 @@ const ProductDetail = () => {
                 <Sidebar isOpen={sidebarOpen} />
                 <main className='h-full flex-1'>
                     <section className={`${sidebarOpen ? 'ml-64' : 'ml-0'} transition-all duration-300 p-6`}>
-                        <h2> ERRO </h2>
+                        <Error/>
                     </section>
                 </main>
             </>
