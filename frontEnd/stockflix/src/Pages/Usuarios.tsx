@@ -9,10 +9,14 @@ import { criarUsuario } from '@/services/postUsuarios.ts';
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog"
 import { Toaster } from "@/components/ui/sonner";
 import { toast } from "sonner";
+import { Trash2, Pen } from 'lucide-react'
+import { atualizarUsuario } from '../services/putUsuario.ts'
+import { deleteUsuario } from '@/services/deleteUsuario.ts';
 
-interface Usuario {
-    id: number;
-    login: string;
+export interface Usuario {
+    id: number,
+    login: string,
+    senha: string,
     acessoADM: boolean
 }
 
@@ -24,6 +28,8 @@ function UsuariosPage() {
     const [listaUsuarios, setListaUsuarios] = useState<Usuario[]>([]);
     const [login, setLogin] = useState('');
     const [senha, setSenha] = useState('');
+    const [isEditing, setIsEditing] = useState(false);
+    const [editForm, setEditForm] = useState<Usuario | undefined>(undefined);
 
 
     useEffect(() => {
@@ -41,6 +47,57 @@ function UsuariosPage() {
 
         carregarDadosDaApi();
     }, []);
+
+    const handleStartEditing = (item: Usuario) => {
+        if (user?.acessoADM === true) {
+            setEditForm(item);
+            setIsEditing(true);
+        } else {
+            toast.error("Acesso negado: Você não tem permissão para editar.");
+        }
+    };
+
+    const handleSave = async () => {
+        if (!editForm) return;
+
+        try {
+            // Faz a requisição PUT na API
+            const usuarioAtualizado = await atualizarUsuario(editForm.id, editForm);
+
+            // Atualiza o estado local corretamente mudando apenas o editado
+            setListaUsuarios(prev =>
+                prev.map(u => u.id === editForm.id ? usuarioAtualizado : u)
+            );
+
+            toast.success("Usuário atualizado com sucesso!", {
+                description: `O login foi alterado para "${usuarioAtualizado.login}".`
+            });
+
+            setIsEditing(false);
+            setEditForm(undefined);
+        } catch (error) {
+            console.error("Erro ao atualizar o usuário na API:", error);
+            toast.error("Erro ao tentar salvar as alterações na API.");
+        }
+    };
+
+    const handleDelete = async (id: number) => {
+        const confirmar = window.confirm("Tem certeza que deseja deletar este usuário?");
+        if (!confirmar) return;
+
+        try {
+            // Faz a requisição de delete na API
+            await deleteUsuario.deletar(id);
+
+            // Remove o usuário da lista local para sumir da tela imediatamente
+            setListaUsuarios(prev => prev.filter(u => u.id !== id));
+
+            toast.success(`Usuário foi deletado com sucesso!`);
+        } catch (error) {
+            console.error("Erro ao deletar:", error);
+            toast.error("Erro ao tentar excluir o usuário.");
+        }
+    };
 
     const handleSubmit = async (e: FormEvent) => {
         e.preventDefault();
@@ -119,15 +176,15 @@ function UsuariosPage() {
                                                     <label htmlFor="senha" className="text-sm font-medium text-gray-700 dark:text-zinc-200">
                                                         Senha
                                                     </label>
-                                                    <input id="senha" value={senha} onChange={(e) => setSenha(e.target.value)}className="col-span-3 min-w-full p-2.5 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-slate-400 dark:bg-zinc-900 dark:border-zinc-800 dark:text-zinc-300 dark:focus:ring-zinc-700" />
+                                                    <input id="senha" value={senha} onChange={(e) => setSenha(e.target.value)} className="col-span-3 min-w-full p-2.5 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-slate-400 dark:bg-zinc-900 dark:border-zinc-800 dark:text-zinc-300 dark:focus:ring-zinc-700" />
                                                 </div>
                                             </div>
 
-                                        <DialogFooter>
-                                            <button type="submit" className="flex items-center w-50 md:w-auto gap-2 text-sm md:text-md bg-green-500 hover:bg-green-600 cursor-pointer text-white font-bold py-2 px-6 rounded-lg">
-                                                Criar
-                                            </button>
-                                        </DialogFooter>
+                                            <DialogFooter>
+                                                <button type="submit" className="flex items-center w-50 md:w-auto gap-2 text-sm md:text-md bg-green-500 hover:bg-green-600 cursor-pointer text-white font-bold py-2 px-6 rounded-lg">
+                                                    Criar
+                                                </button>
+                                            </DialogFooter>
                                         </form>
                                     </DialogContent>
                                 </Dialog>
@@ -163,18 +220,68 @@ function UsuariosPage() {
                                             </tr>
                                         ))
                                     ) : (
-                                        listaUsuarios.map((item) => (
-                                            <tr key={item.id} className="hover:bg-gray-50 dark:hover:bg-zinc-800/30 transition-colors">
-                                                <td className="px-4 py-3 font-medium text-gray-900 dark:text-zinc-200">{item.id}</td>
-                                                <td className="px-4 py-3 font-medium text-gray-900 dark:text-zinc-200">{item.login}</td>
-                                                <td className="px-4 py-3 font-medium text-gray-900 dark:text-zinc-200">{item.acessoADM ? ("true") : ("false")}</td>
-                                                <td className="px-4 py-3 text-right">
-                                                    <button className="text-blue-600 hover:text-blue-800 dark:text-blue-400 dark:hover:text-blue-300 font-medium underline cursor-pointer">
-                                                        Editar
-                                                    </button>
-                                                </td>
-                                            </tr>
-                                        ))
+                                        listaUsuarios.map((item) => {
+                                            // ESSA linha específica está em modo de edição?
+                                            const estaEditandoEste = isEditing && editForm?.id === item.id;
+
+                                            return (
+                                                <tr key={item.id} className="hover:bg-gray-50 dark:hover:bg-zinc-800/30 transition-colors">
+                                                    {/* ID */}
+                                                    <td className="px-4 py-3 font-medium text-gray-900 dark:text-zinc-200">{item.id}</td>
+
+                                                    {/* CAMPO NOME */}
+                                                    <td className="px-4 py-3 font-medium text-gray-900 dark:text-zinc-200">
+                                                        {estaEditandoEste ? (
+                                                            <input
+                                                                type="text"
+                                                                // O valor vem de dentro do objeto editForm que está sendo modificado
+                                                                value={editForm.login}
+                                                                onChange={(e) => setEditForm({ ...editForm, login: e.target.value })}
+                                                                className="bg-white dark:bg-zinc-700 border border-violet-500 rounded px-2 py-1 text-sm focus:outline-none focus:ring-2 focus:ring-violet-500 text-gray-900 dark:text-zinc-100"
+                                                                autoFocus
+                                                            />
+                                                        ) : (
+                                                            item.login
+                                                        )}
+                                                    </td>
+
+                                                    {/* ESTOQUE ID */}
+                                                    <td className="px-4 py-3 font-medium text-gray-900 dark:text-zinc-200">{item.acessoADM ? ("true") : ("false")}</td>
+
+                                                    {/* AÇÕES (BOTÕES) */}
+                                                    <td className="px-4 py-3 text-right">
+                                                        <div className='flex justify-end gap-4'>
+                                                            {user?.acessoADM && (
+                                                                estaEditandoEste ? (
+                                                                    <>
+                                                                        {/* Botão Salvar */}
+                                                                        <button onClick={handleSave} title="Salvar alteração" className="text-emerald-600 hover:text-emerald-800 dark:text-emerald-500 dark:hover:text-emerald-400 font-medium cursor-pointer text-sm">
+                                                                            Salvar
+                                                                        </button>
+                                                                        {/* Botão Cancelar */}
+                                                                        <button onClick={() => { setIsEditing(false); setEditForm(undefined); }} title="Cancelar" className="text-gray-500 hover:text-gray-700 dark:text-zinc-400 dark:hover:text-zinc-300 font-medium cursor-pointer text-sm">
+                                                                            Cancelar
+                                                                        </button>
+                                                                    </>
+                                                                ) : (
+                                                                    <>
+                                                                        {/* Botão Editar - Passando o 'item' atual por parâmetro */}
+                                                                        <button onClick={() => handleStartEditing(item)} title="Editar setor" className="text-violet-600 hover:text-violet-800 dark:text-violet-500 dark:hover:text-violet-400 font-medium cursor-pointer">
+                                                                            <Pen size={17} />
+                                                                        </button>
+
+                                                                        {/* Botão Deletar */}
+                                                                        <button onClick={() => handleDelete(item.id)} title="Deletar setor" className="text-red-600 hover:text-red-800 dark:text-red-500 dark:hover:text-red-400 font-medium cursor-pointer">
+                                                                            <Trash2 size={17} />
+                                                                        </button>
+                                                                    </>
+                                                                )
+                                                            )}
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                            );
+                                        })
                                     )}
                                 </tbody>
                             </table>
