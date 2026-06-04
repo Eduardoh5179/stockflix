@@ -49,11 +49,15 @@ const Sidebar = ({ isOpen }: SidebarProps) => {
             {user?.acessoADM && (<Link to="/Users" className="flex items-center gap-3 p-3 rounded-lg transition-all duration-200 hover:bg-white/10 hover:text-white group">
               <span className="text-gray-400 "><UserRound size={18} /></span>
               <span className="font-semibold">Usuários</span>
-            </Link>)}
+            </Link>
+            )}
+            <Link to="/PrevisaoTeste" className="flex items-center gap-3 p-3 rounded-lg transition-all duration-200 hover:bg-white/10 hover:text-white group">
+              <span className="text-gray-400 "><UserRound size={18} /></span>
+              <span className="font-semibold">Previsao</span>
+            </Link>
           </li>
         </ul>
       </nav>
-
 
       <div className="p-4 border-t border-white/10 dark:bg-(--bgDarkColor)">
         <button onClick={handleLogout} className="flex items-center gap-3 p-3 w-full rounded-lg hover:bg-red-500/10 hover:text-red-500 transition-colors cursor-pointer">

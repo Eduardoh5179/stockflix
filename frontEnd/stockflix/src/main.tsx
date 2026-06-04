@@ -16,6 +16,7 @@ import ProductDetail from './Pages/ProductDetail.tsx'
 import SidebarApp from './Pages/uitest.tsx'
 import Setores from './Pages/Setores.tsx'
 import Usuarios from './Pages/Usuarios.tsx'
+import Previsao from './Pages/PrevisaoTeste.tsx'
 
 interface RouteProps {
   children: ReactNode;
@@ -108,7 +109,15 @@ const router = createBrowserRouter([
       <ErrorService />
     </PublicRoute>
     ),
-  }
+  },
+    {
+    path: "/PrevisaoTeste",
+    element: (
+      <PrivateRoute>
+        <Previsao />
+      </PrivateRoute>
+    )
+  },
 ])
 
 
