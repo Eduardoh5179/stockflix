@@ -17,13 +17,20 @@ import SidebarApp from './Pages/uitest.tsx'
 import Setores from './Pages/Setores.tsx'
 import Usuarios from './Pages/Usuarios.tsx'
 import Previsao from './Pages/PrevisaoTeste.tsx'
+import Loading from './components/Loading.tsx'
 
 interface RouteProps {
   children: ReactNode;
 }
 
 const PrivateRoute = ({ children }: RouteProps) => {
-  const { user } = useAuth();
+  const { user,loading } = useAuth();
+
+  if (loading){
+    return(
+      <Loading/>
+    )
+  }
   return user ? <>{children}</> : <Navigate to="/Login" replace />;
 };
 
