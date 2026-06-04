@@ -1,4 +1,4 @@
-import { Home, History, LogOut, Boxes, SquareSplitVertical, UserRound } from 'lucide-react';
+import { Home, History, LogOut, Boxes, SquareSplitVertical, UserRound, TrendingUpDown } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 
@@ -36,7 +36,7 @@ const Sidebar = ({ isOpen }: SidebarProps) => {
             </Link>
             <Link to="/Products" className="flex items-center gap-3 p-3 rounded-lg transition-all duration-200 hover:bg-white/10 hover:text-white group">
               <span className="text-gray-400 "><Boxes size={18} /></span>
-              <span className="font-semibold">Products</span>
+              <span className="font-semibold">Produtos</span>
             </Link>
             <Link to="/History" className="flex items-center gap-3 p-3 rounded-lg transition-all duration-200 hover:bg-white/10 hover:text-white group">
               <span className="text-gray-400 "><History size={18} /></span>
@@ -52,8 +52,8 @@ const Sidebar = ({ isOpen }: SidebarProps) => {
             </Link>
             )}
             <Link to="/PrevisaoTeste" className="flex items-center gap-3 p-3 rounded-lg transition-all duration-200 hover:bg-white/10 hover:text-white group">
-              <span className="text-gray-400 "><UserRound size={18} /></span>
-              <span className="font-semibold">Previsao</span>
+              <span className="text-gray-400 "><TrendingUpDown size={18} /></span>
+              <span className="font-semibold">Previsões</span>
             </Link>
           </li>
         </ul>

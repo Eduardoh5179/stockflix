@@ -5,11 +5,12 @@ export interface novoUsuario {
     login: string;
     senha: string;
     acessoADM: boolean;
+    ativo:boolean
 }
 
 export const criarUsuario = {
     criar: async (dadosProduto: novoUsuario): Promise<void> => {
-        const response = await fetch(`${API_URL}/produtos`, {
+        const response = await fetch(`${API_URL}/usuarios`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',

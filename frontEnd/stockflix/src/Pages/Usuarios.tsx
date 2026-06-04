@@ -17,7 +17,8 @@ export interface Usuario {
     id: number,
     login: string,
     senha: string,
-    acessoADM: boolean
+    acessoADM: boolean,
+    ativo: boolean
 }
 
 
@@ -50,7 +51,7 @@ function UsuariosPage() {
 
     const handleStartEditing = (item: Usuario) => {
         if (user?.acessoADM === true) {
-            setEditForm(item);
+            setEditForm({...item});
             setIsEditing(true);
         } else {
             toast.error("Acesso negado: Você não tem permissão para editar.");
@@ -61,7 +62,13 @@ function UsuariosPage() {
         if (!editForm) return;
 
         try {
-            const usuarioAtualizado = await atualizarUsuario(editForm.id, editForm);
+            const dadosParaEnviar = {
+            ...editForm,
+            ativo: editForm.ativo ?? true 
+        };
+
+            const usuarioAtualizado = await atualizarUsuario(editForm.id, dadosParaEnviar);
+          
 
             setListaUsuarios(prev =>
                 prev.map(u => u.id === editForm.id ? usuarioAtualizado : u)
@@ -103,7 +110,8 @@ function UsuariosPage() {
             id: 0,
             login: login,
             senha: senha,
-            acessoADM: false
+            acessoADM: false,
+            ativo: true
         };
 
         try {

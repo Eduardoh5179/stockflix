@@ -2,7 +2,8 @@ export interface Usuario {
     id: number;
     login: string;
     senha: string;
-    acessoADM: boolean
+    acessoADM: boolean;
+    ativo: boolean;
 }
 const url = import.meta.env.VITE_API_URL;
 
