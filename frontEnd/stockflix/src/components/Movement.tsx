@@ -1,6 +1,8 @@
 import { useState } from "react"
 import { type Produto } from "../data/constants.ts"
 import { useAuth } from '../context/AuthContext';
+import { Toaster } from "@/components/ui/sonner";
+import { toast } from "sonner";
 
 interface MovementProps {
     produtoAtual: Produto;
@@ -8,7 +10,7 @@ interface MovementProps {
 }
 
 
-function Movement({produtoAtual, onUpdate }: MovementProps){
+function Movement({ produtoAtual, onUpdate }: MovementProps) {
     const url = import.meta.env.VITE_API_URL;
     const { user } = useAuth();
     const [quantidade, setQuantidade] = useState(1);
@@ -17,25 +19,25 @@ function Movement({produtoAtual, onUpdate }: MovementProps){
 
     const usuarioId = user?.id;
 
-    const aumentar = () => setQuantidade(prev=>prev+1);
-    const diminuir = () =>{
-        if (quantidade>1) setQuantidade(prev => prev-1);
+    const aumentar = () => setQuantidade(prev => prev + 1);
+    const diminuir = () => {
+        if (quantidade > 1) setQuantidade(prev => prev - 1);
     }
 
     const registrarMovimentacao = async () => {
-        if (quantidade <= 0) return alert("Insira uma quantidade válida");
+        if (quantidade <= 0) return toast.warning("Insira uma quantidade válida");
 
-        const novoEstoque = tipo === 'entrada' 
-            ? produtoAtual.quantidade + quantidade 
+        const novoEstoque = tipo === 'entrada'
+            ? produtoAtual.quantidade + quantidade
             : produtoAtual.quantidade - quantidade;
 
-        if (novoEstoque < 0) return alert("Estoque insuficiente!");
+        if (novoEstoque < 0) return toast.error("Estoque insuficiente!");
 
         const requestBody = {
             id: 0,
-            tipoMovimentacao: tipo === 'entrada', 
+            tipoMovimentacao: tipo === 'entrada',
             qtdMovimentada: quantidade,
-            data: new Date().toISOString().split('T')[0], 
+            data: new Date().toISOString().split('T')[0],
             produtoId: Number(produtoAtual.id),
             usuarioId: Number(usuarioId)
         };
@@ -60,63 +62,78 @@ function Movement({produtoAtual, onUpdate }: MovementProps){
 
             // 3. Sucesso: Atualiza o estado global/pai e limpa o local
             onUpdate(novoEstoque);
-            alert(`A operação de ${tipo} foi concluída com sucesso!`);
+            toast.success(`A operação de ${tipo} foi concluída com sucesso!`);
             setQuantidade(1);
 
         } catch (error) {
             console.error('Erro na requisição POST:', error);
-            alert('Houve um erro ao tentar registrar a movimentação no servidor.');
+            toast.error('Houve um erro ao tentar registrar a movimentação no servidor.');
         } finally {
             setLoading(false);
         }
     };
 
-    return(
-            <>
+    return (
+        <>
+            <Toaster
+                position="top-center"
+                toastOptions={{
+                    classNames: {
+                        title: 'text-slate-950 font-semibold',
+                        description: '!text-slate-500 font-normal',
+
+                        success: 'bg-white border border-green-200 group success',
+                        error: 'bg-white border border-red-200 group error',
+                        warning: 'bg-white border border-amber-200 group warning',
+
+                        icon: 'group-[.success]:text-green-600 group-[.error]:text-red-500 group-[.warning]:text-amber-500',
+                    },
+                }}
+            />
             <h2 className="text-zinc-700 font-medium text-lg mb-6 dark:text-zinc-300">Movimentação</h2>
             <section className="flex flex-col gap-4">
                 <section className="flex gap-4">
-                        <button type="button" onClick={()=> setTipo('entrada')} className={`px-6 py-1.5 text-sm font-medium rounded-md text-white cursor-pointer bg-green-600 hover:bg-green-700 hover:text-white ${tipo === 'entrada' ? 'bg-green-600 text-white ring-2 ring-offset-1 ring-green-600' : 'bg-zinc-100 text-zinc-600'}`}>
-                            + entrada
-                        </button>
-                        <button type="button" onClick={()=> setTipo('saida')} className={`px-6 py-1.5 text-sm font-medium rounded-md text-white cursor-pointer bg-red-600 hover:bg-red-700 hover:text-white ${tipo === 'saida' ? 'bg-red-600 text-white ring-2 ring-offset-1 ring-red-600' : 'bg-zinc-100 text-zinc-600'}`}>
-                            - retirada
-                        </button>
-                    </section>
-    
-                    <section className="flex gap-1">
-                        <button onClick={diminuir} className="w-9 h-9 border border-zinc-300 rounded-md text-zinc-600 hover:bg-zinc-50 transition-colors cursor-pointer dark:border-zinc-800 dark:text-zinc-400 dark:hover:bg-zinc-800">−</button>
-                        <input type="number" min={1} value={quantidade} onChange={(e)=>{
-                            const valor = parseInt(e.target.value);
-                            if (!isNaN(valor) && valor >= 1) {
-                                setQuantidade(valor);
-                            } else if (e.target.value === "") {
-                                setQuantidade(0); 
-                            }
-                        }} placeholder="Qtd." className="w-24 h-9 border border-zinc-300 rounded-md px-3 text-sm text-center text-slate-800 focus:outline-none focus:border-zinc-500 dark:bg-zinc-900 dark:border-zinc-800 dark:text-zinc-200 dark:focus:border-zinc-600"/>
-                        <button onClick={aumentar} className="w-9 h-9 border border-zinc-300 rounded-md text-zinc-600 hover:bg-zinc-50 transition-colors cursor-pointer dark:border-zinc-800 dark:text-zinc-400 dark:hover:bg-zinc-800">+</button>
-                    </section>
-    
-                    <section>
-                        <p className="text-sm text-zinc-700 font-semibold dark:text-zinc-300">Motivo</p>
-                        <select className="w-full md:w-80 h-9 border mt-2 border-zinc-300 rounded-md px-3 text-sm text-slate-700 bg-white focus:outline-none focus:border-zinc-500 dark:bg-zinc-900 dark:border-zinc-800 dark:text-zinc-300 dark:focus:border-zinc-600">
-                            <option value="compra" className="dark:bg-zinc-900">Compra de fornecedor</option>
-                            <option value="devolucao" className="dark:bg-zinc-900">Devolução de cliente</option>
-                            <option value="transferencia" className="dark:bg-zinc-900">Transferência interna</option>
-                            <option value="ajuste" className="dark:bg-zinc-900">Ajuste de inventário</option>
-                        </select>
-                    </section>
-                    <section>
-                        <button onClick={registrarMovimentacao} disabled={loading} className="w-fit px-6 py-2 rounded-md text-sm text-white cursor-pointer bg-zinc-900 dark:bg-zinc-100 dark:text-zinc-900 dark:hover:bg-white">
-                            {loading ? 'Processando...' : `Confirmar ${tipo === 'entrada' ? 'Entrada' : 'Retirada'}`}
-                        </button>
-                    </section>
-                    </section>
-                </>
+                    <button type="button" onClick={() => setTipo('entrada')} className={`px-6 py-1.5 text-sm font-medium rounded-md text-white cursor-pointer bg-green-600 hover:bg-green-700 hover:text-white ${tipo === 'entrada' ? 'bg-green-600 text-white ring-2 ring-offset-1 ring-green-600' : 'bg-zinc-100 text-zinc-600'}`}>
+                        + entrada
+                    </button>
+                    <button type="button" onClick={() => setTipo('saida')} className={`px-6 py-1.5 text-sm font-medium rounded-md text-white cursor-pointer bg-red-600 hover:bg-red-700 hover:text-white ${tipo === 'saida' ? 'bg-red-600 text-white ring-2 ring-offset-1 ring-red-600' : 'bg-zinc-100 text-zinc-600'}`}>
+                        - retirada
+                    </button>
+                </section>
+
+                <section className="flex gap-1">
+                    <button onClick={diminuir} className="w-9 h-9 border border-zinc-300 rounded-md text-zinc-600 hover:bg-zinc-50 transition-colors cursor-pointer dark:border-zinc-800 dark:text-zinc-400 dark:hover:bg-zinc-800">−</button>
+                    <input type="number" min={1} value={quantidade} onChange={(e) => {
+                        const valor = parseInt(e.target.value);
+                        if (!isNaN(valor) && valor >= 1) {
+                            setQuantidade(valor);
+                        } else if (e.target.value === "") {
+                            setQuantidade(0);
+                        }
+                    }} placeholder="Qtd." className="w-24 h-9 border border-zinc-300 rounded-md px-3 text-sm text-center text-slate-800 focus:outline-none focus:border-zinc-500 dark:bg-zinc-900 dark:border-zinc-800 dark:text-zinc-200 dark:focus:border-zinc-600" />
+                    <button onClick={aumentar} className="w-9 h-9 border border-zinc-300 rounded-md text-zinc-600 hover:bg-zinc-50 transition-colors cursor-pointer dark:border-zinc-800 dark:text-zinc-400 dark:hover:bg-zinc-800">+</button>
+                </section>
+
+                <section>
+                    <p className="text-sm text-zinc-700 font-semibold dark:text-zinc-300">Motivo</p>
+                    <select className="w-full md:w-80 h-9 border mt-2 border-zinc-300 rounded-md px-3 text-sm text-slate-700 bg-white focus:outline-none focus:border-zinc-500 dark:bg-zinc-900 dark:border-zinc-800 dark:text-zinc-300 dark:focus:border-zinc-600">
+                        <option value="compra" className="dark:bg-zinc-900">Compra de fornecedor</option>
+                        <option value="devolucao" className="dark:bg-zinc-900">Devolução de cliente</option>
+                        <option value="transferencia" className="dark:bg-zinc-900">Transferência interna</option>
+                        <option value="ajuste" className="dark:bg-zinc-900">Ajuste de inventário</option>
+                    </select>
+                </section>
+                <section>
+                    <button onClick={registrarMovimentacao} disabled={loading} className="w-fit px-6 py-2 rounded-md text-sm text-white cursor-pointer bg-zinc-900 dark:bg-zinc-100 dark:text-zinc-900 dark:hover:bg-white">
+                        {loading ? 'Processando...' : `Confirmar ${tipo === 'entrada' ? 'Entrada' : 'Retirada'}`}
+                    </button>
+                </section>
+            </section>
+        </>
     )
 }
 
-    {/* <h2 className="text-zinc-700 font-medium text-lg mb-6">Movimentação</h2>
+{/* <h2 className="text-zinc-700 font-medium text-lg mb-6">Movimentação</h2>
             <div className="flex rounded-md border border-zinc-200 overflow-hidden w-fit">
                 <div className="flex items-col gap-6">
                     <span className="text-xs font-bold uppercase text-zinc-400 tracking-wider">Tipo de Operação</span>
