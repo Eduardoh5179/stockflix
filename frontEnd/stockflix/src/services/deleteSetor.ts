@@ -2,7 +2,7 @@ const url = import.meta.env.VITE_API_URL;
 
 export const deleteSetor = {
   deletar: async (id: number): Promise<void> => {
-    const response = await fetch(`${url}/setores/${id}`, {
+    const response = await fetch(`${url}/setores/desativar/${id}`, {
       method: 'DELETE',
       credentials: 'include', 
       headers: {

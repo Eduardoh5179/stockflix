@@ -16,7 +16,8 @@ import atualizarSetor from '../services/putSetor.ts'
 export interface Setor {
     id: number;
     nome: string;
-    estoqueId: number
+    estoqueId: number;
+    ativo: boolean;
 }
 
 function Setores() {
@@ -53,30 +54,28 @@ function Setores() {
         }
     };
 
-
-
     const handleSave = async () => {
 
-    if (!editForm) return;
+        if (!editForm) return;
 
-    try {
-        const setorAtualizado = await atualizarSetor(editForm.id, editForm);
+        try {
+            const setorAtualizado = await atualizarSetor(editForm.id, editForm);
 
-        setListaSetores(prev => 
-            prev.map(setor => setor.id === editForm.id ? setorAtualizado : setor)
-        );
+            setListaSetores(prev =>
+                prev.map(setor => setor.id === editForm.id ? { ...setor, ...editForm } : setor)
+            );
 
-        toast.success("Setor atualizado com sucesso!", {
-            description: `O nome foi alterado para "${setorAtualizado.nome}".`
-        });
-        
-        setIsEditing(false);
-        setEditForm(undefined);
-    } catch (error) {
-        console.error("Erro ao atualizar o setor na API:", error);
-        toast.error("Erro ao tentar salvar as alterações na API.");
-    }
-};
+            toast.success("Setor atualizado com sucesso!", {
+                description: `O nome foi alterado para "${setorAtualizado.nome}".`
+            });
+
+            setIsEditing(false);
+            setEditForm(undefined);
+        } catch (error) {
+            console.error("Erro ao atualizar o setor na API:", error);
+            toast.error("Erro ao tentar salvar as alterações na API.");
+        }
+    };
     const handleDelete = async (id: number) => {
         const confirmar = window.confirm("Tem certeza que deseja deletar este item?");
         if (!confirmar) return;
@@ -184,6 +183,7 @@ function Setores() {
                                         <th className="px-4 py-3 text-left font-semibold text-gray-900 dark:text-zinc-200">ID</th>
                                         <th className="px-4 py-3 text-left font-semibold text-gray-900 dark:text-zinc-200">Nome</th>
                                         <th className="px-4 py-3 text-left font-semibold text-gray-900 dark:text-zinc-200">EstoqueId</th>
+                                        <th className="px-4 py-3 text-left font-semibold text-gray-900 dark:text-zinc-200">Ativo</th>
                                         <th className="px-4 py-3 text-right font-semibold text-gray-900 dark:text-zinc-200">Ações</th>
                                     </tr>
                                 </thead>
@@ -208,7 +208,6 @@ function Setores() {
                                         ))
                                     ) : (
                                         listaSetores.map((item) => {
-                                            // ESSA linha específica está em modo de edição?
                                             const estaEditandoEste = isEditing && editForm?.id === item.id;
 
                                             return (
@@ -234,6 +233,8 @@ function Setores() {
 
                                                     {/* ESTOQUE ID */}
                                                     <td className="px-4 py-3 font-medium text-gray-900 dark:text-zinc-200">{item.estoqueId}</td>
+
+                                                    <td className="px-4 py-3 font-medium text-gray-900 dark:text-zinc-200">{(item.ativo) ? ("true") : ("false")}</td>
 
                                                     {/* AÇÕES (BOTÕES) */}
                                                     <td className="px-4 py-3 text-right">
