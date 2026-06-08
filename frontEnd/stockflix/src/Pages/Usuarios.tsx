@@ -141,7 +141,7 @@ function UsuariosPage() {
                             description: '!text-slate-500 font-normal',
 
                             success: 'bg-white border border-green-200 group success',
-                            error: 'bg-white border border-red-200 group warning',
+                            error: 'bg-white border border-red-200 group error',
 
                             icon: 'group-[.success]:text-green-600 group-[.error]:text-red-500',
                         },

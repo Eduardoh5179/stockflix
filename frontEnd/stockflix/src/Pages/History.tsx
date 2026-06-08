@@ -20,6 +20,8 @@ function History() {
     qtdMovimentada: number;
     tipoMovimentacao: boolean;
     usuarioId: number;
+    produtoNome: string;
+    usuarioNome: string
   }
   const [listaMovement, setMovement] = useState<Movimentacao[]>([]);
 
@@ -112,7 +114,7 @@ function History() {
                           {mov.tipoMovimentacao ? "Entrada" : "Saída"}
                         </td>
                         <td className="px-4 py-3 text-gray-700 font-medium dark:bg-zinc-900 dark:text-zinc-300">
-                          Produto ID: {mov.produtoId}
+                          {mov.produtoNome}
                         </td>
                         <td className="px-4 py-3 text-gray-700 dark:bg-zinc-900 dark:text-zinc-300">
                           {mov.qtdMovimentada}
@@ -121,7 +123,7 @@ function History() {
                           -
                         </td>
                         <td className="px-4 py-3 text-gray-700 dark:bg-zinc-900 dark:text-zinc-300">
-                          Usuário ID: {mov.usuarioId}
+                          {mov.usuarioNome}
                         </td>
                         <td className="px-4 py-3 text-right text-gray-700 dark:bg-zinc-900 dark:text-zinc-300">
                           {new Date(mov.data).toLocaleDateString('pt-BR', { timeZone: 'UTC' })}

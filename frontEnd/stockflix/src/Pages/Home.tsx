@@ -13,7 +13,6 @@ import produtosApi from '../services/api.ts'
 import { Toaster } from "@/components/ui/sonner"
 // import { toast } from "sonner"
 
-
 function Home() {
 
   const { user } = useAuth();
@@ -198,9 +197,9 @@ function Home() {
                   {setorSelecionado !== "todos" && (
                     <span className="inline-flex items-center gap-1.5 px-3 py-2 text-xs font-medium bg-violet-50 text-violet-700 border border-violet-200 dark:bg-violet-950/40 dark:text-violet-400 dark:border-violet-800 rounded-full">
                       Setor: {
-                        setorSelecionado === "1" ? "Eletrônicos" :
-                          setorSelecionado === "2" ? "Vestuário" :
-                            setorSelecionado === "3" ? "Alimentos" : `ID ${setorSelecionado}`
+                        setorSelecionado === "1" ? "1" :
+                          setorSelecionado === "2" ? "2" :
+                            setorSelecionado === "3" ? "3" : `ID ${setorSelecionado}`
                       }
                       <button type="button" onClick={() => setSetorSelecionado("todos")} className="hover:bg-violet-200 dark:hover:bg-violet-900 rounded-full p-0.5 transition-colors cursor-pointer">
                         <X size={12} strokeWidth={2.5} />

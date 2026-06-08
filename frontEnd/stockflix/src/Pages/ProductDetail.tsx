@@ -150,7 +150,7 @@ const ProductDetail = () => {
                 <Sidebar isOpen={sidebarOpen} />
                 <main className='h-full flex-1'>
                     <section className={`${sidebarOpen ? 'ml-64' : 'ml-0'} transition-all duration-300 p-6`}>
-                        <Error/>
+                        <Error />
                     </section>
                 </main>
             </>
@@ -270,6 +270,7 @@ const ProductDetail = () => {
                                                     const resultado = await atualizarProduto(Number(id), editForm);
                                                     toast.success("Dados editados com sucesso!")
                                                     setProduto(resultado);
+
                                                     setIsEditing(false);
                                                 } catch (error) {
                                                     toast.error("Houve um erro ao salvar as alterações.");
