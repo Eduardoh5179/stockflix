@@ -115,7 +115,6 @@ const ProductDetail = () => {
                 const dados = await getSetores();
 
                 setListaSetores(dados);
-                console.log(dados)
 
             } catch (error) {
                 console.error("Erro ao carregar os produtos na tela:", error);
@@ -259,7 +258,6 @@ const ProductDetail = () => {
                                     ) : (
                                         <h1 className="text-xl md:text-3xl font-bold text-slate-800 mb-4 dark:text-zinc-100">{produto.nome}</h1>
                                     )}
-                                    <p>Status</p>
                                 </section>
                                 <section>
                                     <p className="text-4xl font-bold dark:text-white ">{produto.quantidade} <span className="font-medium text-xl dark:text-zinc-400">em estoque</span></p>

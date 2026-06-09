@@ -60,7 +60,6 @@ function History() {
                     <th className="px-4 py-3 text-left font-semibold text-gray-900 dark:text-zinc-200 border-l-none">Tipo</th>
                     <th className="px-4 py-3 text-left font-semibold text-gray-900 dark:text-zinc-200">Produto</th>
                     <th className="px-4 py-3 text-left font-semibold text-gray-900 dark:text-zinc-200">Qtd</th>
-                    <th className="px-4 py-3 text-left font-semibold text-gray-900 dark:text-zinc-200">Mov.</th>
                     <th className="px-4 py-3 text-left font-semibold text-gray-900 dark:text-zinc-200">Operador</th>
                     <th className="px-4 py-3 text-right font-semibold text-gray-900 dark:text-zinc-200">Data</th>
                   </tr>
@@ -93,7 +92,7 @@ function History() {
                   {loading ? (
                     Array.from({ length: 5 }).map((_, rowIndex) => (
                       <tr key={`loading-row-${rowIndex}`} className="hover:bg-gray-50 transition-colors dark:bg-zinc-900 dark:hover:bg-zinc-800/50 ">
-                        {Array.from({ length: 6 }).map((_, colIndex) => {
+                        {Array.from({ length: 5 }).map((_, colIndex) => {
                           const randomWidth = `${Math.floor(Math.random() * 56) + 40}%`;
 
                           return (
@@ -118,9 +117,6 @@ function History() {
                         </td>
                         <td className="px-4 py-3 text-gray-700 dark:bg-zinc-900 dark:text-zinc-300">
                           {mov.qtdMovimentada}
-                        </td>
-                        <td className="px-4 py-3 text-gray-700 dark:bg-zinc-900 dark:text-zinc-300">
-                          -
                         </td>
                         <td className="px-4 py-3 text-gray-700 dark:bg-zinc-900 dark:text-zinc-300">
                           {mov.usuarioNome}

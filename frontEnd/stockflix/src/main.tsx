@@ -13,7 +13,6 @@ import Create from './Pages/Create.tsx'
 import History from './Pages/History.tsx'
 import Dashboard from './Pages/Dashboard.tsx'
 import ProductDetail from './Pages/ProductDetail.tsx'
-import SidebarApp from './Pages/uitest.tsx'
 import Setores from './Pages/Setores.tsx'
 import Usuarios from './Pages/Usuarios.tsx'
 import Previsao from './Pages/PrevisaoTeste.tsx'
@@ -96,14 +95,6 @@ const router = createBrowserRouter([
       <PrivateRoute>
         <Usuarios />
       </PrivateRoute>
-    )
-  },
-  {
-    path: "/uitest",
-    element: (
-      <PublicRoute>
-        <SidebarApp />
-      </PublicRoute>
     )
   },
   {

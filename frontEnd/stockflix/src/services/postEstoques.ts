@@ -1,13 +1,10 @@
 const API_URL = import.meta.env.VITE_API_URL;
 
-
-
 export interface novoEstoque {
     id: number;
     nome: string;
     ativo: boolean
 }
-
 
 export const criarEstoque = {
     criar: async (dadosProduto: novoEstoque): Promise<void> => {

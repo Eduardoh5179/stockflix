@@ -30,6 +30,8 @@ function Dashboard() {
     return acc;
   }, {} as Record<number, { nome: string; total: number }>)
   ).sort((a, b) => b.total - a.total).slice(0, 3);
+  // Conta quantos produtos têm estoque menor ou igual a 5 unidades
+  const totalAbaixoDoEsperado = listaProdutos.filter(item => item.quantidade <= 5).length;
 
   useEffect(() => {
     const carregarDadosDaApi = async () => {
@@ -86,9 +88,6 @@ function Dashboard() {
                   <div className='bg-zinc-200 text-gray-800 w-fit rounded-sm p-2 dark:bg-zinc-800 dark:text-zinc-200'>
                     <Box size={20} />
                   </div>
-                  <div className='text-[0.7rem] font-bold p-0.5 px-2 rounded-lg bg-green-300 text-green-900 '>
-                    +2%
-                  </div>
                 </div>
                 <div className='font-mono'>
                   <p className='text-zinc-600 dark:text-zinc-300'>ITENS TOTAIS</p>
@@ -100,22 +99,16 @@ function Dashboard() {
                   <div className='bg-zinc-200 text-gray-800 w-fit rounded-sm p-2 dark:bg-zinc-800 dark:text-zinc-200'>
                     <TriangleAlert size={20} />
                   </div>
-                  <div className='text-[0.7rem] p-0.5 px-2 rounded-lg font-bold bg-red-200 text-red-800 dark:bg-red-400 dark:text-red-900'>
-                    crítico
-                  </div>
                 </div>
                 <div className='font-mono'>
                   <p className='text-zinc-600 dark:text-zinc-300'>ABAIXO DO ESPERADO</p>
-                  <p className='text-gray-800 font-bold dark:text-zinc-100'>2</p>
+                  <p className='text-gray-800 font-bold dark:text-zinc-100'>{totalAbaixoDoEsperado}</p>
                 </div>
               </div>
-              <div className='border flex  flex-col gap-2 border-(--borderColor) shadow-sm rounded-md p-6 dark:bg-zinc-900 dark:border-zinc-800'> {/*Saidas <ArrowDownRight size={20}/></*/}
+              <div className='border flex  flex-col gap-2 border-(--borderColor) shadow-sm rounded-md p-6 dark:bg-zinc-900 dark:border-zinc-800'>
                 <div className='flex items-center justify-between'>
                   <div className='bg-zinc-200 text-gray-800 w-fit rounded-sm p-2 dark:bg-zinc-800 dark:text-zinc-200'>
                     <ArrowDownRight size={20} />
-                  </div>
-                  <div className='text-[0.7rem] font-bold p-0.5 px-2 rounded-lg bg-green-300 text-green-900'>
-                    -5%
                   </div>
                 </div>
                 <div className='font-mono'>
@@ -128,9 +121,7 @@ function Dashboard() {
                   <div className='bg-zinc-200 text-gray-800 w-fit rounded-sm p-2 dark:bg-zinc-800 dark:text-zinc-200'>
                     <TrendingUp size={20} />
                   </div>
-                  <div className='text-[0.7rem] font-bold p-0.5 px-2 rounded-lg bg-green-300 text-green-900'>
-                    +12%
-                  </div>
+
                 </div>
                 <div className='font-mono'>
                   <p className='text-zinc-600 dark:text-zinc-300'>VALOR TOTAL</p>
@@ -144,8 +135,7 @@ function Dashboard() {
             <section className='grid grid-cols-1 lg:grid-cols-4 gap-4 mt-6'>
               <section className=' lg:col-span-3 border border-zinc-300 rounded-lg p-6 dark:bg-zinc-900 dark:border-zinc-800'>
                 <section className='mb-2 flex justify-between'>
-                  <h2 className='font-bold'> <span className='text-red-500 text-bold '> • </span>Alerta de reposição </h2>
-                  <p className='text-[0.7rem] p-0.5 px-2 flex items-center justify-center rounded-lg font-bold bg-red-200 text-red-800 dark:bg-red-400 dark:text-red-900'> 3 itens críticos </p>
+                  <h2 className='font-bold'> <span className='text-red-500 text-bold '> • </span> Itens em menor quantidade </h2>
                 </section>
                 <section className='overflow-x-auto'>
                   <table className="min-w-full divide-y divide-gray-200 bg-white text-sm dark:bg-zinc-900">

@@ -115,15 +115,6 @@ function Movement({ produtoAtual, onUpdate }: MovementProps) {
                 </section>
 
                 <section>
-                    <p className="text-sm text-zinc-700 font-semibold dark:text-zinc-300">Motivo</p>
-                    <select className="w-full md:w-80 h-9 border mt-2 border-zinc-300 rounded-md px-3 text-sm text-slate-700 bg-white focus:outline-none focus:border-zinc-500 dark:bg-zinc-900 dark:border-zinc-800 dark:text-zinc-300 dark:focus:border-zinc-600">
-                        <option value="compra" className="dark:bg-zinc-900">Compra de fornecedor</option>
-                        <option value="devolucao" className="dark:bg-zinc-900">Devolução de cliente</option>
-                        <option value="transferencia" className="dark:bg-zinc-900">Transferência interna</option>
-                        <option value="ajuste" className="dark:bg-zinc-900">Ajuste de inventário</option>
-                    </select>
-                </section>
-                <section>
                     <button onClick={registrarMovimentacao} disabled={loading} className="w-fit px-6 py-2 rounded-md text-sm text-white cursor-pointer bg-zinc-900 dark:bg-zinc-100 dark:text-zinc-900 dark:hover:bg-white">
                         {loading ? 'Processando...' : `Confirmar ${tipo === 'entrada' ? 'Entrada' : 'Retirada'}`}
                     </button>
