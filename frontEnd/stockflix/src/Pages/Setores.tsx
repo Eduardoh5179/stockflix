@@ -12,6 +12,7 @@ import { useAuth } from '@/context/AuthContext.tsx';
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog"
 import { Trash2, Pen, RefreshCw } from 'lucide-react'
 import atualizarSetor from '../services/putSetor.ts'
+import ativarSetor from '../services/ativarSetor.ts'
 
 export interface Setor {
     id: number;
@@ -78,6 +79,21 @@ function Setores() {
         } catch (error) {
             console.error("Erro ao atualizar o setor na API:", error);
             toast.error("Erro ao tentar salvar as alterações na API.");
+        }
+    };
+
+    const handleUpdate = async (id: number) => {
+        try {
+            await ativarSetor(id);
+
+            setListaSetores(prev =>
+                prev.map(setor => setor.id === id ? { ...setor, ativo: true } : setor)
+            );
+
+            toast.success("Setor reativado com sucesso!");
+        } catch (error) {
+            console.error("Erro ao reativar o setor na API:", error);
+            toast.error("Não foi possível reativar o setor.");
         }
     };
     const handleDelete = async (id: number) => {
@@ -247,7 +263,7 @@ function Setores() {
                                                         <div className='flex justify-end gap-4'>
                                                             {user?.acessoADM && (
                                                                 !item.ativo ? (
-                                                                    <button title="Reativar setor" className=" dark:text-zinc-50 dark:hover:text-white font-medium cursor-pointer transition-transform">
+                                                                    <button onClick={() => handleUpdate(item.id)} title="Reativar setor" className=" dark:text-zinc-50 dark:hover:text-white font-medium cursor-pointer transition-transform">
                                                                         <RefreshCw size={17} />
                                                                     </button>
                                                                 ) : (
