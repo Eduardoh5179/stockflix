@@ -49,6 +49,10 @@ function UsuariosPage() {
         carregarDadosDaApi();
     }, []);
 
+    const usuariosOrdenados = [...listaUsuarios].sort((a, b) => {
+        return (b.ativo ? 1 : 0) - (a.ativo ? 1 : 0);
+    });
+
     const handleStartEditing = (item: Usuario) => {
         if (user?.acessoADM === true) {
             setEditForm({ ...item });
@@ -225,11 +229,11 @@ function UsuariosPage() {
                                             </tr>
                                         ))
                                     ) : (
-                                        listaUsuarios.map((item) => {
+                                        usuariosOrdenados.map((item) => {
                                             const estaEditandoEste = isEditing && editForm?.id === item.id;
 
                                             return (
-                                                <tr key={item.id} className="hover:bg-gray-50 dark:hover:bg-zinc-800/30 transition-colors">
+                                                <tr key={item.id} className={`transition-colors ${!item.ativo ? "opacity-40 bg-gray-50/40 dark:bg-zinc-900/20 select-none" : "hover:bg-gray-50 dark:hover:bg-zinc-800/30"}`}>
 
                                                     <td className="px-4 py-3 font-medium text-gray-900 dark:text-zinc-200">{item.id}</td>
 
@@ -241,7 +245,13 @@ function UsuariosPage() {
                                                         )}
                                                     </td>
                                                     <td className="px-4 py-3 font-medium text-gray-900 dark:text-zinc-200">{item.acessoADM ? ("true") : ("false")}</td>
-                                                    <td className="px-4 py-3 font-medium text-gray-900 dark:text-zinc-200">{item.ativo ? ("true") : ("false")}</td>
+                                                    <td className="px-4 py-3 font-medium text-gray-900 dark:text-zinc-200">
+                                                        {item.ativo ? (
+                                                            <span className="text-sm">Ativo</span>
+                                                        ) : (
+                                                            <span className="text-gray-400 dark:text-zinc-500 text-sm">Inativo</span>
+                                                        )}
+                                                    </td>
 
                                                     <td className="px-4 py-3 text-right">
                                                         <div className='flex justify-end gap-4'>

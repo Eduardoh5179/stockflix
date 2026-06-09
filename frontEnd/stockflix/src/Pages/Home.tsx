@@ -45,6 +45,9 @@ function Home() {
     carregarDadosDaApi();
   }, []);
 
+
+
+
   // const handleDelete = async (id: number, quantidade: number) => {
   //   if (quantidade > 0) {
   //     toast.warning(`Não é possível deletar este produto pois ele ainda possui ${quantidade} unidades em estoque! Zere o estoque antes de excluir.`);
@@ -66,29 +69,37 @@ function Home() {
   // };
 
 
-  const produtosFiltrados = listaProdutos.filter((produto) => {
-    const termo = busca.toLowerCase();
-    return (
-      produto.nome.toLowerCase().includes(termo) ||
-      produto.id.toString().includes(termo)
-    );
-  }).filter((produto) => {
-    if (setorSelecionado === "todos") return true;
-    return produto.setorId.toString() === setorSelecionado;
-  }).sort((a, b) => {
-    switch (ordenacao) {
-      case "preco-crescente":
-        return a.preco - b.preco;
-      case "preco-decrescente":
-        return b.preco - a.preco;
-      case "qtd-crescente":
-        return a.quantidade - b.quantidade;
-      case "qtd-decrescente":
-        return b.quantidade - a.quantidade;
-      default:
-        return 0;
-    }
-  });
+  const produtosFiltrados = listaProdutos
+    .filter((produto) => {
+      const termo = busca.toLowerCase();
+      return (
+        produto.nome.toLowerCase().includes(termo) ||
+        produto.id.toString().includes(termo)
+      );
+    })
+    .filter((produto) => {
+      if (setorSelecionado === "todos") return true;
+      return produto.setorId.toString() === setorSelecionado;
+    })
+    .sort((a, b) => {
+
+      if (a.ativo !== b.ativo) {
+        return (b.ativo ? 1 : 0) - (a.ativo ? 1 : 0);
+      }
+
+      switch (ordenacao) {
+        case "preco-crescente":
+          return a.preco - b.preco;
+        case "preco-decrescente":
+          return b.preco - a.preco;
+        case "qtd-crescente":
+          return a.quantidade - b.quantidade;
+        case "qtd-decrescente":
+          return b.quantidade - a.quantidade;
+        default:
+          return 0;
+      }
+    });
   return (
     <>
       <div className="flex flex-col min-h-screen">
@@ -260,13 +271,19 @@ function Home() {
                       ))
                     ) : (
                       produtosFiltrados.map((item) => (
-                        <tr key={item.id} className="hover:bg-gray-50 dark:hover:bg-zinc-800/30">
+                        <tr key={item.id} className={`transition-colors ${!item.ativo ? "opacity-40 bg-gray-50/40 dark:bg-zinc-900/20 select-none" : "hover:bg-gray-50 dark:hover:bg-zinc-800/30"}`}>
                           <td className="px-4 py-3 font-medium text-gray-900 dark:text-zinc-300">{item.nome}</td>
                           <td className="px-4 py-3 text-gray-700  dark:text-zinc-300">{item.id}</td>
                           <td className="px-4 py-3 text-gray-700  dark:text-zinc-300">{item.preco.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}</td>
                           <td className="px-4 py-3 text-gray-700 dark:text-zinc-300">{item.setorId}</td>
                           <td className="px-4 py-3 text-gray-700  dark:text-zinc-300">{item.quantidade}</td>
-                          <td className="px-4 py-3 text-gray-700  dark:text-zinc-300">{item.ativo ? "true" : "false" }</td>
+                          <td className="px-4 py-3 font-medium">
+                            {item.ativo ? (
+                              <span className="text-sm">Ativo</span>
+                            ) : (
+                              <span className="text-gray-400 dark:text-zinc-500 text-sm">Inativo</span>
+                            )}
+                          </td>
                           <td className="px-4 py-3 text-right flex items-center justify-end gap-3">
                             <Link to={`/Products/${item.id}`} className="text-blue-600 hover:text-blue-800 dark:bg-zinc-900 font-medium underline dark:text-blue-400 dark:hover:text-blue-300">
                               Ver detalhes

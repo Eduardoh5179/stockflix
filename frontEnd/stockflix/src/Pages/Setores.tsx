@@ -45,6 +45,10 @@ function Setores() {
         carregarDadosDaApi();
     }, []);
 
+    const setoresOrdenados = [...listaSetores].sort((a, b) => {
+        return (b.ativo ? 1 : 0) - (a.ativo ? 1 : 0);
+    });
+
     const handleStartEditing = (item: Setor) => {
         if (user?.acessoADM === true) {
             setEditForm(item);
@@ -207,20 +211,18 @@ function Setores() {
                                             </tr>
                                         ))
                                     ) : (
-                                        listaSetores.map((item) => {
+                                        setoresOrdenados.map((item) => {
                                             const estaEditandoEste = isEditing && editForm?.id === item.id;
 
                                             return (
-                                                <tr key={item.id} className="hover:bg-gray-50 dark:hover:bg-zinc-800/30 transition-colors">
-                                                    {/* ID */}
+                                                <tr key={item.id} className={`transition-colors ${!item.ativo ? "opacity-40 bg-gray-50/40 dark:bg-zinc-900/20 select-none" : "hover:bg-gray-50 dark:hover:bg-zinc-800/30"}`}>
+
                                                     <td className="px-4 py-3 font-medium text-gray-900 dark:text-zinc-200">{item.id}</td>
 
-                                                    {/* CAMPO NOME */}
                                                     <td className="px-4 py-3 font-medium text-gray-900 dark:text-zinc-200">
                                                         {estaEditandoEste ? (
                                                             <input
                                                                 type="text"
-                                                                // O valor vem de dentro do objeto editForm que está sendo modificado
                                                                 value={editForm.nome}
                                                                 onChange={(e) => setEditForm({ ...editForm, nome: e.target.value })}
                                                                 className="bg-white dark:bg-zinc-700 border border-violet-500 rounded px-2 py-1 text-sm focus:outline-none focus:ring-2 focus:ring-violet-500 text-gray-900 dark:text-zinc-100"
@@ -233,33 +235,37 @@ function Setores() {
 
                                                     {/* ESTOQUE ID */}
                                                     <td className="px-4 py-3 font-medium text-gray-900 dark:text-zinc-200">{item.estoqueId}</td>
+                                                    <td className="px-4 py-3 font-medium">
+                                                        {item.ativo ? (
+                                                            <span className="text-sm">Ativo</span>
+                                                        ) : (
+                                                            <span className="text-gray-400 dark:text-zinc-500 text-sm">Inativo</span>
+                                                        )}
+                                                    </td>
 
-                                                    <td className="px-4 py-3 font-medium text-gray-900 dark:text-zinc-200">{(item.ativo) ? ("true") : ("false")}</td>
-
-                                                    {/* AÇÕES (BOTÕES) */}
+ 
                                                     <td className="px-4 py-3 text-right">
                                                         <div className='flex justify-end gap-4'>
                                                             {user?.acessoADM && (
                                                                 estaEditandoEste ? (
                                                                     <>
-                                                                        {/* Botão Salvar */}
+ 
                                                                         <button onClick={handleSave} title="Salvar alteração" className="text-emerald-600 hover:text-emerald-800 dark:text-emerald-500 dark:hover:text-emerald-400 font-medium cursor-pointer text-sm">
                                                                             Salvar
                                                                         </button>
-                                                                        {/* Botão Cancelar */}
+
                                                                         <button onClick={() => { setIsEditing(false); setEditForm(undefined); }} title="Cancelar" className="text-gray-500 hover:text-gray-700 dark:text-zinc-400 dark:hover:text-zinc-300 font-medium cursor-pointer text-sm">
                                                                             Cancelar
                                                                         </button>
                                                                     </>
                                                                 ) : (
                                                                     <>
-                                                                        {/* Botão Editar - Passando o 'item' atual por parâmetro */}
+                                           
                                                                         <button onClick={() => handleStartEditing(item)} title="Editar setor" className="text-violet-600 hover:text-violet-800 dark:text-violet-500 dark:hover:text-violet-400 font-medium cursor-pointer">
                                                                             <Pen size={17} />
                                                                         </button>
 
-                                                                        {/* Botão Deletar */}
-                                                                        <button onClick={() => handleDelete(item.id)} title="Deletar setor" className="text-red-600 hover:text-red-800 dark:text-red-500 dark:hover:text-red-400 font-medium cursor-pointer">
+                                                                        <button onClick={() => handleDelete(item.id)} title="Desativar setor" className="text-red-600 hover:text-red-800 dark:text-red-500 dark:hover:text-red-400 font-medium cursor-pointer">
                                                                             <Trash2 size={17} />
                                                                         </button>
                                                                     </>
