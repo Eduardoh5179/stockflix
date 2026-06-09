@@ -4,7 +4,8 @@ export interface Produto {
   preco: number;
   descricao: string;
   quantidade: number;
-  setorId:number
+  setorId:number;
+  ativo:boolean;
 }
 
 // export const produtos: Produto[] = [

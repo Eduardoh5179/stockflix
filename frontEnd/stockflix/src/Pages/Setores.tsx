@@ -192,7 +192,7 @@ function Setores() {
                                     {loading ? (
                                         Array.from({ length: 4 }).map((_, rowIndex) => (
                                             <tr key={`loading-row-${rowIndex}`} className="dark:bg-zinc-900">
-                                                {Array.from({ length: 4 }).map((_, colIndex) => {
+                                                {Array.from({ length: 5 }).map((_, colIndex) => {
                                                     const randomWidth = `${Math.floor(Math.random() * 56) + 40}%`;
 
                                                     return (

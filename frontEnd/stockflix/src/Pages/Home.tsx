@@ -235,6 +235,7 @@ function Home() {
                       <th className="px-4 py-3 text-left font-semibold text-gray-900 dark:text-zinc-200">Preço</th>
                       <th className="px-4 py-3 text-left font-semibold text-gray-900 dark:text-zinc-200">Setor</th>
                       <th className="px-4 py-3 text-left font-semibold text-gray-900 dark:text-zinc-200">Qtd.</th>
+                      <th className="px-4 py-3 text-left font-semibold text-gray-900 dark:text-zinc-200">Ativo</th>
                       <th className="px-4 py-3 text-right font-semibold text-gray-900 dark:text-zinc-200">Ações</th>
                     </tr>
                   </thead>
@@ -243,7 +244,7 @@ function Home() {
                     {loading ? (
                       Array.from({ length: 5 }).map((_, rowIndex) => (
                         <tr key={`loading-row-${rowIndex}`} className="hover:bg-gray-50 dark:bg-zinc-900 dark:hover:bg-zinc-800/50">
-                          {Array.from({ length: 6 }).map((_, colIndex) => {
+                          {Array.from({ length: 7 }).map((_, colIndex) => {
                             const randomWidth = `${Math.floor(Math.random() * 56) + 40}%`;
 
                             return (
@@ -265,6 +266,7 @@ function Home() {
                           <td className="px-4 py-3 text-gray-700  dark:text-zinc-300">{item.preco.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}</td>
                           <td className="px-4 py-3 text-gray-700 dark:text-zinc-300">{item.setorId}</td>
                           <td className="px-4 py-3 text-gray-700  dark:text-zinc-300">{item.quantidade}</td>
+                          <td className="px-4 py-3 text-gray-700  dark:text-zinc-300">{item.ativo ? "true" : "false" }</td>
                           <td className="px-4 py-3 text-right flex items-center justify-end gap-3">
                             <Link to={`/Products/${item.id}`} className="text-blue-600 hover:text-blue-800 dark:bg-zinc-900 font-medium underline dark:text-blue-400 dark:hover:text-blue-300">
                               Ver detalhes

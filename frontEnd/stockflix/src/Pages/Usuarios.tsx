@@ -51,7 +51,7 @@ function UsuariosPage() {
 
     const handleStartEditing = (item: Usuario) => {
         if (user?.acessoADM === true) {
-            setEditForm({...item});
+            setEditForm({ ...item });
             setIsEditing(true);
         } else {
             toast.error("Acesso negado: Você não tem permissão para editar.");
@@ -63,12 +63,12 @@ function UsuariosPage() {
 
         try {
             const dadosParaEnviar = {
-            ...editForm,
-            ativo: editForm.ativo ?? true 
-        };
+                ...editForm,
+                ativo: editForm.ativo ?? true
+            };
 
             const usuarioAtualizado = await atualizarUsuario(editForm.id, dadosParaEnviar);
-          
+
 
             setListaUsuarios(prev =>
                 prev.map(u => u.id === editForm.id ? usuarioAtualizado : u)
@@ -198,10 +198,11 @@ function UsuariosPage() {
                             <table className="min-w-full divide-y divide-gray-200 bg-white dark:bg-zinc-900 text-sm">
                                 <thead className="bg-gray-50 dark:bg-zinc-800/50">
                                     <tr>
-                                        <th className="px-4 py-3 text-left font-semibold text-gray-900 dark:text-zinc-200">ID</th>
-                                        <th className="px-4 py-3 text-left font-semibold text-gray-900 dark:text-zinc-200">Login</th>
-                                        <th className="px-4 py-3 text-left font-semibold text-gray-900 dark:text-zinc-200">AcessoADM </th>
-                                        <th className="px-4 py-3 text-right font-semibold text-gray-900 dark:text-zinc-200">Ações</th>
+                                        <th className="px-4 py-3 text-left font-semibold text-gray-900 dark:text-zinc-200"> ID </th>
+                                        <th className="px-4 py-3 text-left font-semibold text-gray-900 dark:text-zinc-200"> Login </th>
+                                        <th className="px-4 py-3 text-left font-semibold text-gray-900 dark:text-zinc-200"> AcessoADM </th>
+                                        <th className="px-4 py-3 text-left font-semibold text-gray-900 dark:text-zinc-200"> Ativo </th>
+                                        <th className="px-4 py-3 text-right font-semibold text-gray-900 dark:text-zinc-200"> Ações</th>
                                     </tr>
                                 </thead>
 
@@ -209,7 +210,7 @@ function UsuariosPage() {
                                     {loading ? (
                                         Array.from({ length: 3 }).map((_, rowIndex) => (
                                             <tr key={`loading-row-${rowIndex}`} className="dark:bg-zinc-900">
-                                                {Array.from({ length: 4 }).map((_, colIndex) => {
+                                                {Array.from({ length: 5 }).map((_, colIndex) => {
                                                     const randomWidth = `${Math.floor(Math.random() * 56) + 40}%`;
 
                                                     return (
@@ -229,7 +230,7 @@ function UsuariosPage() {
 
                                             return (
                                                 <tr key={item.id} className="hover:bg-gray-50 dark:hover:bg-zinc-800/30 transition-colors">
-    
+
                                                     <td className="px-4 py-3 font-medium text-gray-900 dark:text-zinc-200">{item.id}</td>
 
                                                     <td className="px-4 py-3 font-medium text-gray-900 dark:text-zinc-200">
@@ -240,6 +241,7 @@ function UsuariosPage() {
                                                         )}
                                                     </td>
                                                     <td className="px-4 py-3 font-medium text-gray-900 dark:text-zinc-200">{item.acessoADM ? ("true") : ("false")}</td>
+                                                    <td className="px-4 py-3 font-medium text-gray-900 dark:text-zinc-200">{item.ativo ? ("true") : ("false")}</td>
 
                                                     <td className="px-4 py-3 text-right">
                                                         <div className='flex justify-end gap-4'>

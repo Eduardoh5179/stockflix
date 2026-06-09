@@ -6,7 +6,7 @@ import { Box, TriangleAlert, ArrowDownRight, TrendingUp } from 'lucide-react'
 import { type Produto } from '../data/constants.ts'
 import produtosApi from '../services/api.ts'
 import movimentacoes from '../services/movimentacoes.ts'
-import { Link,useNavigate } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import { type Movimentacao } from '../data/movimentacao.ts'
 
 
