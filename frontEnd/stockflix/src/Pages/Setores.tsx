@@ -21,6 +21,7 @@ export interface Setor {
     ativo: boolean;
 }
 
+
 function Setores() {
     const { user } = useAuth();
     const [sidebarOpen, setsidebarOpen] = useState(true);
