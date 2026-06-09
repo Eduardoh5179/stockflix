@@ -170,7 +170,7 @@ function UsuariosPage() {
                 <main className='h-full flex-1 dark:bg-zinc-950'>
                     <section className={`${sidebarOpen ? 'ml-64' : 'ml-0'} transition-all duration-300 p-6`}>
                         <div className="flex items-baseline gap-3">
-                            <h1 className="text-3xl font-bold text-gray-800 dark:text-zinc-100 tracking-tight"> Usuarios </h1>
+                            <h1 className="text-3xl font-bold text-gray-800 dark:text-zinc-100 tracking-tight"> Usuários </h1>
                         </div>
                         <div className='mt-4'>
                             {user?.acessoADM === true && (
