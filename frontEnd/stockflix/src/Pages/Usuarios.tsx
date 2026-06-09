@@ -12,6 +12,7 @@ import { toast } from "sonner";
 import { Trash2, Pen, RefreshCw } from 'lucide-react'
 import { atualizarUsuario } from '../services/putUsuario.ts'
 import { deleteUsuario } from '@/services/deleteUsuario.ts';
+import ativarUsuario from '../services/ativarUsuario.ts'
 
 export interface Usuario {
     id: number,
@@ -90,6 +91,21 @@ function UsuariosPage() {
         }
     };
 
+    const handleUpdate = async (id: number) => {
+        try {
+            await ativarUsuario(id);
+
+            setListaUsuarios(prev =>
+                prev.map(usuario => usuario.id === id ? { ...usuario, ativo: true } : usuario)
+            );
+
+            toast.success("usuário reativado com sucesso!");
+        } catch (error) {
+            console.error("Erro ao reativar o setor na API:", error);
+            toast.error("Não foi possível reativar o setor.");
+        }
+    };
+
     const handleDelete = async (id: number) => {
         const confirmar = window.confirm("Tem certeza que deseja deletar este usuário?");
         if (!confirmar) return;
@@ -98,7 +114,6 @@ function UsuariosPage() {
 
             await deleteUsuario.deletar(id);
 
-            setListaUsuarios(prev => prev.filter(u => u.id !== id));
 
             toast.success(`Usuário foi deletado com sucesso!`);
         } catch (error) {
@@ -257,7 +272,7 @@ function UsuariosPage() {
                                                         <div className='flex justify-end gap-4'>
                                                             {user?.acessoADM && (
                                                                 !item.ativo ? (
-                                                                    <button title="Reativar setor" className=" dark:text-zinc-50 dark:hover:text-white font-medium cursor-pointer transition-transform">
+                                                                    <button onClick={() => handleUpdate(item.id)}  title="Reativar setor" className=" dark:text-zinc-50 dark:hover:text-white font-medium cursor-pointer transition-transform">
                                                                         <RefreshCw size={17} />
                                                                     </button>
                                                                 ) : (

@@ -9,6 +9,7 @@ import { useNavigate } from 'react-router-dom'
 import { type Produto } from '../data/constants.ts'
 import produtosPorID from '../services/produtosID.ts'
 import atualizarProduto from '../services/produtoPut.ts'
+import ativarProduto from '../services/ativarProduto.ts'
 import { produtoDelete } from '../services/produtoDelete.ts'
 import { Spinner } from "@/components/ui/spinner"
 import { Pen, Trash2, RefreshCw } from 'lucide-react'
@@ -46,6 +47,18 @@ const ProductDetail = () => {
                 ...editForm,
                 [name]: (name === "preco" || name === "setorId") ? Number(value) : value
             });
+        }
+    };
+
+    const handleUpdate = async (id: number) => {
+        try {
+            await ativarProduto(id);
+
+
+            toast.success("Produto reativado com sucesso!");
+        } catch (error) {
+            console.error("Erro ao reativar o setor na API:", error);
+            toast.error("Não foi possível reativar o usuário.");
         }
     };
 
@@ -195,10 +208,7 @@ const ProductDetail = () => {
                                     <div className="flex items-center gap-2">
                                         {user?.acessoADM && (
                                             !produto.ativo ? (
-                                                <button
-                                                    className="cursor-pointer p-2 text-emerald-600 hover:text-emerald-800 hover:bg-emerald-50 dark:hover:bg-emerald-900/20 dark:text-emerald-500 dark:hover:text-emerald-400 rounded-full transition-all border border-transparent hover:border-emerald-200"
-                                                    title="Reativar produto"
-                                                >
+                                                <button onClick={() => handleUpdate(Number(id))} className="cursor-pointer p-2 text-emerald-600 hover:text-emerald-800 hover:bg-emerald-50 dark:hover:bg-emerald-900/20 dark:text-emerald-500 dark:hover:text-emerald-400 rounded-full transition-all border border-transparent hover:border-emerald-200" title="Reativar produto">
                                                     <RefreshCw size={18} />
                                                 </button>
                                             ) : (
