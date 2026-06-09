@@ -2,24 +2,12 @@ import Header from '../components/Header.tsx';
 import Sidebar from '../components/Sidebar1.tsx';
 import Footer from '../components/Footer.tsx';
 import { useState, useEffect } from 'react';
-import { type FormEvent } from 'react';
 import { useAuth } from '@/context/AuthContext.tsx';
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog"
 import getPrevisao from '../services/getPrevisao.ts';
 import { criarPrevisao } from '../services/postPrevisao.ts'
 import { Toaster } from "@/components/ui/sonner";
 import { toast } from "sonner"
-
-// [
-//   {
-//     "id": 0,
-//     "qtdPrevista": 0,
-//     "inicioPeriodo": "string",
-//     "fimPeriodo": "string",
-//     "criadoEm": "string",
-//     "produtoId": 0
-//   }
-// ]
 
 export interface Previsao {
     id: number,
@@ -56,36 +44,6 @@ function Previsao() {
 
         carregarDadosDaApi();
     }, []);
-
-    // const handleSubmit = async (e: FormEvent) => {
-    //     e.preventDefault();
-
-    //     const requestBody = {
-    //         id: 0,
-    //         nome: nome,
-    //         preco: Number(preco),
-    //         quantidade: 0,
-    //         descricao: descricao,
-    //         setorId: Number(setorId)
-    //     };
-
-    //     try {
-    //         await produtoService.criar(requestBody);
-    //         toast.success("Produto criado com sucesso!", {
-    //             description: `O produto "${nome}" foi salvo no sistema.`,
-    //         });
-    //         setNome('');
-    //         setDescricao('');
-    //         setSetorId('1');
-    //         setPreco('');
-
-    //     } catch (error: any) {
-    //         console.error('Erro na requisição POST:', error);
-    //         const mensagem = "Houve um erro ao tentar criar o produto.";
-
-    //         setErrorStatus(mensagem);
-    //     }
-    // };
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();

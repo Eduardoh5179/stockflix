@@ -18,17 +18,18 @@ import Setores from './Pages/Setores.tsx'
 import Usuarios from './Pages/Usuarios.tsx'
 import Previsao from './Pages/PrevisaoTeste.tsx'
 import Loading from './components/Loading.tsx'
+import Estoques from './Pages/Estoques.tsx'
 
 interface RouteProps {
   children: ReactNode;
 }
 
 const PrivateRoute = ({ children }: RouteProps) => {
-  const { user,loading } = useAuth();
+  const { user, loading } = useAuth();
 
-  if (loading){
-    return(
-      <Loading/>
+  if (loading) {
+    return (
+      <Loading />
     )
   }
   return user ? <>{children}</> : <Navigate to="/Login" replace />;
@@ -117,11 +118,19 @@ const router = createBrowserRouter([
     </PublicRoute>
     ),
   },
-    {
-    path: "/PrevisaoTeste",
+  {
+    path: "/Previsao",
     element: (
       <PrivateRoute>
         <Previsao />
+      </PrivateRoute>
+    )
+  },
+  {
+    path: "/Estoques",
+    element: (
+      <PrivateRoute>
+        <Estoques />
       </PrivateRoute>
     )
   },

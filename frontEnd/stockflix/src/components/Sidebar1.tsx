@@ -1,4 +1,4 @@
-import { Home, History, LogOut, Boxes, SquareSplitVertical, UserRound, TrendingUpDown } from 'lucide-react';
+import { Home, History, LogOut, Boxes, SquareSplitVertical, UserRound, TrendingUpDown, Layers } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 
@@ -51,9 +51,13 @@ const Sidebar = ({ isOpen }: SidebarProps) => {
               <span className="font-semibold">Usuários</span>
             </Link>
             )}
-            <Link to="/PrevisaoTeste" className="flex items-center gap-3 p-3 rounded-lg transition-all duration-200 hover:bg-white/10 hover:text-white group">
+            <Link to="/Previsao" className="flex items-center gap-3 p-3 rounded-lg transition-all duration-200 hover:bg-white/10 hover:text-white group">
               <span className="text-gray-400 "><TrendingUpDown size={18} /></span>
               <span className="font-semibold">Previsões</span>
+            </Link>
+            <Link to="/Estoques" className="flex items-center gap-3 p-3 rounded-lg transition-all duration-200 hover:bg-white/10 hover:text-white group">
+              <span className="text-gray-400 "><Layers size={18} /></span>
+              <span className="font-semibold">Estoques</span>
             </Link>
           </li>
         </ul>
