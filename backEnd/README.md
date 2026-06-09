@@ -1,2 +1,0 @@
-# StockFlix
-Sistema de Estoque 
