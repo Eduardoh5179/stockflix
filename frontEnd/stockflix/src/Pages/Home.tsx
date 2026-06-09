@@ -2,13 +2,21 @@ import Header from '../components/Header.tsx'
 import Sidebar from '../components/Sidebar1.tsx'
 import Footer from '../components/Footer.tsx'
 import { Dialog, DialogTrigger, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogFooter, DialogClose } from "@/components/ui/dialog"
-import { Search, SlidersHorizontal, X} from 'lucide-react'
+import { Search, SlidersHorizontal, X } from 'lucide-react'
 import { useState, useEffect } from 'react'
 import { type Produto } from '../data/constants.ts'
 import { Link, useNavigate } from 'react-router-dom'
 import { useAuth } from '../context/AuthContext'
 import produtosApi from '../services/api.ts'
 import { Toaster } from "@/components/ui/sonner"
+import getSetores from '@/services/getSetores.ts'
+
+interface Setor {
+  id: number;
+  nome: string;
+  estoqueId: number;
+}
+
 
 function Home() {
 
@@ -19,7 +27,8 @@ function Home() {
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
-  const [listaProdutos, setListaProdutos] = useState<Produto[]>([])
+  const [listaProdutos, setListaProdutos] = useState<Produto[]>([]);
+  const [listaSetores, setListaSetores] = useState<Setor[]>([]);
   const [setorSelecionado, setSetorSelecionado] = useState<string>("todos");
   const [ordenacao, setOrdenacao] = useState<string>("nenhum");
 
@@ -41,6 +50,26 @@ function Home() {
 
     carregarDadosDaApi();
   }, []);
+
+
+  useEffect(() => {
+    const carregarSetoresApi = async () => {
+      setLoading(true)
+      try {
+        const dados = await getSetores();
+
+        setListaSetores(dados);
+
+      } catch (error) {
+        console.error("Erro ao carregar os produtos na tela:", error);
+      } finally {
+        setLoading(false)
+      }
+    };
+
+    carregarSetoresApi();
+  }, []);
+
 
 
 
@@ -154,9 +183,11 @@ function Home() {
                           <label className="text-sm font-medium text-gray-700 dark:text-zinc-200">Setor</label>
                           <select value={setorSelecionado} onChange={(e) => setSetorSelecionado(e.target.value)} className="w-full p-2.5 bg-white border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-slate-400 dark:bg-zinc-900 dark:border-zinc-800 dark:text-zinc-300 dark:focus:ring-zinc-700">
                             <option value="todos">Todos os Setores</option>
-                            <option value="1">Setor 1 (Ex: Eletrônicos)</option>
-                            <option value="2">Setor 2 (Ex: Vestuário)</option>
-                            <option value="3">Setor 3 (Ex: Alimentos)</option>
+                            {listaSetores && listaSetores.map((setor) => (
+                              <option key={setor.id} value={setor.id}>
+                                {setor.nome}
+                              </option>
+                            ))}
                           </select>
                         </div>
 

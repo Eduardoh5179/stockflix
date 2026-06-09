@@ -16,6 +16,13 @@ import { Pen, Trash2, RefreshCw } from 'lucide-react'
 import { Toaster } from "@/components/ui/sonner"
 import { toast } from "sonner"
 import Error from '../components/Error.tsx'
+import getSetores from '@/services/getSetores.ts'
+
+interface Setor {
+    id: number;
+    nome: string;
+    estoqueId: number;
+}
 
 const ProductDetail = () => {
     //Boa sorte futuro desenvolvedor que for mexer com isso :)
@@ -24,6 +31,7 @@ const ProductDetail = () => {
     const { user } = useAuth();
 
     const [produto, setProduto] = useState<Produto | undefined>();
+    const [listaSetores, setListaSetores] = useState<Setor[]>([]);
     const [loading, setLoading] = useState(true);
     const [isUpdating, setIsUpdating] = useState(false);
     const navigate = useNavigate()
@@ -100,7 +108,24 @@ const ProductDetail = () => {
         carregarProduto();
     }, [id]);
 
-    console.log(produto)
+    useEffect(() => {
+        const carregarSetoresApi = async () => {
+            setLoading(true)
+            try {
+                const dados = await getSetores();
+
+                setListaSetores(dados);
+                console.log(dados)
+
+            } catch (error) {
+                console.error("Erro ao carregar os produtos na tela:", error);
+            } finally {
+                setLoading(false)
+            }
+        };
+
+        carregarSetoresApi();
+    }, []);
 
 
     if (loading) {
@@ -253,12 +278,20 @@ const ProductDetail = () => {
                                     </div>
                                     <div className="border-b flex font-medium justify-between border-(--borderColor) py-2 px-4 dark:border-zinc-800">
                                         <p className=" dark:text-zinc-400 ">Setor</p>
-                                        {isEditing && user?.acessoADM ? (<select name="setorId" value={editForm?.setorId} onChange={handleChange} className="border border-violet-300 rounded px-2 py-1 text-sm outline-none dark:bg-zinc-800 dark:border-zinc-700 dark:text-zinc-100">
-                                            <option value={1}>Setor 1</option>
-                                            <option value={2}>Setor 2</option>
-                                            <option value={3}>Setor 3</option>
-                                        </select>) : (
-                                            <p className="dark:text-zinc-100">{produto.setorId}</p>)}
+                                        {isEditing && user?.acessoADM ? (
+                                            <select name="setorId" value={editForm?.setorId} onChange={handleChange} className="border border-violet-300 rounded px-2 py-1 text-sm outline-none dark:bg-zinc-800 dark:border-zinc-700 dark:text-zinc-100">
+
+                                                {listaSetores && listaSetores.map((setor) => (
+                                                    <option key={setor.id} value={setor.id}>
+                                                        {setor.nome}
+                                                    </option>
+                                                ))}
+                                            </select>
+                                        ) : (
+                                            <p className="dark:text-zinc-100">
+                                                {listaSetores?.find(s => s.id === produto.setorId)?.nome || produto.setorId}
+                                            </p>
+                                        )}
                                     </div>
                                     <div className="border-b flex font-medium justify-between border-(--borderColor) py-2 px-4 dark:border-zinc-800">
                                         <p className=" dark:text-zinc-400">valor unitário</p>
