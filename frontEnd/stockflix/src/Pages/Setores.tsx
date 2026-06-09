@@ -10,7 +10,7 @@ import { toast } from "sonner"
 import { criarSetor } from '@/services/postSetores.ts';
 import { useAuth } from '@/context/AuthContext.tsx';
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog"
-import { Trash2, Pen } from 'lucide-react'
+import { Trash2, Pen, RefreshCw } from 'lucide-react'
 import atualizarSetor from '../services/putSetor.ts'
 
 export interface Setor {
@@ -233,7 +233,6 @@ function Setores() {
                                                         )}
                                                     </td>
 
-                                                    {/* ESTOQUE ID */}
                                                     <td className="px-4 py-3 font-medium text-gray-900 dark:text-zinc-200">{item.estoqueId}</td>
                                                     <td className="px-4 py-3 font-medium">
                                                         {item.ativo ? (
@@ -243,32 +242,36 @@ function Setores() {
                                                         )}
                                                     </td>
 
- 
+
                                                     <td className="px-4 py-3 text-right">
                                                         <div className='flex justify-end gap-4'>
                                                             {user?.acessoADM && (
-                                                                estaEditandoEste ? (
-                                                                    <>
- 
-                                                                        <button onClick={handleSave} title="Salvar alteração" className="text-emerald-600 hover:text-emerald-800 dark:text-emerald-500 dark:hover:text-emerald-400 font-medium cursor-pointer text-sm">
-                                                                            Salvar
-                                                                        </button>
-
-                                                                        <button onClick={() => { setIsEditing(false); setEditForm(undefined); }} title="Cancelar" className="text-gray-500 hover:text-gray-700 dark:text-zinc-400 dark:hover:text-zinc-300 font-medium cursor-pointer text-sm">
-                                                                            Cancelar
-                                                                        </button>
-                                                                    </>
+                                                                !item.ativo ? (
+                                                                    <button title="Reativar setor" className=" dark:text-zinc-50 dark:hover:text-white font-medium cursor-pointer transition-transform">
+                                                                        <RefreshCw size={17} />
+                                                                    </button>
                                                                 ) : (
-                                                                    <>
-                                           
-                                                                        <button onClick={() => handleStartEditing(item)} title="Editar setor" className="text-violet-600 hover:text-violet-800 dark:text-violet-500 dark:hover:text-violet-400 font-medium cursor-pointer">
-                                                                            <Pen size={17} />
-                                                                        </button>
+                                                                    estaEditandoEste ? (
+                                                                        <>
+                                                                            <button onClick={handleSave} title="Salvar alteração" className="text-emerald-600 hover:text-emerald-800 dark:text-emerald-500 dark:hover:text-emerald-400 font-medium cursor-pointer text-sm">
+                                                                                Salvar
+                                                                            </button>
 
-                                                                        <button onClick={() => handleDelete(item.id)} title="Desativar setor" className="text-red-600 hover:text-red-800 dark:text-red-500 dark:hover:text-red-400 font-medium cursor-pointer">
-                                                                            <Trash2 size={17} />
-                                                                        </button>
-                                                                    </>
+                                                                            <button onClick={() => { setIsEditing(false); setEditForm(undefined); }} title="Cancelar" className="text-gray-500 hover:text-gray-700 dark:text-zinc-400 dark:hover:text-zinc-300 font-medium cursor-pointer text-sm">
+                                                                                Cancelar
+                                                                            </button>
+                                                                        </>
+                                                                    ) : (
+                                                                        <>
+                                                                            <button onClick={() => handleStartEditing(item)} title="Editar setor" className="text-violet-600 hover:text-violet-800 dark:text-violet-500 dark:hover:text-violet-400 font-medium cursor-pointer">
+                                                                                <Pen size={17} />
+                                                                            </button>
+
+                                                                            <button onClick={() => handleDelete(item.id)} title="Desativar setor" className="text-red-600 hover:text-red-800 dark:text-red-500 dark:hover:text-red-400 font-medium cursor-pointer">
+                                                                                <Trash2 size={17} />
+                                                                            </button>
+                                                                        </>
+                                                                    )
                                                                 )
                                                             )}
                                                         </div>
@@ -279,7 +282,6 @@ function Setores() {
                                     )}
                                 </tbody>
                             </table>
-
                         </section>
                     </section>
                 </main>

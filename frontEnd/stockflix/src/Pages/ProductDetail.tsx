@@ -11,7 +11,7 @@ import produtosPorID from '../services/produtosID.ts'
 import atualizarProduto from '../services/produtoPut.ts'
 import { produtoDelete } from '../services/produtoDelete.ts'
 import { Spinner } from "@/components/ui/spinner"
-import { Pen, Trash2 } from 'lucide-react'
+import { Pen, Trash2, RefreshCw } from 'lucide-react'
 import { Toaster } from "@/components/ui/sonner"
 import { toast } from "sonner"
 import Error from '../components/Error.tsx'
@@ -193,16 +193,27 @@ const ProductDetail = () => {
                                     <span className="text-zinc-500 text-sm dark:text-zinc-400">ID: {id}</span>
 
                                     <div className="flex items-center gap-2">
+                                        {user?.acessoADM && (
+                                            !produto.ativo ? (
+                                                <button
+                                                    className="cursor-pointer p-2 text-emerald-600 hover:text-emerald-800 hover:bg-emerald-50 dark:hover:bg-emerald-900/20 dark:text-emerald-500 dark:hover:text-emerald-400 rounded-full transition-all border border-transparent hover:border-emerald-200"
+                                                    title="Reativar produto"
+                                                >
+                                                    <RefreshCw size={18} />
+                                                </button>
+                                            ) : (
+                                                <>
+                                                    {!isEditing && (
+                                                        <button onClick={handleStartEditing} className="p-2 text-zinc-800 hover:text-violet-600 hover:bg-violet-50 rounded-full transition-all cursor-pointer border border-transparent hover:border-violet-200 dark:text-zinc-400 dark:hover:bg-violet-900/20 dark:hover:text-violet-400" title="Editar Informações">
+                                                            <Pen size={18} />
+                                                        </button>
+                                                    )}
 
-                                        {user?.acessoADM && !isEditing && (
-                                            <button onClick={handleStartEditing} className="p-2 text-zinc-800  hover:text-violet-600 hover:bg-violet-50 rounded-full transition-all cursor-pointer border border-transparent hover:border-violet-200 dark:text-zinc-400 dark:hover:bg-violet-900/20 dark:hover:text-violet-400" title="Editar Informações">
-                                                <Pen size={18} />
-                                            </button>
-                                        )}
-                                        {user?.acessoADM === true && (
-                                            <button className='cursor-pointer p-2 hover:text-red-800 hover:bg-violet-50 rounded-full transition-all border border-transparent hover:border-red-300 dark:text-zinc-400 dark:hover:bg-red-900/20 dark:hover:text-red-400' onClick={() => handleDelete(produto.id, produto.quantidade)} title="Deletar produto">
-                                                <Trash2 size={18} className='text-red-600' />
-                                            </button>
+                                                    <button className='cursor-pointer p-2 hover:text-red-800 hover:bg-red-50 dark:hover:bg-red-900/20 rounded-full transition-all border border-transparent hover:border-red-300 dark:text-zinc-400 dark:hover:text-red-400' onClick={() => handleDelete(produto.id, produto.quantidade)} title="Deletar produto">
+                                                        <Trash2 size={18} className='text-red-600 dark:text-red-500' />
+                                                    </button>
+                                                </>
+                                            )
                                         )}
                                     </div>
                                 </div>

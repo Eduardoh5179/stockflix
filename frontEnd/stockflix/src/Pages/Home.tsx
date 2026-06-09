@@ -2,16 +2,13 @@ import Header from '../components/Header.tsx'
 import Sidebar from '../components/Sidebar1.tsx'
 import Footer from '../components/Footer.tsx'
 import { Dialog, DialogTrigger, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogFooter, DialogClose } from "@/components/ui/dialog"
-import { Search, SlidersHorizontal, X } from 'lucide-react'
-// import { Trash2 } from 'lucide-react'
+import { Search, SlidersHorizontal, X} from 'lucide-react'
 import { useState, useEffect } from 'react'
 import { type Produto } from '../data/constants.ts'
 import { Link, useNavigate } from 'react-router-dom'
 import { useAuth } from '../context/AuthContext'
 import produtosApi from '../services/api.ts'
-// import { produtoDelete } from '../services/produtoDelete.ts'
 import { Toaster } from "@/components/ui/sonner"
-// import { toast } from "sonner"
 
 function Home() {
 
