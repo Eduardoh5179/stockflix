@@ -114,9 +114,14 @@ function estoques() {
     const handleSubmit = async (e: FormEvent) => {
         e.preventDefault();
 
+        if (nome == ''){
+            toast.error('Preencha o campo');
+            return
+        }
+
         const requestBody = {
             id: 0,
-            nome: nome,
+            nome: nome.trim(),
             ativo: true
         };
 
@@ -183,7 +188,7 @@ function estoques() {
                                                     <label htmlFor="name" className="text-sm font-medium text-gray-700 dark:text-zinc-200">
                                                         Nome
                                                     </label>
-                                                    <input id="name" value={nome} onChange={(e) => setNome(e.target.value)} placeholder="Ex: Logística, TI, RH..." className="col-span-3 min-w-full p-2.5 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-slate-400 dark:bg-zinc-900 dark:border-zinc-800 dark:text-zinc-300 dark:focus:ring-zinc-700" />
+                                                    <input id="name" value={nome} maxLength={50} required onChange={(e) => setNome(e.target.value)} placeholder="Ex: Logística, TI, RH..." className="col-span-3 min-w-full p-2.5 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-slate-400 dark:bg-zinc-900 dark:border-zinc-800 dark:text-zinc-300 dark:focus:ring-zinc-700" />
                                                 </div>
                                             </div>
 
@@ -241,7 +246,7 @@ function estoques() {
                                                         {estaEditandoEste ? (
                                                             <input
                                                                 type="text"
-                                                                value={editForm.nome}
+                                                                value={editForm.nome} required maxLength={50}
                                                                 onChange={(e) => setEditForm({ ...editForm, nome: e.target.value })}
                                                                 className="bg-white dark:bg-zinc-700 border border-violet-500 rounded px-2 py-1 text-sm focus:outline-none focus:ring-2 focus:ring-violet-500 text-gray-900 dark:text-zinc-100"
                                                                 autoFocus

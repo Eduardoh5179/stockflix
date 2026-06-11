@@ -131,15 +131,15 @@ function Previsao() {
                                                     <label htmlFor="inicio" className="text-sm font-medium text-gray-700 dark:text-zinc-200">
                                                         inicio do periodo
                                                     </label>
-                                                    <input id="inicio" value={dataInicio} onChange={(e) => setDataInicio(e.target.value)} type='date' className="col-span-3 min-w-full p-2.5 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-slate-400 dark:bg-zinc-900 dark:border-zinc-800 dark:text-zinc-300 dark:focus:ring-zinc-700" />
+                                                    <input id="inicio" value={dataInicio} required onChange={(e) => setDataInicio(e.target.value)} type='date' className="col-span-3 min-w-full p-2.5 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-slate-400 dark:bg-zinc-900 dark:border-zinc-800 dark:text-zinc-300 dark:focus:ring-zinc-700" />
                                                     <label htmlFor="fim" className="text-sm font-medium text-gray-700 dark:text-zinc-200">
                                                         fim do periodo
                                                     </label>
-                                                    <input id="fim" value={dataFim} onChange={(e) => setDataFim(e.target.value)} type='date' className="col-span-3 min-w-full p-2.5 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-slate-400 dark:bg-zinc-900 dark:border-zinc-800 dark:text-zinc-300 dark:focus:ring-zinc-700" />
+                                                    <input id="fim" value={dataFim} required onChange={(e) => setDataFim(e.target.value)} type='date' className="col-span-3 min-w-full p-2.5 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-slate-400 dark:bg-zinc-900 dark:border-zinc-800 dark:text-zinc-300 dark:focus:ring-zinc-700" />
                                                     <label htmlFor="id" className="text-sm font-medium text-gray-700 dark:text-zinc-200">
                                                         id do produto
                                                     </label>
-                                                    <input id="id" type='number' value={id} onChange={(e) => setId(e.target.value === '' ? '' : Number(e.target.value))} className="col-span-3 min-w-full p-2.5 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-slate-400 dark:bg-zinc-900 dark:border-zinc-800 dark:text-zinc-300 dark:focus:ring-zinc-700" />
+                                                    <input id="id" type='number' value={id} required onChange={(e) => setId(e.target.value === '' ? '' : Number(e.target.value))} className="col-span-3 min-w-full p-2.5 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-slate-400 dark:bg-zinc-900 dark:border-zinc-800 dark:text-zinc-300 dark:focus:ring-zinc-700" />
                                                 </div>
                                             </div>
 

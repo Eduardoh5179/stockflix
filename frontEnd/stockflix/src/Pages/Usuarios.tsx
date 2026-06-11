@@ -125,10 +125,15 @@ function UsuariosPage() {
     const handleSubmit = async (e: FormEvent) => {
         e.preventDefault();
 
+        if (login == '' || senha == ''){
+            toast.error('preencha os campos');
+            return
+        }
+
         const requestBody = {
             id: 0,
-            login: login,
-            senha: senha,
+            login: login.trim(),
+            senha: senha.trim(),
             acessoADM: false,
             ativo: true
         };
@@ -195,11 +200,11 @@ function UsuariosPage() {
                                                     <label htmlFor="name" className="text-sm font-medium text-gray-700 dark:text-zinc-200">
                                                         Login
                                                     </label>
-                                                    <input id="name" value={login} onChange={(e) => setLogin(e.target.value)} className="col-span-3 min-w-full p-2.5 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-slate-400 dark:bg-zinc-900 dark:border-zinc-800 dark:text-zinc-300 dark:focus:ring-zinc-700" />
+                                                    <input id="name" value={login} required maxLength={50} onChange={(e) => setLogin(e.target.value)} className="col-span-3 min-w-full p-2.5 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-slate-400 dark:bg-zinc-900 dark:border-zinc-800 dark:text-zinc-300 dark:focus:ring-zinc-700" />
                                                     <label htmlFor="senha" className="text-sm font-medium text-gray-700 dark:text-zinc-200">
                                                         Senha
                                                     </label>
-                                                    <input id="senha" value={senha} onChange={(e) => setSenha(e.target.value)} className="col-span-3 min-w-full p-2.5 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-slate-400 dark:bg-zinc-900 dark:border-zinc-800 dark:text-zinc-300 dark:focus:ring-zinc-700" />
+                                                    <input id="senha" value={senha} required maxLength={50} onChange={(e) => setSenha(e.target.value)} className="col-span-3 min-w-full p-2.5 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-slate-400 dark:bg-zinc-900 dark:border-zinc-800 dark:text-zinc-300 dark:focus:ring-zinc-700" />
                                                 </div>
                                             </div>
 
