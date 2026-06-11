@@ -72,11 +72,11 @@ const ProductDetail = () => {
 
     const handleDelete = async (id: number, quantidade: number) => {
         if (quantidade > 0) {
-            toast.warning(`Não é possível deletar este produto pois ele ainda possui ${quantidade} unidades em estoque! Zere o estoque antes de excluir.`);
+            toast.warning(`Não é possível desativar este produto pois ele ainda possui ${quantidade} unidades em estoque! Zere o estoque antes de excluir.`);
             return;
         }
 
-        const confirmar = window.confirm("Tem certeza que deseja deletar este item?");
+        const confirmar = window.confirm("Tem certeza que deseja desativar este item?");
         if (!confirmar) return;
 
         try {
@@ -254,7 +254,7 @@ const ProductDetail = () => {
 
                                 <section className="flex justify-between">
                                     {isEditing && user?.acessoADM ? (
-                                        <input name="nome" className="text-xl md:text-3xl font-bold text-slate-800 mb-4 border-b-2 border-violet-500 outline-none bg-slate-50 px-2 w-full dark:bg-zinc-800 dark:text-zinc-100 dark:border-violet-400" value={editForm?.nome} onChange={handleChange} />
+                                        <input name="nome" required maxLength={50} className="text-xl md:text-3xl font-bold text-slate-800 mb-4 border-b-2 border-violet-500 outline-none bg-slate-50 px-2 w-full dark:bg-zinc-800 dark:text-zinc-100 dark:border-violet-400" value={editForm?.nome} onChange={handleChange} />
                                     ) : (
                                         <h1 className="text-xl md:text-3xl font-bold text-slate-800 mb-4 dark:text-zinc-100">{produto.nome}</h1>
                                     )}
@@ -296,7 +296,7 @@ const ProductDetail = () => {
                                         {isEditing && user?.acessoADM ? (
                                             <div className="flex items-center gap-1">
                                                 <span className="text-sm text-slate-50 dark:text-zinc-400">R$</span>
-                                                <input name="preco" type="number" step="0.01" className="border border-violet-300 rounded px-2 py-1 text-sm w-24 outline-none dark:bg-zinc-800 dark:border-zinc-700 dark:text-zinc-100" value={editForm?.preco} onChange={handleChange} />
+                                                <input name="preco" type="number" required step="0.01" className="border border-violet-300 rounded px-2 py-1 text-sm w-24 outline-none dark:bg-zinc-800 dark:border-zinc-700 dark:text-zinc-100" value={editForm?.preco} onChange={handleChange} />
                                             </div>) : (<p className="dark:text-zinc-100">{produto.preco.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}</p>)}
                                     </div>
                                     <div className="border-b flex font-medium justify-between border-(--borderColor) py-2 px-4 dark:border-zinc-800">
