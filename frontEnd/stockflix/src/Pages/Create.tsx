@@ -1,12 +1,19 @@
 import Header from '../components/Header.tsx'
 import Sidebar from '../components/Sidebar1.tsx'
 import Footer from '../components/Footer.tsx'
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { type FormEvent } from 'react'
 import { produtoService } from '../services/produtoPost.ts'
 import { Toaster } from "@/components/ui/sonner"
 import { toast } from "sonner"
 import { CircleX } from 'lucide-react'
+import getSetores from '@/services/getSetores.ts'
+
+interface Setor {
+  id: number;
+  nome: string;
+  estoqueId: number;
+}
 
 export function Create() {
   const [sidebarOpen, setsidebarOpen] = useState(true);
@@ -15,6 +22,7 @@ export function Create() {
   const [setorId, setSetorId] = useState('1');
   const [preco, setPreco] = useState('');
   const [errorStatus, setErrorStatus] = useState<string | null>(null);
+  const [listaSetores, setListaSetores] = useState<Setor[]>([]);
 
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
@@ -45,6 +53,22 @@ export function Create() {
       setErrorStatus(mensagem);
     }
   };
+
+  useEffect(() => {
+    const carregarSetoresApi = async () => {
+      try {
+        const dados = await getSetores();
+
+        setListaSetores(dados);
+
+      } catch (error) {
+        console.error("Erro ao carregar os produtos na tela:", error);
+      }
+    };
+
+    carregarSetoresApi();
+  }, []);
+
   return (
     <>
       <div className="flex flex-col min-h-screen">
@@ -76,15 +100,19 @@ export function Create() {
               </div>
               <div className='flex flex-col gap-2'>
                 <label className='font-semibold font-sans text-slate-800 dark:text-zinc-300'>Defina o setor do produto </label>
-                <select value={setorId} onChange={(e) => setSetorId(e.target.value)} className='px-4 py-3 border  border-slate-200 bg-slate-50 rounded-xl focus:outline-none text-slate-900 focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 placeholder:text-slate-400 dark:bg-zinc-900 dark:border-zinc-800 dark:text-zinc-100 dark:placeholder:text-zinc-500 dark:focus:ring-blue-500'>
-                  <option value="1"> 1 </option>
-                  <option value="2"> 2 </option>
-                  <option value="3"> 3 </option>
+
+                <select name="setorId" value={setorId}  onChange={(e) => setSetorId(e.target.value)} className='px-4 py-3 border  border-slate-200 bg-slate-50 rounded-xl focus:outline-none text-slate-900 focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 placeholder:text-slate-400 dark:bg-zinc-900 dark:border-zinc-800 dark:text-zinc-100 dark:placeholder:text-zinc-500 dark:focus:ring-blue-500'>
+
+                  {listaSetores && listaSetores.map((setor) => (
+                    <option key={setor.id} value={setor.id}>
+                      {setor.nome}
+                    </option>
+                  ))}
                 </select>
               </div>
               <div className='flex flex-col gap-2'>
                 <label className='font-semibold font-sans text-slate-800 dark:text-zinc-300'>Preço do produto (R$)</label>
-                <input type='number' placeholder='determine o preço do produto' step="0.01" value={preco} onChange={(e) => setPreco(e.target.value)} required  maxLength={50} className='px-4 py-3 border border-slate-200 bg-slate-50 rounded-xl focus:outline-none text-slate-900 focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 placeholder:text-slate-400 dark:bg-zinc-900 dark:border-zinc-800 dark:text-zinc-100 dark:placeholder:text-zinc-500 dark:focus:ring-blue-500'></input>
+                <input type='number' placeholder='determine o preço do produto' step="0.01" value={preco} onChange={(e) => setPreco(e.target.value)} required maxLength={50} className='px-4 py-3 border border-slate-200 bg-slate-50 rounded-xl focus:outline-none text-slate-900 focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 placeholder:text-slate-400 dark:bg-zinc-900 dark:border-zinc-800 dark:text-zinc-100 dark:placeholder:text-zinc-500 dark:focus:ring-blue-500'></input>
               </div>
               {errorStatus && (<div>
                 <div className="bg-red-100 border px-3 py-2 rounded-xl overflow-x-hidden flex items-center w-fit">
