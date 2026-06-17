@@ -105,6 +105,7 @@ function Previsao() {
                     <section className={`${sidebarOpen ? 'ml-64' : 'ml-0'} transition-all duration-300 p-6`}>
                         <div className="flex items-baseline gap-3">
                             <h1 className="text-3xl font-bold text-gray-800 dark:text-zinc-100 tracking-tight"> Previsões </h1>
+                            <p className="text-sm text-gray-400 dark:text-zinc-200 tracking-tight"> Uma previsão dirá a quantidade em média em que um produto sairá do estoque por dia baseado nas saídas registradas do produto em um período de tempo especificado <p/>
                         </div>
 
                         <div className="mt-4">
@@ -159,7 +160,7 @@ function Previsao() {
                                 <thead className="bg-gray-50 dark:bg-zinc-800">
                                     <tr>
                                         <th className="px-4 py-3 text-left font-semibold text-gray-900 dark:text-zinc-200 border-l-none">idProduto</th>
-                                        <th className="px-4 py-3 text-left font-semibold text-gray-900 dark:text-zinc-200">qtdPrevista</th>
+                                        <th className="px-4 py-3 text-left font-semibold text-gray-900 dark:text-zinc-200">Saidas(dia)</th>
                                         <th className="px-4 py-3 text-left font-semibold text-gray-900 dark:text-zinc-200">dataInicio</th>
                                         <th className="px-4 py-3 text-left font-semibold text-gray-900 dark:text-zinc-200">dataFim</th>
                                         <th className="px-4 py-3 text-right font-semibold text-gray-900 dark:text-zinc-200">criadoEm</th>
