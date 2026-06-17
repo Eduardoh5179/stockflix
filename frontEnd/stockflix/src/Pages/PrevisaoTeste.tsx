@@ -102,7 +102,7 @@ function Previsao() {
                 <Sidebar isOpen={sidebarOpen} />
                 <main className='h-full flex-1 dark:bg-zinc-950'>
                     <section className={`${sidebarOpen ? 'ml-64' : 'ml-0'} transition-all duration-300 p-6`}>
-                        <div className="flex items-baseline gap-3">
+                        <div className="flex flex-col gap-3">
                             <h1 className="text-3xl font-bold text-gray-800 dark:text-zinc-100 tracking-tight"> Previsões </h1>
                             <p className="text-sm text-gray-400 dark:text-zinc-200 tracking-tight"> Uma previsão dirá a quantidade em média em que um produto sairá do estoque por dia baseado nas saídas registradas do produto em um período de tempo especificado </p>
                         </div>
