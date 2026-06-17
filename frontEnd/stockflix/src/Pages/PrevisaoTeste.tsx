@@ -64,7 +64,6 @@ function Previsao() {
                 produtoNome: "", 
             };
 
-  
             await criarPrevisao.criar(dadosParaEnviar);
 
             toast.success("Previsão gerada com sucesso!");
